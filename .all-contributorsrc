@@ -1,4 +1,29 @@
 {
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "nicholas-fedor",
+      "name": "Nicholas Fedor",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/71477161?v=4",
+      "profile": "https://github.com/nicholas-fedor",
+      "contributions": [
+        "code",
+        "doc",
+        "maintenance",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
   "projectName": "eui64-calculator",
-  "projectOwner": "nicholas-fedor"
+  "projectOwner": "nicholas-fedor",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "commitConvention": "none",
+  "skipCi": true,
+  "commitType": "docs"
 }
