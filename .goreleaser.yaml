@@ -1,3 +1,4 @@
+version: 2
 project_name: eui64-calculator
 before:
   hooks:
