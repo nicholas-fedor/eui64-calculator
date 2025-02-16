@@ -20,7 +20,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o eui64-calculator ./cmd/server/main.go
 # Final stage
 FROM gcr.io/distroless/static-debian12:latest
 WORKDIR /app
-COPY eui64-calculator ./ 
+COPY eui64-calculator ./
 COPY static/ ./static/
 COPY ui/ ./ui/
 USER nonroot:nonroot

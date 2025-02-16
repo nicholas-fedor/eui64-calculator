@@ -40,8 +40,9 @@ release:
 dockers:
   - dockerfile: Dockerfile
     extra_files:
-      - go.mod
-      - go.sum
+      - eui64-calculator
+      - static/
+      - ui/
   - image_templates:
       - "docker.io/nickfedor/eui64-calculator:{{ .Tag }}"
       - "docker.io/nickfedor/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
