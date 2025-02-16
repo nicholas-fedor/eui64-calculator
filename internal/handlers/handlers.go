@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,10 @@ func NewHandler() *Handler {
 
 func (h *Handler) Home(c *gin.Context) {
 	if err := ui.Home().Render(c.Request.Context(), c.Writer); err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		if err := c.AbortWithError(http.StatusInternalServerError, err); err != nil {
+			// Log the error since there's nothing more we can do here
+			log.Printf("Failed to abort with error: %v", err)
+		}
 		return
 	}
 }
@@ -37,7 +41,10 @@ func (h *Handler) Calculate(c *gin.Context) {
 	}
 
 	if err := ui.Result(data).Render(c.Request.Context(), c.Writer); err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		if err := c.AbortWithError(http.StatusInternalServerError, err); err != nil {
+			// Log the error for debugging purposes
+			log.Printf("Failed to abort with error: %v", err)
+		}
 		return
 	}
 }
