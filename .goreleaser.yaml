@@ -38,6 +38,10 @@ release:
   prerelease: auto
 
 dockers:
+  - dockerfile: Dockerfile
+    extra_files:
+      - go.mod
+      - go.sum
   - image_templates:
       - "docker.io/nickfedor/eui64-calculator:{{ .Tag }}"
       - "docker.io/nickfedor/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
