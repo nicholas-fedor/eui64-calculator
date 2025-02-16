@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Set up Go
+        uses: actions/setup-go@5a083d0e9a84784eb32078397cf5459adecb4c40
+        with:
+          go-version: 1.24.0
+
+      - name: Cache Go modules
+        uses: actions/cache@9fa7e61ec7e1f44ac75218e7aaea81da8856fd11
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Cache Go build cache
+        uses: actions/cache@9fa7e61ec7e1f44ac75218e7aaea81da8856fd11
+        with:
+          path: ~/go/pkg/mod/cache
+          key: ${{ runner.os }}-build-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Install templ
+        run: go install github.com/a-h/templ/cmd/templ@latest
+
+      - name: Generate templates
+        run: templ generate
+
+      - name: Cache generated templates
+        uses: actions/cache@9fa7e61ec7e1f44ac75218e7aaea81da8856fd11
+        with:
+          path: ui/*.go
+          key: ${{ runner.os }}-templ-${{ hashFiles('ui/*.templ') }}
+          restore-keys: |
+            ${{ runner.os }}-templ-
+
+      - name: Build application
+        run: |
+          go build -o eui64-calculator ./cmd/server

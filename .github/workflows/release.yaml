@@ -1,0 +1,71 @@
+name: Release (Production)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yaml
+
+  test:
+    uses: /.github/workflows/test.yaml
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    needs:
+      - test
+      - lint
+    env:
+      CGO_ENABLED: 0
+      TAG: ${{ github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
+
+      - name: Set up Go
+        uses: actions/setup-go@5a083d0e9a84784eb32078397cf5459adecb4c40
+        with:
+          go-version: 1.24.0
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@327cd5a69de6c009b9ce71bce8395f28e651bf99
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@327cd5a69de6c009b9ce71bce8395f28e651bf99
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@90a3faa9d0182683851fbfa97ca1a2cb983bfca3
+        with:
+          version: latest
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+
+  renew-docs:
+    name: Refresh pkg.go.dev
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull new module version
+        uses: nicholas-fedor/go-proxy-pull-action@2c0cd90fca4f4c81efcc530ee6435752a261aea9

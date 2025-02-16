@@ -1,0 +1,89 @@
+---
+#---------------------------------------------------------------------#
+#                          EUI64-Calculator                           #
+#---------------------------------------------------------------------#
+name: eui64-calculator
+
+networks:
+  eui64-calculator:
+    name: eui64-calculator
+    internal: true
+  traefik:
+    name: traefik
+    internal: false
+
+secrets:
+  CLOUDFLARE_EMAIL:
+    file: ./Traefik/Secrets/CLOUDFLARE_EMAIL
+  CLOUDFLARE_DNS_API_TOKEN:
+    file: ./Traefik/Secrets/CLOUDFLARE_DNS_API_TOKEN
+
+services:
+  eui64-calculator:
+    container_name: eui64-calculator
+    environment:
+      - TRUSTED_PROXIES=127.0.0.1
+    image: eui64-calculator:latest
+    labels:
+      - traefik.docker.network=eui64-calculator
+      - traefik.enable=true
+      - traefik.http.routers.eui64-calculator.rule=Host(`${DOMAIN_NAME}`)
+      - traefik.http.routers.eui64-calculator.entrypoints=https
+      - traefik.http.routers.eui64-calculator.service=eui64-calculator-svc
+      - traefik.http.services.eui64-calculator-svc.loadbalancer.server.port=8080
+      - traefik.http.routers.eui64-calculator.tls=true
+      - traefik.http.routers.eui64-calculator.tls.certresolver=cloudflare
+    networks:
+      - eui64-calculator
+    restart: unless-stopped
+
+  traefik:
+    container_name: traefik
+    deploy:
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+        failure_action: rollback
+    environment:
+      - CLOUDFLARE_EMAIL=/run/secrets/CLOUDFLARE_EMAIL
+      - CLOUDFLARE_DNS_API_TOKEN_FILE=/run/secrets/CLOUDFLARE_DNS_API_TOKEN
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    image: traefik:latest
+    restart: unless-stopped
+    networks:
+      - eui64-calculator
+      - traefik
+    labels:
+      - traefik.docker.network=traefik
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints=http
+      - traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME}`)
+      - traefik.http.routers.traefik.middlewares=traefik-https-redirect
+      - traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+      - traefik.http.routers.traefik-secure.entrypoints=https
+      - traefik.http.routers.traefik-secure.rule=Host(`traefik.${DOMAIN_NAME}`)
+      - traefik.http.routers.traefik-secure.service=api@internal
+      - traefik.http.routers.traefik-secure.tls=true
+      - traefik.http.routers.traefik-secure.tls.certresolver=cloudflare
+      - traefik.http.routers.traefik-secure.tls.domains[0].main=${DOMAIN_NAME}
+      - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.${DOMAIN_NAME}
+    ports:
+      - 80:80
+      - 443:443
+    secrets:
+      - CLOUDFLARE_DNS_API_TOKEN
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./Traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro
+      - ./Traefik/Configs:/etc/traefik/configs:ro
+      - ./Traefik/Certs/acme.json:/acme.json:rw
