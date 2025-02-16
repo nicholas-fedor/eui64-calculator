@@ -182,7 +182,7 @@ If you're using VSCode, I've included an `extensions.json` file with recommended
 - Rebuilding the Docker image:
 
     ```console
-    docker build -f ./Docker/Dockerfile -t eui64-calculator:latest .
+    docker build -t eui64-calculator:latest .
     ```
 
 - Running the image locally:
