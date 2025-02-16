@@ -5,6 +5,8 @@
 A EUI-64 address calculator implemented in Go, HTMX, and Templ.
 
 This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EUI64-Calculator)
+
+![EUI-64 Calculator Screenshot](eui64-calculator_screenshot.png)
 <br/><br/>
 
   [![CircleCI](https://dl.circleci.com/status-badge/img/gh/nicholas-fedor/eui64-calculator/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/nicholas-fedor/eui64-calculator/tree/main)
