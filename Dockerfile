@@ -22,7 +22,6 @@ FROM gcr.io/distroless/static-debian12:latest
 WORKDIR /app
 COPY eui64-calculator ./
 COPY static/ ./static/
-COPY ui/ ./ui/
 USER nonroot:nonroot
 EXPOSE 8080
 ENTRYPOINT ["./eui64-calculator"]
