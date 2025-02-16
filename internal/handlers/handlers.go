@@ -1,6 +1,9 @@
 package handlers
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nicholas-fedor/EUI64-Calculator/internal/eui64"
 	"github.com/nicholas-fedor/EUI64-Calculator/ui"
@@ -14,7 +17,13 @@ func NewHandler() *Handler {
 }
 
 func (h *Handler) Home(c *gin.Context) {
-	ui.Home().Render(c.Request.Context(), c.Writer)
+	if err := ui.Home().Render(c.Request.Context(), c.Writer); err != nil {
+		if err := c.AbortWithError(http.StatusInternalServerError, err); err != nil {
+			// Log the error since there's nothing more we can do here
+			log.Printf("Failed to abort with error: %v", err)
+		}
+		return
+	}
 }
 
 func (h *Handler) Calculate(c *gin.Context) {
@@ -31,5 +40,11 @@ func (h *Handler) Calculate(c *gin.Context) {
 		data.Error = err.Error()
 	}
 
-	ui.Result(data).Render(c.Request.Context(), c.Writer)
+	if err := ui.Result(data).Render(c.Request.Context(), c.Writer); err != nil {
+		if err := c.AbortWithError(http.StatusInternalServerError, err); err != nil {
+			// Log the error for debugging purposes
+			log.Printf("Failed to abort with error: %v", err)
+		}
+		return
+	}
 }
