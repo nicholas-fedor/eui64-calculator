@@ -64,7 +64,10 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 	ip6 := make([]uint16, 8)
 	for i := 0; i < 8; i++ {
 		if i < len(prefixParts) {
-			fmt.Sscanf(prefixParts[i], "%x", &ip6[i])
+			_, err := fmt.Sscanf(prefixParts[i], "%x", &ip6[i])
+			if err != nil {
+				return "", "", fmt.Errorf("failed to parse hextet: %v", err)
+			}
 		} else if i < 4 {
 			ip6[i] = 0 // Fill remaining prefix hextets with zeros
 		} else {
