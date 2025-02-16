@@ -17,7 +17,7 @@ The `traefik.yaml` file is set by default to obtain a Let's Encrypt staging cert
     ```console
     Docker
     ├─── docker-compose.yaml
-    ├─── compose.env
+    ├─── .env
     └───Traefik
         ├─── traefik.yaml
         ├───Certs
@@ -35,7 +35,7 @@ The `traefik.yaml` file is set by default to obtain a Let's Encrypt staging cert
 
 3. Go to Cloudflare's [website](https://dash.cloudflare.com/profile/api-tokens) to generate an API token with the `Edit zone DNS` template.
 
-4. Update the `compose.env` file with the domain name that you're going to be using.
+4. Update the `.env` file with the domain name that you're going to be using.
 
     > Don't forget to add the appropriate DNS record entries either in your `hosts` file or DNS resolver.
 
