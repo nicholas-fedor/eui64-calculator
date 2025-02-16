@@ -1,0 +1,19 @@
+package ui
+
+type ResultData struct {
+	InterfaceID string
+	FullIP      string
+	Error       string
+}
+
+templ Result(data ResultData) {
+	if data.Error != "" {
+		<p class="error-message">{ data.Error }</p>
+	} else {
+		<label class="form-label" for="ip">End of IPv6 Address</label>
+		<input type="text" class="form-field" readonly value={ data.InterfaceID }/>
+		<br/>
+		<label class="form-label" for="ip-full">IPv6 Address</label>
+		<input type="text" class="form-field" readonly value={ data.FullIP }/>
+	}
+}

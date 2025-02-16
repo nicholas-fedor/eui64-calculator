@@ -1,0 +1,25 @@
+package ui
+
+templ Home() {
+	@Layout("EUI-64 Calculator", HomeContent())
+}
+
+templ HomeContent() {
+	<h1 class="app-title">EUI-64 Calculator</h1>
+	<p class="app-description">Enter a MAC address and IPv6 prefix to calculate the EUI-64 address.</p>
+	<div class="form-fields">
+		<form hx-post="/calculate" hx-target=".result-container" hx-swap="innerHTML">
+			<label class="form-label" for="mac">MAC Address</label>
+			<input type="text" class="form-field" placeholder="xx-xx-xx-xx-xx-xx" id="mac" name="mac"/>
+			<label class="form-label" for="ip-start">Start of IPv6 Address</label>
+			<input type="text" class="form-field" placeholder="xxxx:xxxx:xxxx:xxxx" id="ip-start" name="ip-start"/>
+			<div class="form-buttons">
+				<button type="submit" class="form-submit">Calculate</button>
+				<button type="reset" class="form-clear">Clear</button>
+			</div>
+		</form>
+		<div class="form-results hidden">
+			<div class="result-container hidden"></div>
+		</div>
+	</div>
+}

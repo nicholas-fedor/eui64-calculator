@@ -1,0 +1,22 @@
+---
+#---------------------------------------------------------------------#
+#                          EUI64-Calculator                           #
+#---------------------------------------------------------------------#
+name: eui64-calculator
+
+networks:
+  eui64-calculator:
+    name: eui64-calculator
+    internal: false
+
+services:
+  eui64-calculator:
+    container_name: eui64-calculator
+    environment:
+      - TRUSTED_PROXIES=127.0.0.1
+    image: eui64-calculator:latest
+    networks:
+      - eui64-calculator
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
