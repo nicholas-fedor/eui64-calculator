@@ -22,9 +22,7 @@ jobs:
 
   build-and-publish:
     uses: ./.github/workflows/build.yaml
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    secrets: inherit
     needs:
       - test
       - lint
