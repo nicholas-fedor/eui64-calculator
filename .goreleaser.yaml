@@ -47,5 +47,6 @@ dockers:
     extra_files:
       - go.mod
       - go.sum
+      - cmd/
     build_flag_templates:
       - "--platform=linux/amd64"
