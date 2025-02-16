@@ -26,8 +26,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o eui64-calculator ./cmd/server/main.go
 # Final stage
 FROM gcr.io/distroless/static-debian12@sha256:6ec5aa99dc335666e79dc64e4a6c8b89c33a543a1967f20d360922a80dd21f02
 WORKDIR /app
-COPY --from=builder /app/eui64-calculator .
-COPY --from=builder /app/static/ ./static/
+COPY eui64-calculator .
+COPY static/ ./static/
 USER nonroot:nonroot
 EXPOSE 8080
 ENTRYPOINT ["./eui64-calculator"]

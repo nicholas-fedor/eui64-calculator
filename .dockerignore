@@ -3,6 +3,7 @@
 *.md
 .git
 test/
-# Ensure dependency files are included
+# Ensure necessary files are included
 !go.mod
 !go.sum
+!static/
