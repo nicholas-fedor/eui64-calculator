@@ -1,27 +1,33 @@
+ARG BASE_IMAGE=golang:1.24.0
+
 # Test stage
-FROM golang:1.24.0 AS tester
+FROM $BASE_IMAGE AS tester
 WORKDIR /app
-COPY . .
+COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
-RUN go install github.com/a-h/templ/cmd/templ@latest
+COPY /cmd /cmd
+COPY /internal /internal
+COPY /static /static
+COPY /ui /ui
+RUN go install github.com/a-h/templ/cmd/templ@v0.3.833
 RUN templ generate
 RUN go test -v ./...
 
 # Build stage
-FROM golang:1.24.0 AS builder
+FROM $BASE_IMAGE AS builder
 WORKDIR /app
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod go mod download
 COPY . .
-RUN go mod download
-RUN go mod tidy
-RUN go install github.com/a-h/templ/cmd/templ@latest
+RUN go install github.com/a-h/templ/cmd/templ@v0.3.833
 RUN templ generate
 RUN CGO_ENABLED=0 GOOS=linux go build -o eui64-calculator ./cmd/server/main.go
 
 # Final stage
-FROM gcr.io/distroless/static-debian12:latest
+FROM gcr.io/distroless/static-debian12@sha256:6ec5aa99dc335666e79dc64e4a6c8b89c33a543a1967f20d360922a80dd21f02
 WORKDIR /app
-COPY eui64-calculator ./
-COPY static/ ./static/
+COPY --from=builder /app/eui64-calculator .
+COPY --from=builder /app/static/ ./static/
 USER nonroot:nonroot
 EXPOSE 8080
 ENTRYPOINT ["./eui64-calculator"]

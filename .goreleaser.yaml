@@ -3,7 +3,7 @@ project_name: eui64-calculator
 before:
   hooks:
     - go mod download
-    - go install github.com/a-h/templ/cmd/templ@latest
+    - go install github.com/a-h/templ/cmd/templ@v0.3.833
     - templ generate
 
 builds:
@@ -38,11 +38,6 @@ release:
   prerelease: auto
 
 dockers:
-  - dockerfile: Dockerfile
-    extra_files:
-      - eui64-calculator
-      - static/
-      - ui/
   - image_templates:
       - "docker.io/nickfedor/eui64-calculator:{{ .Tag }}"
       - "docker.io/nickfedor/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
