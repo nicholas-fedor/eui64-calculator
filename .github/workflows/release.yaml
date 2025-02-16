@@ -53,10 +53,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Lowercase REPO
-        run: |
-          echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
-
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@90a3faa9d0182683851fbfa97ca1a2cb983bfca3
         with:
@@ -64,7 +60,7 @@ jobs:
           version: latest
           args: release --clean --snapshot
         env:
-          GITHUB_REPOSITORY: ${{ env.REPO }}
+          GITHUB_REPOSITORY: eui64-calculator
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
