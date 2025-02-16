@@ -16,6 +16,7 @@ This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.co
   [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1c48cfb7646d4009aa8c6f71287670b8)](https://www.codacy.com/gh/nicholas-fedor/EUI64-Calculator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nicholas-fedor/EUI64-Calculator&amp;utm_campaign=Badge_Grade)
   [![All Contributors](https://img.shields.io/github/all-contributors/nicholas-fedor/EUI64-Calculator)](#contributors)
   [![Pulls from DockerHub](https://img.shields.io/docker/pulls/nickfedor/EUI64-Calculator.svg)](https://hub.docker.com/r/nickfedor/EUI64-Calculator)
+  
 </div>
 
 ## Overview
