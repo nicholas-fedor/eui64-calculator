@@ -15,6 +15,14 @@ RUN go test -v ./...
 
 # Build stage
 FROM $BASE_IMAGE AS builder
+LABEL org.opencontainers.image.title="EUI64 Calculator"
+LABEL org.opencontainers.image.description="A tool to calculate EUI-64 network addresses"
+LABEL org.opencontainers.image.revision=$VCS_REF
+LABEL org.opencontainers.image.source="https://github.com/nicholas-fedor/eui64-calculator"
+LABEL org.opencontainers.image.authors="Nicholas Fedor <nick@nickfedor.com>"
+LABEL org.opencontainers.image.licenses="GPLv3"
+LABEL org.opencontainers.image.url="https://hub.docker.com/r/nickfedor/eui64-calculator"
+LABEL org.opencontainers.image.base.name="$BASE_IMAGE"
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
