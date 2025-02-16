@@ -39,10 +39,13 @@ release:
 
 dockers:
   - image_templates:
-      - "docker.io/{{ .Env.DOCKERHUB_USERNAME }}/eui64-calculator:{{ .Tag }}"
-      - "docker.io/{{ .Env.DOCKERHUB_USERNAME }}/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
+      - "docker.io/nickfedor/eui64-calculator:{{ .Tag }}"
+      - "docker.io/nickfedor/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
       - "ghcr.io/nicholas-fedor/eui64-calculator:{{ .Tag }}"
       - "ghcr.io/nicholas-fedor/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
     dockerfile: docker/Dockerfile
+    extra_files:
+      - go.mod
+      - go.sum
     build_flag_templates:
       - "--platform=linux/amd64"

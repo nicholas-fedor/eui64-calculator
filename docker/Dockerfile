@@ -1,7 +1,7 @@
 # Test stage
 FROM golang:1.24.0 AS tester
 WORKDIR /app
-COPY ../go.mod ../go.sum ./
+COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 COPY . .
 RUN go install github.com/a-h/templ/cmd/templ@latest
