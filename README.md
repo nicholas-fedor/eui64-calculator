@@ -7,15 +7,15 @@ A EUI-64 address calculator implemented in Go, HTMX, and Templ.
 This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EUI64-Calculator)
 <br/><br/>
 
-  [![CircleCI](https://dl.circleci.com/status-badge/img/gh/nicholas-fedor/EUI64-Calculator/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/nicholas-fedor/EUI64-Calculator/tree/main)
-  [![codecov](https://codecov.io/gh/nicholas-fedor/EUI64-Calculator/branch/main/graph/badge.svg)](https://codecov.io/gh/nicholas-fedor/EUI64-Calculator)
-  [![GoDoc](https://godoc.org/github.com/nicholas-fedor/EUI64-Calculator?status.svg)](https://godoc.org/github.com/nicholas-fedor/EUI64-Calculator)
-  [![Go Report Card](https://goreportcard.com/badge/github.com/nicholas-fedor/EUI64-Calculator)](https://goreportcard.com/report/github.com/nicholas-fedor/EUI64-Calculator)
-  [![latest version](https://img.shields.io/github/tag/nicholas-fedor/EUI64-Calculator.svg)](https://github.com/nicholas-fedor/EUI64-Calculator/releases)
-  [![GPLv3 License](https://img.shields.io/github/license/nicholas-fedor/EUI64-Calculator.svg)](https://www.gnu.org/licenses/gpl-3.0)
-  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1c48cfb7646d4009aa8c6f71287670b8)](https://www.codacy.com/gh/nicholas-fedor/EUI64-Calculator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nicholas-fedor/EUI64-Calculator&amp;utm_campaign=Badge_Grade)
-  [![All Contributors](https://img.shields.io/github/all-contributors/nicholas-fedor/EUI64-Calculator)](#contributors)
-  [![Pulls from DockerHub](https://img.shields.io/docker/pulls/nickfedor/EUI64-Calculator.svg)](https://hub.docker.com/r/nickfedor/EUI64-Calculator)
+  [![CircleCI](https://dl.circleci.com/status-badge/img/gh/nicholas-fedor/eui64-calculator/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/nicholas-fedor/eui64-calculator/tree/main)
+  [![codecov](https://codecov.io/gh/nicholas-fedor/eui64-calculator/branch/main/graph/badge.svg)](https://codecov.io/gh/nicholas-fedor/eui64-calculator)
+  [![GoDoc](https://godoc.org/github.com/nicholas-fedor/eui64-calculator?status.svg)](https://godoc.org/github.com/nicholas-fedor/eui64-calculator)
+  [![Go Report Card](https://goreportcard.com/badge/github.com/nicholas-fedor/eui64-calculator)](https://goreportcard.com/report/github.com/nicholas-fedor/eui64-calculator)
+  [![latest version](https://img.shields.io/github/tag/nicholas-fedor/eui64-calculator.svg)](https://github.com/nicholas-fedor/eui64-calculator/releases)
+  [![GPLv3 License](https://img.shields.io/github/license/nicholas-fedor/eui64-calculator.svg)](https://www.gnu.org/licenses/gpl-3.0)
+  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1c48cfb7646d4009aa8c6f71287670b8)](https://www.codacy.com/gh/nicholas-fedor/eui64-calculator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nicholas-fedor/eui64-calculator&amp;utm_campaign=Badge_Grade)
+  [![All Contributors](https://img.shields.io/github/all-contributors/nicholas-fedor/eui64-calculator)](#contributors)
+  [![Pulls from DockerHub](https://img.shields.io/docker/pulls/nickfedor/eui64-calculator.svg)](https://hub.docker.com/r/nickfedor/eui64-calculator)
   
 </div>
 
@@ -68,13 +68,13 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 1. Clone the repository:
 
     ```console
-    git clone https://github.com/nicholas-fedor/EUI64-Calculator.git
+    git clone https://github.com/nicholas-fedor/eui64-calculator.git
     ```
 
 2. Enter the repository:
 
     ```console
-    cd EUI64-Calculator
+    cd eui64-calculator
     ```
 
 3. Install Dependencies:

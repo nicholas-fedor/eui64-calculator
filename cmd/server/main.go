@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/nicholas-fedor/EUI64-Calculator/internal/handlers"
+	"github.com/nicholas-fedor/eui64-calculator/internal/handlers"
 
 	"github.com/gin-gonic/gin"
 )

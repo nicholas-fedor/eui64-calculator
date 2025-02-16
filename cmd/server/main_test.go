@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicholas-fedor/EUI64-Calculator/internal/handlers"
+	"github.com/nicholas-fedor/eui64-calculator/internal/handlers"
 	"github.com/stretchr/testify/assert"
 )
 

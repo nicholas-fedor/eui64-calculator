@@ -1,4 +1,4 @@
-module github.com/nicholas-fedor/EUI64-Calculator
+module github.com/nicholas-fedor/eui64-calculator
 
 go 1.24.0
 

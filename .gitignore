@@ -23,3 +23,6 @@ go.work
 # Ignore generated templ.go files
 *templ.go
 dist/
+
+# Ignore VSCode settings.json
+.vscode/settings.json

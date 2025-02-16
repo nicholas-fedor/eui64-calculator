@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicholas-fedor/EUI64-Calculator/internal/eui64"
-	"github.com/nicholas-fedor/EUI64-Calculator/ui"
+	"github.com/nicholas-fedor/eui64-calculator/internal/eui64"
+	"github.com/nicholas-fedor/eui64-calculator/ui"
 )
 
 type Handler struct {

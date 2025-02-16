@@ -48,5 +48,6 @@ dockers:
       - go.mod
       - go.sum
       - cmd/
+      - internal/
     build_flag_templates:
       - "--platform=linux/amd64"
