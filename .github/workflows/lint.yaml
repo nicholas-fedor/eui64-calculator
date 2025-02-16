@@ -14,21 +14,21 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@5a083d0e9a84784eb32078397cf5459adecb4c40
         with:
-          go-version: 1.24.0
+          go-version: "1.24.0"
 
       - name: Cache Go modules
         uses: actions/cache@9fa7e61ec7e1f44ac75218e7aaea81da8856fd11
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-go-
 
       - name: Cache Go build cache
-        uses: actions/cache@9fa7e61ec7e1f44ac75218e7aaea81da8856fd11
+        uses: actions/cache@85e6279cec87321a52edac9c87bce653a07cf6c2
         with:
           path: ~/go/pkg/mod/cache
-          key: ${{ runner.os }}-build-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/go.sum') }}-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-build-
 
@@ -45,20 +45,15 @@ jobs:
         uses: actions/cache@9fa7e61ec7e1f44ac75218e7aaea81da8856fd11
         with:
           path: ui/*.go
-          key: ${{ runner.os }}-templ-${{ hashFiles('ui/*.templ') }}
+          key: ${{ runner.os }}-templ-${{ hashFiles('ui/*.templ') }}-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-templ-
 
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@2226d7cb06a077cd73e56eedd38eecad18e5d837
         with:
-          # Specify the version of golangci-lint to use
           version: v1.64.5
-          # Optional: Customize linter arguments
           args: --timeout=5m
-          # If you want to fail the job on lint errors
-          skip-go-installation: true
-          go-version: 1.24.0
 
       - name: Format Go code
         run: |
