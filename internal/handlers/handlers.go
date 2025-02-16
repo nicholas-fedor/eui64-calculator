@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nicholas-fedor/EUI64-Calculator/internal/eui64"
 	"github.com/nicholas-fedor/EUI64-Calculator/ui"
@@ -14,7 +16,10 @@ func NewHandler() *Handler {
 }
 
 func (h *Handler) Home(c *gin.Context) {
-	ui.Home().Render(c.Request.Context(), c.Writer)
+	if err := ui.Home().Render(c.Request.Context(), c.Writer); err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
 }
 
 func (h *Handler) Calculate(c *gin.Context) {
@@ -31,5 +36,8 @@ func (h *Handler) Calculate(c *gin.Context) {
 		data.Error = err.Error()
 	}
 
-	ui.Result(data).Render(c.Request.Context(), c.Writer)
+	if err := ui.Result(data).Render(c.Request.Context(), c.Writer); err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
 }
