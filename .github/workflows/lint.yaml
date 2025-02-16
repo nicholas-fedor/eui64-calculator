@@ -44,6 +44,7 @@ jobs:
           args: --timeout=5m
           # If you want to fail the job on lint errors
           skip-go-installation: true
+          go-version: 1.24.0
 
       - name: Install templ
         run: go install github.com/a-h/templ/cmd/templ@latest
