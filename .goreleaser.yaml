@@ -41,8 +41,8 @@ dockers:
   - image_templates:
       - "docker.io/{{ .Env.DOCKERHUB_USERNAME }}/eui64-calculator:{{ .Tag }}"
       - "docker.io/{{ .Env.DOCKERHUB_USERNAME }}/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
-      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}/eui64-calculator:{{ .Tag }}"
-      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
+      - "ghcr.io/nicholas-fedor/eui64-calculator:{{ .Tag }}"
+      - "ghcr.io/nicholas-fedor/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
     dockerfile: docker/Dockerfile
     build_flag_templates:
       - "--platform=linux/amd64"

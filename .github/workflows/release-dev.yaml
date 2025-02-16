@@ -61,6 +61,5 @@ jobs:
           version: latest
           args: release --clean --snapshot
         env:
-          GITHUB_REPOSITORY: eui64-calculator
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
