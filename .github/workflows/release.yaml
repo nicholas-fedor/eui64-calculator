@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
 
   build:
-    uses: ./.github/workflows/build.yaml@main
+    uses: ./.github/workflows/build.yaml
     needs:
       - test
       - lint
