@@ -1,4 +1,8 @@
-.git
-*.md
+# Exclude unnecessary files
 *.log
+*.md
+.git
 test/
+# Ensure dependency files are included
+!go.mod
+!go.sum
