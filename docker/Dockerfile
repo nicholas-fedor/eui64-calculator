@@ -16,7 +16,7 @@ RUN go mod download
 COPY . .
 RUN go install github.com/a-h/templ/cmd/templ@latest
 RUN templ generate
-RUN CGO_ENABLED=0 GOOS=linux go build -o eui64-calculator ./cmd/server
+RUN CGO_ENABLED=0 GOOS=linux go build -o eui64-calculator ./cmd/server/main.go
 
 # Final stage
 FROM gcr.io/distroless/static-debian12:latest
