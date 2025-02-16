@@ -43,11 +43,5 @@ dockers:
       - "docker.io/nickfedor/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
       - "ghcr.io/nicholas-fedor/eui64-calculator:{{ .Tag }}"
       - "ghcr.io/nicholas-fedor/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
-    dockerfile: docker/Dockerfile
-    extra_files:
-      - go.mod
-      - go.sum
-      - cmd/
-      - internal/
     build_flag_templates:
       - "--platform=linux/amd64"
