@@ -11,10 +11,10 @@ permissions:
 
 jobs:
   lint:
-    uses: ./.github/workflows/lint.yaml@main
+    uses: ./.github/workflows/lint.yaml
 
   test:
-    uses: /.github/workflows/test.yaml@main
+    uses: /.github/workflows/test.yaml
 
   build:
-    uses: ./.github/workflows/build.yaml@main
+    uses: ./.github/workflows/build.yaml
