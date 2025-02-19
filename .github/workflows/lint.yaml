@@ -26,7 +26,7 @@ jobs:
         run: templ generate
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@0bc16cda6e51961f4eb7c2ee2a92b0a4a5ddfd4b
+        uses: golangci/golangci-lint-action@378320cf0deaa3d11c91d5c97d7489ebda3170cd
         with:
           version: v1.64.5
           args: --timeout=5m
