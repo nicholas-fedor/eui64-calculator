@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -19,6 +20,7 @@ func setupRouter(t *testing.T) *gin.Engine {
 	if err != nil {
 		t.Fatalf("Failed to load config: %v", err)
 	}
+	config.StaticDir = filepath.Join("..", "..", "static")
 	r, err := SetupRouter(config)
 	if err != nil {
 		t.Fatalf("Failed to setup router: %v", err)
