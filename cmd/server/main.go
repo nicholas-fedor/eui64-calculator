@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -16,19 +17,22 @@ import (
 const (
 	defaultPort       = ":8080"           // defaultPort is the default server port if PORT is unset.
 	trustedProxiesEnv = "TRUSTED_PROXIES" // trustedProxiesEnv is the environment variable for trusted proxy IPs.
+	staticDirEnv      = "STATIC_DIR"      // staticDirEnv is the environment variable for the static directory.
+	defaultStaticDir  = "static"          // defaultStaticDir is the default static directory relative to the project root.
 )
 
 // Config holds server configuration parameters.
 type Config struct {
 	Port           string   // Port is the server listening port (e.g., ":8080").
 	TrustedProxies []string // TrustedProxies lists IP addresses of trusted reverse proxies.
+	StaticDir      string   // StaticDir is the directory containing static files.
 }
 
 // LoadConfig loads server configuration from environment variables.
 // It defaults to port ":8080" if PORT is unset and processes TRUSTED_PROXIES as a comma-separated list,
 // trimming whitespace and logging warnings for empty entries. Returns the configuration and any error encountered.
 func LoadConfig() (Config, error) {
-	config := Config{Port: defaultPort}
+	config := Config{Port: defaultPort, StaticDir: defaultStaticDir}
 	if port := os.Getenv("PORT"); port != "" {
 		config.Port = ":" + port
 	}
@@ -39,6 +43,17 @@ func LoadConfig() (Config, error) {
 			if config.TrustedProxies[i] == "" {
 				slog.Warn("Empty proxy entry in TRUSTED_PROXIES")
 			}
+		}
+	}
+	if staticDir := os.Getenv(staticDirEnv); staticDir != "" {
+		config.StaticDir = staticDir
+	} else {
+		// Resolve defaultStaticDir relative to the executable's directory
+		exePath, err := os.Executable()
+		if err != nil {
+			slog.Warn("Failed to determine executable path, using default static dir", "error", err)
+		} else {
+			config.StaticDir = filepath.Join(filepath.Dir(exePath), defaultStaticDir)
 		}
 	}
 	return config, nil
@@ -60,7 +75,7 @@ func SetupRouter(config Config) (*gin.Engine, error) {
 	handler := handlers.NewHandler(&eui64.DefaultCalculator{})
 	r.GET("/", handler.Home)
 	r.POST("/calculate", handler.Calculate)
-	r.Static("/static", "./static") // Serves static files from the project root's static directory.
+	r.Static("/static", config.StaticDir) // Use configurable static directory
 
 	return r, nil
 }
@@ -80,7 +95,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	slog.Info("Starting server", "port", config.Port)
+	slog.Info("Starting server", "port", config.Port, "static_dir", config.StaticDir)
 	if err := router.Run(config.Port); err != nil {
 		slog.Error("Server failed", "error", err)
 		os.Exit(1)
