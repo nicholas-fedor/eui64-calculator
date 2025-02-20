@@ -6,72 +6,79 @@ import (
 	"strings"
 )
 
-// CalculateEUI64 converts a MAC address and IPv6 prefix into an EUI-64 IPv6 address.
+// Constants defining sizes and markers for EUI-64 and IPv6 calculations.
+const (
+	ipv6Hextets      = 8    // ipv6Hextets is the number of hextets in a full IPv6 address.
+	prefixMaxHextets = 4    // prefixMaxHextets is the maximum number of hextets allowed in an IPv6 prefix.
+	macBytes         = 6    // macBytes is the expected length of a MAC address in bytes.
+	eui64Bytes       = 8    // eui64Bytes is the length of an EUI-64 identifier in bytes.
+	fffeMarkerLow    = 0xFF // fffeMarkerLow is the low byte of the EUI-64 FFFE marker.
+	fffeMarkerHigh   = 0xFE // fffeMarkerHigh is the high byte of the EUI-64 FFFE marker.
+)
+
+// Calculator defines the interface for computing EUI-64 identifiers and IPv6 addresses.
+type Calculator interface {
+	// CalculateEUI64 computes the EUI-64 interface ID and full IPv6 address from a MAC address and IPv6 prefix.
+	CalculateEUI64(mac, prefix string) (string, string, error)
+}
+
+// DefaultCalculator implements the Calculator interface using the standard EUI-64 algorithm.
+type DefaultCalculator struct{}
+
+// CalculateEUI64 computes the EUI-64 interface ID and full IPv6 address from a MAC address and prefix.
+// It delegates to the standalone CalculateEUI64 function.
+func (d *DefaultCalculator) CalculateEUI64(mac, prefix string) (string, string, error) {
+	return CalculateEUI64(mac, prefix)
+}
+
+// CalculateEUI64 computes the EUI-64 interface ID and full IPv6 address from a MAC address and an optional IPv6 prefix.
+// It converts the MAC address to an EUI-64 identifier by inserting the FFFE marker and flipping the local/global bit,
+// then constructs an IPv6 address if a prefix is provided. Returns the interface ID, full IPv6 address, and any error.
 func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
-	// Parse MAC address
 	mac, err := net.ParseMAC(macStr)
 	if err != nil {
-		return "", "", fmt.Errorf("invalid MAC address: %v", err)
+		return "", "", fmt.Errorf("parsing MAC address: %w", err)
+	}
+	if len(mac) != macBytes {
+		return "", "", fmt.Errorf("MAC address must be %d bytes, got %d", macBytes, len(mac))
 	}
 
-	// Ensure MAC is 48 bits (6 bytes)
-	if len(mac) != 6 {
-		return "", "", fmt.Errorf("MAC address must be 48 bits")
-	}
-
-	// Split MAC into two parts and insert FFFE
-	eui64 := make([]byte, 8)
+	eui64 := make([]byte, eui64Bytes)
 	copy(eui64[0:3], mac[0:3])
-	eui64[3] = 0xFF
-	eui64[4] = 0xFE
-	copy(eui64[5:8], mac[3:6])
+	eui64[3] = fffeMarkerLow
+	eui64[4] = fffeMarkerHigh
+	copy(eui64[5:], mac[3:])
+	eui64[0] ^= 0x02 // Flip the local/global bit (7th bit) for EUI-64.
 
-	// Flip the 7th bit (Universal/Local bit)
-	eui64[0] ^= 0x02
-
-	// Format the interface ID (end of IPv6 address)
 	interfaceID := fmt.Sprintf("%02x%02x:%02x%02x:%02x%02x:%02x%02x",
 		eui64[0], eui64[1], eui64[2], eui64[3],
 		eui64[4], eui64[5], eui64[6], eui64[7])
 
-	// Handle the prefix
 	if prefixStr == "" {
-		// If no prefix is provided, return just the interface ID
 		return interfaceID, "", nil
 	}
 
-	// Parse and validate the prefix
+	prefixStr = strings.TrimSuffix(prefixStr, "::")
 	prefixParts := strings.Split(prefixStr, ":")
-	if len(prefixParts) > 4 {
-		return "", "", fmt.Errorf("IPv6 prefix must be 4 or fewer hextets, got %d", len(prefixParts))
+	if len(prefixParts) > prefixMaxHextets {
+		return "", "", fmt.Errorf("IPv6 prefix exceeds %d hextets, got %d", prefixMaxHextets, len(prefixParts))
 	}
 
-	// Validate each part of the prefix
-	for _, part := range prefixParts {
-		if part == "" {
-			return "", "", fmt.Errorf("empty hextet in IPv6 prefix: %s", prefixStr)
-		}
-		if len(part) > 4 {
-			return "", "", fmt.Errorf("invalid hextet length in IPv6 prefix: %s", part)
-		}
-		_, err := fmt.Sscanf(part, "%x", new(uint16))
-		if err != nil {
-			return "", "", fmt.Errorf("invalid hextet in IPv6 prefix: %s", part)
+	for i, part := range prefixParts {
+		if part == "" && i != 0 && i != len(prefixParts)-1 {
+			return "", "", fmt.Errorf("invalid empty hextet in IPv6 prefix: %s", prefixStr)
 		}
 	}
 
-	// Construct the full IPv6 address array (8 hextets)
-	ip6 := make([]uint16, 8)
-	for i := 0; i < 8; i++ {
-		if i < len(prefixParts) {
-			_, err := fmt.Sscanf(prefixParts[i], "%x", &ip6[i])
-			if err != nil {
-				return "", "", fmt.Errorf("failed to parse hextet: %v", err)
+	ip6 := make([]uint16, ipv6Hextets)
+	for i := range ip6 {
+		if i < len(prefixParts) && prefixParts[i] != "" {
+			if _, err := fmt.Sscanf(prefixParts[i], "%x", &ip6[i]); err != nil {
+				return "", "", fmt.Errorf("invalid hextet %q in IPv6 prefix: %w", prefixParts[i], err)
 			}
-		} else if i < 4 {
-			ip6[i] = 0 // Fill remaining prefix hextets with zeros
+		} else if i < prefixMaxHextets {
+			ip6[i] = 0
 		} else {
-			// Fill the interface ID part
 			switch i {
 			case 4:
 				ip6[i] = uint16(eui64[0])<<8 | uint16(eui64[1])
@@ -85,84 +92,60 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 		}
 	}
 
-	// Convert the IPv6 array to a string with zero compression
-	fullIP := ip6ToString(ip6)
-
-	return interfaceID, fullIP, nil
+	return interfaceID, ip6ToString(ip6), nil
 }
 
-// ip6ToString converts an IPv6 address array to a string with zero compression.
+// ip6ToString converts a 128-bit IPv6 address into its canonical string representation.
+// It applies zero compression (e.g., "::") to the longest run of consecutive zero hextets,
+// ensuring a compact and valid IPv6 address format.
 func ip6ToString(ip6 []uint16) string {
-	// Handle the special case of all zeros
-	isAllZeros := true
-	for _, hextet := range ip6 {
-		if hextet != 0 {
-			isAllZeros = false
+	allZeros := true
+	for _, h := range ip6 {
+		if h != 0 {
+			allZeros = false
 			break
 		}
 	}
-	if isAllZeros {
+	if allZeros {
 		return "::"
 	}
 
-	// Find the longest stretch of zeros
-	var zeroStart, zeroLength, maxZeroStart, maxZeroLength int
-	inZeroRun := false
-
-	for i := 0; i < 8; i++ {
-		if ip6[i] == 0 {
-			if !inZeroRun {
-				zeroStart = i
-				zeroLength = 1
-				inZeroRun = true
-			} else {
-				zeroLength++
+	// Find the longest run of zeros for compression.
+	bestStart, bestLen := -1, 0
+	start, length := -1, 0
+	for i, h := range ip6 {
+		if h == 0 {
+			if start == -1 {
+				start = i
 			}
-		} else {
-			if inZeroRun && zeroLength > maxZeroLength && zeroLength > 1 {
-				maxZeroStart = zeroStart
-				maxZeroLength = zeroLength
+			length++
+			if length > bestLen && length > 1 {
+				bestStart, bestLen = start, length
 			}
-			inZeroRun = false
+		} else if start != -1 {
+			start, length = -1, 0
 		}
 	}
-	if inZeroRun && zeroLength > maxZeroLength && zeroLength > 1 {
-		maxZeroStart = zeroStart
-		maxZeroLength = zeroLength
+	if start != -1 && length > bestLen && length > 1 {
+		bestStart, bestLen = start, length
 	}
 
-	// Build the string without compression
-	var parts []string
-	for i := 0; i < 8; i++ {
-		parts = append(parts, fmt.Sprintf("%x", ip6[i]))
-	}
-
-	// If no compression is needed, join and return
-	if maxZeroLength <= 1 {
-		return strings.Join(parts, ":")
-	}
-
-	// Apply zero compression
-	var compressedParts []string
-	for i := 0; i < 8; i++ {
-		if i == maxZeroStart && maxZeroLength > 1 {
-			compressedParts = append(compressedParts, "") // Insert empty part for zero compression
-			i += maxZeroLength - 1                        // Skip the zero run
-		} else {
-			compressedParts = append(compressedParts, parts[i])
+	var b strings.Builder
+	prevWasCompression := false
+	for i := 0; i < len(ip6); i++ {
+		if i == bestStart && bestLen > 1 {
+			b.WriteString("::")
+			prevWasCompression = true
+			i += bestLen - 1
+			continue
+		}
+		if ip6[i] != 0 || (i < bestStart || i >= bestStart+bestLen) {
+			if i > 0 && !prevWasCompression {
+				b.WriteByte(':')
+			}
+			b.WriteString(fmt.Sprintf("%x", ip6[i]))
+			prevWasCompression = false
 		}
 	}
-
-	// Join parts with colons
-	result := strings.Join(compressedParts, ":")
-
-	// Handle leading and trailing zeros for zero compression
-	if maxZeroStart == 0 {
-		result = ":" + result // Leading zeros
-	}
-	if maxZeroStart+maxZeroLength == 8 {
-		result += ":" // Trailing zeros
-	}
-
-	return result
+	return b.String()
 }
