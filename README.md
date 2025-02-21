@@ -105,13 +105,20 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 
 ```console
 .
+├── .dockerignore
+├── .gitignore
+├── Dockerfile
+├── go.mod
+├── go.sum
+├── LICENSE
+├── README.md
 ├── cmd
 │   └── server
 │       ├── main.go
 │       └── main_test.go
 ├── docker
 │   ├── docker-compose.yaml
-│   ├── Dockerfile
+│   ├── Dockerfile-dev
 │   └── Examples
 │       └── Traefik
 ├── internal
