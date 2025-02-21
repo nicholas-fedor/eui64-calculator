@@ -118,9 +118,14 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 │   ├── eui64
 │   │   ├── eui64.go
 │   │   └── eui64_test.go
-│   └── handlers
-│       ├── handlers.go
-│       └── handlers_test.go
+│   ├── handlers
+│   │   ├── handlers.go
+│   │   └── handlers_test.go
+│   └── validators
+│       ├── ipv6_prefix_validator.go
+│       ├── ipv6_prefix_validator_test.go
+│       ├── mac_validator.go
+│       └── mac_validator_test.go
 ├── static
 │   ├── favicon.ico
 │   └── styles.css
