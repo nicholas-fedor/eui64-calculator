@@ -46,9 +46,7 @@ func (r *UIRenderer) RenderResult(ctx *gin.Context, interfaceID, fullIP, errorMs
 }
 
 func SetupRouter(config Config, homeHandler, calculateHandler gin.HandlerFunc) (*gin.Engine, error) {
-	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
-	gin.ForceConsoleColor()
 	router.Use(gin.Logger(), gin.Recovery())
 
 	if err := router.SetTrustedProxies(config.TrustedProxies); err != nil {
