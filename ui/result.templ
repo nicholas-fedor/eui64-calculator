@@ -7,6 +7,10 @@ type ResultData struct {
 }
 
 templ Result(data ResultData) {
+	@Layout("EUI-64 Calculator", ResultContent(data))
+}
+
+templ ResultContent(data ResultData) {
 	if data.Error != "" {
 		<p class="error-message">{ data.Error }</p>
 	} else {
