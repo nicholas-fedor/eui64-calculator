@@ -51,6 +51,27 @@ func TestCalculateEUI64Valid(t *testing.T) {
 			wantInterfaceID: "0214:22ff:fe01:2345",
 			wantFullIP:      "2001:db8::214:22ff:fe01:2345",
 		},
+		{
+			name:            "Valid MAC with single hextet prefix",
+			mac:             "00-14-22-01-23-45",
+			prefix:          "2001",
+			wantInterfaceID: "0214:22ff:fe01:2345",
+			wantFullIP:      "2001::214:22ff:fe01:2345",
+		},
+		{
+			name:            "Valid MAC with empty hextet start",
+			mac:             "00-14-22-01-23-45",
+			prefix:          ":0db8:85a3",
+			wantInterfaceID: "0214:22ff:fe01:2345",
+			wantFullIP:      "0:db8:85a3:0:214:22ff:fe01:2345",
+		},
+		{
+			name:            "Valid MAC with three hextets",
+			mac:             "00-14-22-01-23-45",
+			prefix:          "2001:db8:85a3",
+			wantInterfaceID: "0214:22ff:fe01:2345",
+			wantFullIP:      "2001:db8:85a3:0:214:22ff:fe01:2345",
+		},
 	}
 
 	for _, testCase := range tests {

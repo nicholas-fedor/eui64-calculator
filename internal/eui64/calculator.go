@@ -65,7 +65,7 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 		return "", "", err
 	}
 
-	fullIP := constructFullIP(prefixParts, mac)
+	fullIP := ConstructFullIP(prefixParts, mac)
 
 	return interfaceID, fullIP, nil
 }
@@ -111,25 +111,25 @@ func parsePrefix(prefixStr string) ([]string, error) {
 	return prefixParts, nil
 }
 
-// constructFullIP builds the full IPv6 address from prefix parts and MAC.
-func constructFullIP(prefixParts []string, mac []byte) string {
+// ConstructFullIP builds the full IPv6 address from prefix parts and MAC.
+func ConstructFullIP(prefixParts []string, mac []byte) string {
 	ip6 := make([]uint16, ipv6Hextets)
-	for hextetID := range ip6 {
-		switch {
-		case hextetID < len(prefixParts) && prefixParts[hextetID] != "":
-			_, _ = fmt.Sscanf(prefixParts[hextetID], "%x", &ip6[hextetID]) // Safe—validated in parsePrefix
-		case hextetID < PrefixMaxHextets:
-			ip6[hextetID] = 0
-		default:
-			ip6[hextetID] = fillEUI64Hextet(hextetID, mac)
+	// Fill prefix parts
+	for hextetID := 0; hextetID < len(prefixParts) && hextetID < PrefixMaxHextets; hextetID++ {
+		if prefixParts[hextetID] != "" {
+			_, _ = fmt.Sscanf(prefixParts[hextetID], "%x", &ip6[hextetID])
 		}
 	}
-
+	// Fill EUI-64 hextets
+	for hextetID := PrefixMaxHextets; hextetID < ipv6Hextets; hextetID++ {
+		ip6[hextetID] = FillEUI64Hextet(hextetID, mac)
+	}
+	
 	return IP6ToString(ip6)
 }
 
-// fillEUI64Hextet computes EUI-64 hextet values from MAC bytes.
-func fillEUI64Hextet(hextetID int, mac []byte) uint16 {
+// FillEUI64Hextet computes EUI-64 hextet values from MAC bytes.
+func FillEUI64Hextet(hextetID int, mac []byte) uint16 {
 	eui64 := make([]byte, eui64Bytes)
 	copy(eui64[0:3], mac[0:3])
 	eui64[3] = fffeMarkerLow

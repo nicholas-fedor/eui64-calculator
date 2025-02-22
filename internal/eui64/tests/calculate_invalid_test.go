@@ -46,6 +46,12 @@ func TestCalculateEUI64Invalid(t *testing.T) {
 			prefix:  "2001:invalid:85a3",
 			wantErr: "invalid hextet in IPv6 prefix: \"invalid\"",
 		},
+		{
+			name:    "Invalid prefix - bad hex char",
+			mac:     "00-14-22-01-23-45",
+			prefix:  "2001:0db8:xyz",
+			wantErr: "invalid hextet in IPv6 prefix: \"xyz\"",
+		},
 	}
 
 	for _, testCase := range tests {

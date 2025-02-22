@@ -13,7 +13,32 @@ func IP6ToString(ip6 []uint16) string {
 
 	bestStart, bestLen := findLongestZeroRun(ip6)
 
-	return formatIPv6(ip6, bestStart, bestLen)
+	var builder strings.Builder
+
+	prevWasCompression := false
+
+	for ip6Digit := 0; ip6Digit < len(ip6); ip6Digit++ {
+		if ip6Digit == bestStart && bestLen > 1 { // Only compress runs > 1
+			builder.WriteString("::")
+
+			prevWasCompression = true
+			ip6Digit += bestLen - 1
+
+			continue
+		}
+
+		if ip6[ip6Digit] != 0 || (ip6Digit < bestStart || ip6Digit >= bestStart+bestLen) {
+			if ip6Digit > 0 && !prevWasCompression {
+				builder.WriteByte(':')
+			}
+
+			builder.WriteString(strconv.FormatUint(uint64(ip6[ip6Digit]), 16))
+
+			prevWasCompression = false
+		}
+	}
+
+	return builder.String()
 }
 
 // isAllZeros checks if all hextets are zero.
