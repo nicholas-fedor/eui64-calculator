@@ -55,12 +55,12 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 		return "", "", fmt.Errorf("%w: got %d bytes", ErrInvalidMACLength, len(mac))
 	}
 
-	interfaceID := generateInterfaceID(mac)
+	interfaceID := GenerateInterfaceID(mac)
 	if prefixStr == "" {
 		return interfaceID, "", nil
 	}
 
-	prefixParts, err := parsePrefix(prefixStr)
+	prefixParts, err := ParsePrefix(prefixStr)
 	if err != nil {
 		return "", "", err
 	}
@@ -70,8 +70,8 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 	return interfaceID, fullIP, nil
 }
 
-// generateInterfaceID creates the EUI-64 interface ID from a MAC address.
-func generateInterfaceID(mac []byte) string {
+// GenerateInterfaceID creates the EUI-64 interface ID from a MAC address.
+func GenerateInterfaceID(mac []byte) string {
 	eui64 := make([]byte, eui64Bytes)
 	copy(eui64[0:3], mac[0:3])
 	eui64[3] = fffeMarkerLow
@@ -85,7 +85,7 @@ func generateInterfaceID(mac []byte) string {
 }
 
 // parsePrefix validates and splits the IPv6 prefix.
-func parsePrefix(prefixStr string) ([]string, error) {
+func ParsePrefix(prefixStr string) ([]string, error) {
 	prefixStr = strings.TrimSuffix(prefixStr, "::")
 	prefixParts := strings.Split(prefixStr, ":")
 
