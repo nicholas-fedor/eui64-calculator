@@ -29,7 +29,6 @@ func setupRouter(t *testing.T) *gin.Engine {
 	validator := &validators.CombinedValidator{}
 	handler := handlers.NewHandler(calculator, validator, &server.UIRenderer{})
 
-	gin.SetMode(gin.TestMode)
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
 
