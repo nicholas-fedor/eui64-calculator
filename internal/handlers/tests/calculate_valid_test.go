@@ -48,15 +48,14 @@ func TestCalculateHandlerValid(t *testing.T) {
 				FullIP:      "2001:db8::214:22ff:fe01:2345",
 				Err:         nil,
 			}
-			renderer := &mocks.Renderer{
+			renderer := &mocks.MockRenderer{ // Use MockRenderer
 				HomeErr:      nil,
 				ResultErr:    nil,
 				CalledHome:   false,
 				CalledResult: false,
 			}
 			handler := handlers.NewHandler(calc, &mocks.Validator{MacErr: nil, PrefixErr: nil}, renderer)
-			ctx := mocks.NewRequestContext(ginContext) // Use constructor
-			handler.Calculate(ctx)
+			handler.Calculate(ginContext) // Pass *gin.Context directly
 			require.Equal(t, testCase.wantStatus, responseRecorder.Code)
 			require.Contains(t, responseRecorder.Body.String(), testCase.wantBody)
 			require.True(t, renderer.CalledResult, "RenderResult not called")

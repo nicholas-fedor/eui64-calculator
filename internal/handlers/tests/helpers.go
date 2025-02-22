@@ -41,15 +41,20 @@ func prepareCalcRequest(t *testing.T, formData url.Values) (*gin.Context, *httpt
 func setupInvalidHandler(
 	t *testing.T,
 	validator *mocks.Validator,
-	renderer *mocks.Renderer,
-) (*handlers.Handler, *mocks.Renderer) {
+	calculator *mocks.Calculator,
+	renderer *mocks.MockRenderer, // Use MockRenderer
+) (*handlers.Handler, *mocks.MockRenderer) {
 	t.Helper()
 
 	if renderer == nil {
-		renderer = &mocks.Renderer{}
+		renderer = &mocks.MockRenderer{}
 	}
 
-	handler := handlers.NewHandler(&mocks.Calculator{}, validator, renderer)
+	if calculator == nil {
+		calculator = &mocks.Calculator{}
+	}
+
+	handler := handlers.NewHandler(calculator, validator, renderer)
 
 	return handler, renderer
 }

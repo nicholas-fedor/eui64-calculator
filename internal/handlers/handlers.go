@@ -67,17 +67,16 @@ func (h *Handler) HomeAdapter() gin.HandlerFunc {
 }
 
 // Calculate handles POST requests to compute an EUI-64 address from form data.
-func (h *Handler) Calculate(ctx RequestContext) {
-	mac := ctx.FormValue("mac")
-	prefix := ctx.FormValue("ip-start")
+func (h *Handler) Calculate(c *gin.Context) {
+	mac := c.PostForm("mac")
+	prefix := c.PostForm("ip-start")
 	interfaceID, fullIP, errorMsg := "", "", ""
-	c := ctx.GetContext()
 
 	if err := h.validator.ValidateMAC(mac); err != nil {
 		errorMsg = "Please enter a valid MAC address (e.g., 00-14-22-01-23-45)"
 
 		slog.Warn("MAC validation failed", "mac", mac, "error", err)
-		h.renderResult(c, interfaceID, fullIP, errorMsg)
+		h.renderResult(c, http.StatusOK, interfaceID, fullIP, errorMsg)
 
 		return
 	}
@@ -86,7 +85,7 @@ func (h *Handler) Calculate(ctx RequestContext) {
 		errorMsg = "Please enter a valid IPv6 prefix (e.g., 2001:db8::)"
 
 		slog.Warn("Prefix validation failed", "prefix", prefix, "error", err)
-		h.renderResult(c, interfaceID, fullIP, errorMsg)
+		h.renderResult(c, http.StatusOK, interfaceID, fullIP, errorMsg)
 
 		return
 	}
@@ -96,36 +95,37 @@ func (h *Handler) Calculate(ctx RequestContext) {
 		errorMsg = "Failed to calculate EUI-64 address"
 
 		slog.Error("EUI-64 calculation failed", "mac", mac, "prefix", prefix, "error", err)
-		h.renderError(c, http.StatusInternalServerError, errorMsg)
+		h.renderResult(c, http.StatusInternalServerError, interfaceID, fullIP, errorMsg)
 
 		return
 	}
 
-	h.renderResult(c, interfaceID, fullIP, errorMsg)
+	h.renderResult(c, http.StatusOK, interfaceID, fullIP, errorMsg)
 }
 
 // CalculateAdapter adapts the Calculate method to a gin.HandlerFunc.
 func (h *Handler) CalculateAdapter() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		h.Calculate(&ginRequestContext{c: c})
+		h.Calculate(c)
 	}
 }
 
-// renderResult renders a successful calculation result.
-func (h *Handler) renderResult(c *gin.Context, interfaceID, fullIP, errorMsg string) {
+// renderResult renders a calculation result with the specified status.
+func (h *Handler) renderResult(c *gin.Context, status int, interfaceID, fullIP, errorMsg string) {
+	c.Status(status) // Set status first
+
 	if err := h.renderer.RenderResult(c, interfaceID, fullIP, errorMsg); err != nil {
-		h.renderError(c, http.StatusInternalServerError, err.Error())
+		slog.Error("Failed to render result", "error", err)
+
+		msg := errorMsg
+		if msg == "" {
+			msg = err.Error()
+		}
+
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": msg})
 
 		return
 	}
-
-	c.Status(http.StatusOK)
-}
-
-// renderError renders an error response without committing headers prematurely.
-func (h *Handler) renderError(c *gin.Context, status int, errorMsg string) {
-	slog.Error("Rendering error response", "status", status, "message", errorMsg)
-	c.AbortWithStatusJSON(status, gin.H{"error": errorMsg})
 }
 
 // ginRequestContext adapts gin.Context to RequestContext.

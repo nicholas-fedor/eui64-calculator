@@ -6,14 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Renderer struct {
+type MockRenderer struct {
 	HomeErr      error
 	ResultErr    error
 	CalledHome   bool
 	CalledResult bool
 }
 
-func (m *Renderer) RenderHome(ctx *gin.Context) error {
+func (m *MockRenderer) RenderHome(ctx *gin.Context) error {
 	m.CalledHome = true
 	if m.HomeErr != nil {
 		return m.HomeErr
@@ -24,16 +24,21 @@ func (m *Renderer) RenderHome(ctx *gin.Context) error {
 	return nil
 }
 
-func (m *Renderer) RenderResult(ctx *gin.Context, interfaceID, fullIP, errorMsg string) error {
+func (m *MockRenderer) RenderResult(ctx *gin.Context, interfaceID, fullIP, errorMsg string) error {
 	m.CalledResult = true
 	if m.ResultErr != nil {
-		return m.ResultErr // Return error without writing
+		return m.ResultErr
+	}
+	// Use the current status from the context instead of hardcoding 200
+	status := ctx.Writer.Status()
+	if status == 0 { // Default to 200 if not set
+		status = http.StatusOK
 	}
 
 	if errorMsg != "" {
-		ctx.String(http.StatusOK, errorMsg)
+		ctx.String(status, errorMsg)
 	} else {
-		ctx.String(http.StatusOK, "%s\n%s", interfaceID, fullIP)
+		ctx.String(status, "%s\n%s", interfaceID, fullIP)
 	}
 
 	return nil

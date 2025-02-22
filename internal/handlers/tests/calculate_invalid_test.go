@@ -17,7 +17,8 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 		name       string
 		formData   url.Values
 		validator  *mocks.Validator
-		renderer   *mocks.Renderer
+		calculator *mocks.Calculator
+		renderer   *mocks.MockRenderer // Use MockRenderer
 		wantStatus int
 		wantBody   string
 	}{
@@ -28,7 +29,8 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 				"ip-start": {"2001:0db8:85a3:0000"},
 			},
 			validator:  &mocks.Validator{MacErr: mocks.ErrInvalidMAC, PrefixErr: nil},
-			renderer:   &mocks.Renderer{},
+			calculator: &mocks.Calculator{},
+			renderer:   &mocks.MockRenderer{},
 			wantStatus: http.StatusOK,
 			wantBody:   "Please enter a valid MAC address (e.g., 00-14-22-01-23-45)",
 		},
@@ -39,7 +41,8 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 				"ip-start": {"2001::85a3"},
 			},
 			validator:  &mocks.Validator{MacErr: nil, PrefixErr: mocks.ErrInvalidPrefix},
-			renderer:   &mocks.Renderer{},
+			calculator: &mocks.Calculator{},
+			renderer:   &mocks.MockRenderer{},
 			wantStatus: http.StatusOK,
 			wantBody:   "Please enter a valid IPv6 prefix (e.g., 2001:db8::)",
 		},
@@ -50,9 +53,22 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 				"ip-start": {"2001:0db8:85a3:0000"},
 			},
 			validator:  &mocks.Validator{MacErr: nil, PrefixErr: nil},
-			renderer:   &mocks.Renderer{ResultErr: errors.New("render failed")},
+			calculator: &mocks.Calculator{},
+			renderer:   &mocks.MockRenderer{ResultErr: errors.New("render failed")},
 			wantStatus: http.StatusInternalServerError,
 			wantBody:   "render failed",
+		},
+		{
+			name: "Calculation failure",
+			formData: url.Values{
+				"mac":      {"00-14-22-01-23-45"},
+				"ip-start": {"2001:0db8:85a3:0000"},
+			},
+			validator:  &mocks.Validator{MacErr: nil, PrefixErr: nil},
+			calculator: &mocks.Calculator{Err: errors.New("calculation failed")},
+			renderer:   &mocks.MockRenderer{},
+			wantStatus: http.StatusInternalServerError,
+			wantBody:   "Failed to calculate EUI-64 address",
 		},
 	}
 
@@ -60,9 +76,8 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 		t.Run(testCase.name, func(t *testing.T) {
 			t.Parallel()
 			ginContext, responseRecorder := prepareCalcRequest(t, testCase.formData)
-			handler, renderer := setupInvalidHandler(t, testCase.validator, testCase.renderer)
-			ctx := mocks.NewRequestContext(ginContext)
-			handler.Calculate(ctx)
+			handler, renderer := setupInvalidHandler(t, testCase.validator, testCase.calculator, testCase.renderer)
+			handler.Calculate(ginContext) // Pass *gin.Context directly
 			require.Equal(t, testCase.wantStatus, responseRecorder.Code)
 			require.Contains(t, responseRecorder.Body.String(), testCase.wantBody)
 			require.True(t, renderer.CalledResult, "RenderResult not called")
