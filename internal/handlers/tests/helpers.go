@@ -38,20 +38,18 @@ func prepareCalcRequest(t *testing.T, formData url.Values) (*gin.Context, *httpt
 }
 
 // setupInvalidHandler creates a handler for invalid Calculate tests.
-func setupInvalidHandler(t *testing.T, validator *mocks.Validator) (*handlers.Handler, *mocks.Renderer) {
+func setupInvalidHandler(
+	t *testing.T,
+	validator *mocks.Validator,
+	renderer *mocks.Renderer,
+) (*handlers.Handler, *mocks.Renderer) {
 	t.Helper()
 
-	renderer := &mocks.Renderer{
-		HomeErr:      nil,
-		ResultErr:    nil,
-		CalledHome:   false,
-		CalledResult: false,
+	if renderer == nil {
+		renderer = &mocks.Renderer{}
 	}
-	handler := handlers.NewHandler(
-		&mocks.Calculator{InterfaceID: "", FullIP: "", Err: nil},
-		validator,
-		renderer,
-	)
+
+	handler := handlers.NewHandler(&mocks.Calculator{}, validator, renderer)
 
 	return handler, renderer
 }

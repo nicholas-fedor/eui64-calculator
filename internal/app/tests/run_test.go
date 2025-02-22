@@ -58,6 +58,14 @@ func TestRun(t *testing.T) {
 			runErr:     ErrRouterRunFailed,
 			wantErr:    true,
 		},
+		{
+			name:       "Default NewApp run",
+			configPort: ":8082",
+			configErr:  nil,
+			setupErr:   nil,
+			runErr:     ErrRouterRunFailed,
+			wantErr:    true,
+		},
 	}
 
 	for _, testCase := range tests {

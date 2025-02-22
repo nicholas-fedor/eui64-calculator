@@ -48,10 +48,15 @@ func NewHandler(calc Calculator, validator Validator, renderer Renderer) *Handle
 
 // Home handles GET requests to the root path, rendering the home page.
 func (h *Handler) Home(ctx RequestContext) {
-	if err := h.renderer.RenderHome(ctx.GetContext()); err != nil {
+	c := ctx.GetContext()
+	if err := h.renderer.RenderHome(c); err != nil {
 		slog.Error("Failed to render home page", "error", err)
-		ctx.GetContext().AbortWithStatus(http.StatusInternalServerError)
+		c.AbortWithStatus(http.StatusInternalServerError)
+
+		return
 	}
+
+	c.Status(http.StatusOK)
 }
 
 // HomeAdapter adapts the Home method to a gin.HandlerFunc.
@@ -66,12 +71,13 @@ func (h *Handler) Calculate(ctx RequestContext) {
 	mac := ctx.FormValue("mac")
 	prefix := ctx.FormValue("ip-start")
 	interfaceID, fullIP, errorMsg := "", "", ""
+	c := ctx.GetContext()
 
 	if err := h.validator.ValidateMAC(mac); err != nil {
 		errorMsg = "Please enter a valid MAC address (e.g., 00-14-22-01-23-45)"
 
 		slog.Warn("MAC validation failed", "mac", mac, "error", err)
-		h.renderResult(ctx, interfaceID, fullIP, errorMsg)
+		h.renderResult(c, interfaceID, fullIP, errorMsg)
 
 		return
 	}
@@ -80,7 +86,7 @@ func (h *Handler) Calculate(ctx RequestContext) {
 		errorMsg = "Please enter a valid IPv6 prefix (e.g., 2001:db8::)"
 
 		slog.Warn("Prefix validation failed", "prefix", prefix, "error", err)
-		h.renderResult(ctx, interfaceID, fullIP, errorMsg)
+		h.renderResult(c, interfaceID, fullIP, errorMsg)
 
 		return
 	}
@@ -90,9 +96,12 @@ func (h *Handler) Calculate(ctx RequestContext) {
 		errorMsg = "Failed to calculate EUI-64 address"
 
 		slog.Error("EUI-64 calculation failed", "mac", mac, "prefix", prefix, "error", err)
+		h.renderError(c, http.StatusInternalServerError, errorMsg)
+
+		return
 	}
 
-	h.renderResult(ctx, interfaceID, fullIP, errorMsg)
+	h.renderResult(c, interfaceID, fullIP, errorMsg)
 }
 
 // CalculateAdapter adapts the Calculate method to a gin.HandlerFunc.
@@ -102,12 +111,21 @@ func (h *Handler) CalculateAdapter() gin.HandlerFunc {
 	}
 }
 
-// renderResult renders the calculation result to the HTTP response.
-func (h *Handler) renderResult(ctx RequestContext, interfaceID, fullIP, errorMsg string) {
-	if err := h.renderer.RenderResult(ctx.GetContext(), interfaceID, fullIP, errorMsg); err != nil {
-		slog.Error("Failed to render result", "error", err)
-		ctx.GetContext().AbortWithStatus(http.StatusInternalServerError)
+// renderResult renders a successful calculation result.
+func (h *Handler) renderResult(c *gin.Context, interfaceID, fullIP, errorMsg string) {
+	if err := h.renderer.RenderResult(c, interfaceID, fullIP, errorMsg); err != nil {
+		h.renderError(c, http.StatusInternalServerError, err.Error())
+
+		return
 	}
+
+	c.Status(http.StatusOK)
+}
+
+// renderError renders an error response without committing headers prematurely.
+func (h *Handler) renderError(c *gin.Context, status int, errorMsg string) {
+	slog.Error("Rendering error response", "status", status, "message", errorMsg)
+	c.AbortWithStatusJSON(status, gin.H{"error": errorMsg})
 }
 
 // ginRequestContext adapts gin.Context to RequestContext.
