@@ -97,33 +97,3 @@ func finalizeBestRun(currentStart, currentLen, bestStart, bestLen int) (int, int
 
 	return bestStart, bestLen
 }
-
-// formatIPv6 builds the string with zero compression applied.
-func formatIPv6(ip6 []uint16, bestStart, bestLen int) string {
-	var builder strings.Builder
-
-	prevWasCompression := false
-
-	for ip6Digit := 0; ip6Digit < len(ip6); ip6Digit++ {
-		if ip6Digit == bestStart && bestLen > 1 {
-			builder.WriteString("::")
-
-			prevWasCompression = true
-			ip6Digit += bestLen - 1
-
-			continue
-		}
-
-		if ip6[ip6Digit] != 0 || (ip6Digit < bestStart || ip6Digit >= bestStart+bestLen) {
-			if ip6Digit > 0 && !prevWasCompression {
-				builder.WriteByte(':')
-			}
-
-			builder.WriteString(strconv.FormatUint(uint64(ip6[ip6Digit]), 16))
-
-			prevWasCompression = false
-		}
-	}
-
-	return builder.String()
-}
