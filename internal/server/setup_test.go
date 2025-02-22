@@ -1,4 +1,4 @@
-package tests
+package server
 
 import (
 	"net/http"
@@ -6,23 +6,20 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicholas-fedor/eui64-calculator/internal/server"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSetupRouter(t *testing.T) {
-	t.Parallel()
-
 	tests := []struct {
 		name       string
-		config     server.Config
+		config     Config
 		wantStatus int
 		wantBody   string
 		wantErr    bool
 	}{
 		{
 			name: "Valid config with routes",
-			config: server.Config{
+			config: Config{
 				Port:           ":8080",
 				StaticDir:      "/tmp/static",
 				TrustedProxies: []string{"127.0.0.1"},
@@ -33,7 +30,7 @@ func TestSetupRouter(t *testing.T) {
 		},
 		{
 			name: "Invalid trusted proxies",
-			config: server.Config{
+			config: Config{
 				Port:           ":8080",
 				StaticDir:      "/tmp/static",
 				TrustedProxies: []string{"invalid-proxy"},
@@ -43,7 +40,7 @@ func TestSetupRouter(t *testing.T) {
 		},
 		{
 			name: "Empty static dir",
-			config: server.Config{
+			config: Config{
 				Port:           ":8080",
 				StaticDir:      "",
 				TrustedProxies: []string{"127.0.0.1"},
@@ -54,7 +51,7 @@ func TestSetupRouter(t *testing.T) {
 		},
 		{
 			name: "No trusted proxies",
-			config: server.Config{
+			config: Config{
 				Port:           ":8080",
 				StaticDir:      "/tmp/static",
 				TrustedProxies: nil,
@@ -65,7 +62,7 @@ func TestSetupRouter(t *testing.T) {
 		},
 		{
 			name: "Default handlers",
-			config: server.Config{
+			config: Config{
 				Port:           ":8080",
 				StaticDir:      "/tmp/static",
 				TrustedProxies: []string{"127.0.0.1"},
@@ -85,13 +82,13 @@ func TestSetupRouter(t *testing.T) {
 				homeHandler = nil
 				calcHandler = nil
 			} else {
-				homeHandlerMock := &mockHandlerFunc{called: false}
-				calcHandlerMock := &mockHandlerFunc{called: false}
-				homeHandler = homeHandlerMock.ServeHTTP
-				calcHandler = calcHandlerMock.ServeHTTP
+				homeMock := &mockHandlerFunc{called: false}
+				calcMock := &mockHandlerFunc{called: false}
+				homeHandler = homeMock.ServeHTTP
+				calcHandler = calcMock.ServeHTTP
 			}
 
-			router, err := server.SetupRouter(testCase.config, homeHandler, calcHandler)
+			router, err := SetupRouter(testCase.config, homeHandler, calcHandler)
 			if testCase.wantErr {
 				require.Error(t, err, "SetupRouter should fail with invalid config")
 				require.Nil(t, router, "Router should be nil on error")
@@ -129,7 +126,6 @@ func TestSetupRouter(t *testing.T) {
 				router.ServeHTTP(w, req)
 				require.Equal(t, http.StatusNotFound, w.Code, "Static route should return 404 for missing file")
 
-				// Test HEAD request for static route
 				w = httptest.NewRecorder()
 				req, _ = http.NewRequest(http.MethodHead, "/static/test.css", nil)
 				router.ServeHTTP(w, req)
@@ -137,4 +133,15 @@ func TestSetupRouter(t *testing.T) {
 			}
 		})
 	}
+}
+
+// mockHandlerFunc simulates a gin.HandlerFunc for testing.
+type mockHandlerFunc struct {
+	called bool
+}
+
+func (m *mockHandlerFunc) ServeHTTP(c *gin.Context) {
+	m.called = true
+
+	c.String(http.StatusOK, "Mock Response")
 }
