@@ -124,7 +124,7 @@ func ConstructFullIP(prefixParts []string, mac []byte) string {
 	for hextetID := PrefixMaxHextets; hextetID < ipv6Hextets; hextetID++ {
 		ip6[hextetID] = FillEUI64Hextet(hextetID, mac)
 	}
-	
+
 	return IP6ToString(ip6)
 }
 
