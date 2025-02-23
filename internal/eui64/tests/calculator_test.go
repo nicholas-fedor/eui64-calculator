@@ -132,7 +132,7 @@ func TestCalculateEUI64(t *testing.T) {
 		},
 		{
 			name:            "MAC invalid length",
-			mac:             "00-14-22-01-23-FF-FF", // 7 bytes
+			mac:             "00-14-22-01-23-FF-FF",
 			prefix:          "2001:0db8",
 			wantInterfaceID: "",
 			wantFullIP:      "",
@@ -152,22 +152,22 @@ func TestCalculateEUI64(t *testing.T) {
 			prefix:          "2001:0db8",
 			wantInterfaceID: "",
 			wantFullIP:      "",
-			wantErr:         "parsing MAC address failed", // Covers 48-52
+			wantErr:         "parsing MAC address failed",
 		},
 		{
 			name:            "GenerateInterfaceID only",
 			mac:             "00-14-22-01-23-45",
 			prefix:          "",
 			wantInterfaceID: "0214:22ff:fe01:2345",
-			wantFullIP:      "", // Covers 58-61, parts of 74-84
+			wantFullIP:      "",
 		},
 		{
 			name:            "Invalid MAC length",
-			mac:             "00-14-22-01-23-45-67", // 7 bytes
+			mac:             "00-14-22-01-23-45-67",
 			prefix:          "2001:0db8",
 			wantInterfaceID: "",
 			wantFullIP:      "",
-			wantErr:         "parsing MAC address failed", // Covers 54-56 indirectly via ParseMAC
+			wantErr:         "parsing MAC address failed",
 		},
 		{
 			name:            "Invalid prefix too long",
@@ -175,7 +175,7 @@ func TestCalculateEUI64(t *testing.T) {
 			prefix:          "2001:0db8:85a3:0000:1234",
 			wantInterfaceID: "",
 			wantFullIP:      "",
-			wantErr:         "IPv6 prefix exceeds 4 hextets", // Covers 63-66, 88-94
+			wantErr:         "IPv6 prefix exceeds 4 hextets",
 		},
 		{
 			name:            "Prefix with full IP",
@@ -183,15 +183,6 @@ func TestCalculateEUI64(t *testing.T) {
 			prefix:          "2001:0db8:85a3:0000",
 			wantInterfaceID: "0214:22ff:fe01:2345",
 			wantFullIP:      "2001:db8:85a3:0:214:22ff:fe01:2345",
-			wantErr:         "", // Covers 68-70, parts of 115-148
-		},
-		{
-			name:            "MAC length mismatch",
-			mac:             "00-14-22-01-23-45-67", // Already added, but confirm coverage
-			prefix:          "2001:0db8",
-			wantInterfaceID: "",
-			wantFullIP:      "",
-			wantErr:         "parsing MAC address failed", // Should hit 54-56 if ParseMAC lets it through
 		},
 	}
 
