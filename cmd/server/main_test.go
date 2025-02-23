@@ -42,6 +42,7 @@ func TestMainError(t *testing.T) {
 	defer func() { logFatalf = origFatalf }()
 
 	var exitCode int
+
 	logFatalf = func(format string, v ...interface{}) {
 		exitCode = 1
 	}
