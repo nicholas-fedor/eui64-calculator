@@ -11,8 +11,6 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	t.Parallel()
-
 	// Backup and restore original newAppFunc
 	origNewApp := newAppFunc
 	defer func() { newAppFunc = origNewApp }()
@@ -39,8 +37,6 @@ func TestRun(t *testing.T) {
 }
 
 func TestMainError(t *testing.T) {
-	t.Parallel()
-
 	// Backup and restore original logFatalf
 	origFatalf := logFatalf
 	defer func() { logFatalf = origFatalf }()
