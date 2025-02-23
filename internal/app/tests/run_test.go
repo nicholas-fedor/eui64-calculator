@@ -66,6 +66,22 @@ func TestRun(t *testing.T) {
 			runErr:     ErrRouterRunFailed,
 			wantErr:    true,
 		},
+		{
+			name:       "SetupRouter fails",
+			configPort: ":0",
+			configErr:  nil,
+			setupErr:   ErrSetupFailed,
+			runErr:     nil,
+			wantErr:    true,
+		},
+		{
+			name:       "RunEngine fails explicitly",
+			configPort: ":0",
+			configErr:  nil,
+			setupErr:   nil,
+			runErr:     ErrRouterRunFailed,
+			wantErr:    true,
+		},
 	}
 
 	for _, testCase := range tests {

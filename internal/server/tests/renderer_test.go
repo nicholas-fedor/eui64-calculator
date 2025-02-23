@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -11,6 +12,28 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// mockableRenderer wraps UIRenderer to allow error simulation.
+type mockableRenderer struct {
+	*server.UIRenderer
+	forceError bool
+}
+
+func (r *mockableRenderer) RenderHome(ctx *gin.Context) error {
+	if r.forceError {
+		return errors.New("simulated render failure")
+	}
+
+	return r.UIRenderer.RenderHome(ctx)
+}
+
+func (r *mockableRenderer) RenderResult(ctx *gin.Context, interfaceID, fullIP, errorMsg string) error {
+	if r.forceError {
+		return errors.New("simulated render failure")
+	}
+
+	return r.UIRenderer.RenderResult(ctx, interfaceID, fullIP, errorMsg)
+}
+
 func TestUIRenderer(t *testing.T) {
 	t.Parallel()
 
@@ -19,6 +42,8 @@ func TestUIRenderer(t *testing.T) {
 		name       string
 		wantBody   string
 		wantStatus int
+		isHome     bool
+		forceError bool // Flag to simulate rendering error
 	}{
 		{
 			data: ui.ResultData{
@@ -29,6 +54,8 @@ func TestUIRenderer(t *testing.T) {
 			name:       "RenderHome",
 			wantBody:   "EUI-64 Calculator",
 			wantStatus: http.StatusOK,
+			isHome:     true,
+			forceError: false,
 		},
 		{
 			data: ui.ResultData{
@@ -39,6 +66,8 @@ func TestUIRenderer(t *testing.T) {
 			name:       "RenderResult with error",
 			wantBody:   "Invalid input",
 			wantStatus: http.StatusOK,
+			isHome:     false,
+			forceError: false,
 		},
 		{
 			data: ui.ResultData{
@@ -49,6 +78,24 @@ func TestUIRenderer(t *testing.T) {
 			name:       "RenderResult with valid data",
 			wantBody:   "0214:22ff:fe01:2345",
 			wantStatus: http.StatusOK,
+			isHome:     false,
+			forceError: false,
+		},
+		{
+			data:       ui.ResultData{},
+			name:       "RenderHome_error",
+			wantBody:   "",
+			wantStatus: http.StatusInternalServerError,
+			isHome:     true,
+			forceError: true,
+		},
+		{
+			data:       ui.ResultData{},
+			name:       "RenderResult_error",
+			wantBody:   "",
+			wantStatus: http.StatusInternalServerError,
+			isHome:     false,
+			forceError: true,
 		},
 	}
 
@@ -56,22 +103,38 @@ func TestUIRenderer(t *testing.T) {
 		t.Run(testCase.name, func(t *testing.T) {
 			t.Parallel()
 
-			renderer := &server.UIRenderer{}
+			// Use mockableRenderer to control error simulation
+			renderer := &mockableRenderer{
+				UIRenderer: &server.UIRenderer{},
+				forceError: testCase.forceError,
+			}
 			resp := httptest.NewRecorder()
 			ctx, _ := gin.CreateTestContext(resp)
 			ctx.Request, _ = http.NewRequestWithContext(t.Context(), http.MethodGet, "/", nil)
 
-			isHome := testCase.name == "RenderHome"
-			if isHome {
-				err := renderer.RenderHome(ctx)
-				require.NoError(t, err)
+			var err error
+			if testCase.isHome {
+				err = renderer.RenderHome(ctx)
 			} else {
-				err := renderer.RenderResult(ctx, testCase.data.InterfaceID, testCase.data.FullIP, testCase.data.Error)
+				err = renderer.RenderResult(ctx, testCase.data.InterfaceID, testCase.data.FullIP, testCase.data.Error)
+			}
+
+			// Simulate handler behavior: set status based on error
+			if err != nil {
+				ctx.AbortWithStatus(http.StatusInternalServerError)
+			}
+
+			if testCase.forceError {
+				require.Error(t, err)
+			} else {
 				require.NoError(t, err)
 			}
 
 			require.Equal(t, testCase.wantStatus, resp.Code)
-			require.Contains(t, resp.Body.String(), testCase.wantBody)
+
+			if testCase.wantBody != "" {
+				require.Contains(t, resp.Body.String(), testCase.wantBody)
+			}
 		})
 	}
 }

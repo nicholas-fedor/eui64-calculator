@@ -40,6 +40,15 @@ func TestSetupRouter(t *testing.T) {
 			wantStatus: 0,
 			wantError:  true,
 		},
+		{
+			config: server.Config{
+				Port:           ":8080",
+				StaticDir:      "/tmp/static",
+				TrustedProxies: []string{"invalid-proxy"},
+			},
+			name:      "SetTrustedProxies fails",
+			wantError: true,
+		},
 	}
 
 	for _, testCase := range tests {

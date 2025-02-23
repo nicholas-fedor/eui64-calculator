@@ -70,6 +70,16 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 			wantStatus: http.StatusInternalServerError,
 			wantBody:   "Failed to calculate EUI-64 address",
 		},
+		{
+			name: "Empty MAC",
+			formData: url.Values{
+				"mac":      {""},
+				"ip-start": {"2001:0db8:85a3:0000"},
+			},
+			validator:  &mocks.Validator{MacErr: errors.New("MAC required"), PrefixErr: nil},
+			wantStatus: http.StatusOK,
+			wantBody:   "Please enter a valid MAC address",
+		},
 	}
 
 	for _, testCase := range tests {

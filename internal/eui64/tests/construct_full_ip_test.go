@@ -70,6 +70,7 @@ func TestFillEUI64Hextet(t *testing.T) {
 		{name: "Invalid hextet ID 0", hextetID: 0, want: 0},   // Default case
 		{name: "Invalid hextet ID -1", hextetID: -1, want: 0}, // Default case
 		{name: "Invalid hextet ID 8", hextetID: 8, want: 0},   // Default case
+		{name: "Invalid hextet ID 3", hextetID: 3, want: 0},   // Default case
 	}
 
 	for _, testCase := range tests {

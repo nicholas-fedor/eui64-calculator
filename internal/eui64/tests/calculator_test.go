@@ -130,6 +130,22 @@ func TestCalculateEUI64(t *testing.T) {
 			wantFullIP:      "",
 			wantErr:         "invalid hextet in IPv6 prefix: \"xyz\"",
 		},
+		{
+			name:            "MAC invalid length",
+			mac:             "00-14-22-01-23-FF-FF", // 7 bytes
+			prefix:          "2001:0db8",
+			wantInterfaceID: "",
+			wantFullIP:      "",
+			wantErr:         "parsing MAC address failed",
+		},
+		{
+			name:            "Prefix with invalid middle empty",
+			mac:             "00-14-22-01-23-45",
+			prefix:          "2001::85a3",
+			wantInterfaceID: "",
+			wantFullIP:      "",
+			wantErr:         "invalid empty hextet",
+		},
 	}
 
 	for _, tt := range tests {
@@ -225,6 +241,12 @@ func TestParsePrefix(t *testing.T) {
 			prefix:    "2001:invalid:85a3",
 			wantParts: nil,
 			wantErr:   "invalid hextet in IPv6 prefix: \"invalid\"",
+		},
+		{
+			name:      "Invalid hextet with letters",
+			prefix:    "2001:xyz:85a3",
+			wantParts: nil,
+			wantErr:   "invalid hextet in IPv6 prefix: \"xyz\"",
 		},
 	}
 

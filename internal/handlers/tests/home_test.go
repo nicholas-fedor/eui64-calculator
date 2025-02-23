@@ -33,6 +33,12 @@ func TestHomeHandler(t *testing.T) {
 			wantStatus: http.StatusInternalServerError,
 			wantBody:   "", // No body expected on error
 		},
+		{
+			name:       "RenderHome failure with abort",
+			renderer:   &mocks.MockRenderer{HomeErr: errors.New("render home failed")},
+			wantStatus: http.StatusInternalServerError,
+			wantBody:   "",
+		},
 	}
 
 	for _, testCase := range tests {
