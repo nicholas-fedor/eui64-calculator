@@ -184,6 +184,14 @@ func TestCalculateEUI64(t *testing.T) {
 			wantInterfaceID: "0214:22ff:fe01:2345",
 			wantFullIP:      "2001:db8:85a3:0:214:22ff:fe01:2345",
 		},
+		{
+			name:            "MAC valid length but malformed",
+			mac:             "00-14-22-01-23-ZZ",
+			prefix:          "2001:0db8",
+			wantInterfaceID: "",
+			wantFullIP:      "",
+			wantErr:         "parsing MAC address failed",
+		},
 	}
 
 	for _, tt := range tests {
