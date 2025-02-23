@@ -16,8 +16,6 @@ var (
 )
 
 func TestRun(t *testing.T) {
-	t.Parallel()
-
 	tests := []struct {
 		name       string
 		configPort string
@@ -38,8 +36,6 @@ func TestRun(t *testing.T) {
 			name:       "Config load error",
 			configPort: ":0",
 			configErr:  ErrConfigLoadFailed,
-			setupErr:   nil,
-			runErr:     nil,
 			wantErr:    true,
 		},
 		{
@@ -47,7 +43,6 @@ func TestRun(t *testing.T) {
 			configPort: ":0",
 			configErr:  nil,
 			setupErr:   ErrSetupFailed,
-			runErr:     nil,
 			wantErr:    true,
 		},
 		{
@@ -58,86 +53,47 @@ func TestRun(t *testing.T) {
 			runErr:     ErrRouterRunFailed,
 			wantErr:    true,
 		},
-		{
-			name:       "Default NewApp run",
-			configPort: ":8082",
-			configErr:  nil,
-			setupErr:   nil,
-			runErr:     ErrRouterRunFailed,
-			wantErr:    true,
-		},
-		{
-			name:       "SetupRouter fails",
-			configPort: ":0",
-			configErr:  nil,
-			setupErr:   ErrSetupFailed,
-			runErr:     nil,
-			wantErr:    true,
-		},
-		{
-			name:       "RunEngine fails explicitly",
-			configPort: ":0",
-			configErr:  nil,
-			setupErr:   nil,
-			runErr:     ErrRouterRunFailed,
-			wantErr:    true,
-		},
 	}
 
 	for _, testCase := range tests {
 		t.Run(testCase.name, func(t *testing.T) {
-			t.Parallel()
-			runTestCase(t, testCase)
+			appInstance := app.NewApp() // Covers lines 25-29
+			origLoadConfig := appInstance.LoadConfig
+			origSetupRouter := appInstance.SetupRouter
+			origRunEngine := appInstance.RunEngine
+
+			defer func() {
+				appInstance.LoadConfig = origLoadConfig
+				appInstance.SetupRouter = origSetupRouter
+				appInstance.RunEngine = origRunEngine
+			}()
+
+			appInstance.LoadConfig = func(_ string) (server.Config, error) {
+				if testCase.configErr != nil {
+					return server.Config{}, testCase.configErr // Covers 35-39
+				}
+
+				return server.Config{
+					Port:           testCase.configPort,
+					StaticDir:      "/tmp/static",
+					TrustedProxies: []string{"127.0.0.1"},
+				}, nil
+			}
+
+			appInstance.SetupRouter = func(_ server.Config, _, _ gin.HandlerFunc) (*gin.Engine, error) {
+				if testCase.setupErr != nil {
+					return nil, testCase.setupErr // Covers 41-44
+				}
+
+				return gin.New(), nil
+			}
+
+			appInstance.RunEngine = func(_ *gin.Engine, _ string) error {
+				return testCase.runErr // Covers 46
+			}
+
+			err := appInstance.Run()
+			assertRunError(t, err, testCase.wantErr, testCase.runErr)
 		})
 	}
-}
-
-// runTestCase executes a single TestRun case with setup and assertions.
-func runTestCase(t *testing.T, testCase struct {
-	name       string
-	configPort string
-	configErr  error
-	setupErr   error
-	runErr     error
-	wantErr    bool
-}) {
-	t.Helper()
-
-	appInstance := app.NewApp()
-	origLoadConfig := appInstance.LoadConfig
-	origSetupRouter := appInstance.SetupRouter
-	origRunEngine := appInstance.RunEngine
-
-	defer func() {
-		appInstance.LoadConfig = origLoadConfig
-		appInstance.SetupRouter = origSetupRouter
-		appInstance.RunEngine = origRunEngine
-	}()
-
-	appInstance.LoadConfig = func(_ string) (server.Config, error) {
-		if testCase.configErr != nil {
-			return server.Config{}, testCase.configErr
-		}
-
-		return server.Config{
-			Port:           testCase.configPort,
-			StaticDir:      "/tmp/static",
-			TrustedProxies: []string{"127.0.0.1"},
-		}, nil
-	}
-
-	appInstance.SetupRouter = func(_ server.Config, _, _ gin.HandlerFunc) (*gin.Engine, error) {
-		if testCase.setupErr != nil {
-			return nil, testCase.setupErr
-		}
-
-		return gin.New(), nil
-	}
-
-	appInstance.RunEngine = func(_ *gin.Engine, _ string) error {
-		return testCase.runErr
-	}
-
-	err := appInstance.Run()
-	assertRunError(t, err, testCase.wantErr, testCase.runErr)
 }
