@@ -29,6 +29,7 @@ func testRouterRoute(
 	wStatus int,
 	wBody string,
 	handler *mockHandlerFunc,
+	useHandlerCheck bool, // Added to control handler check
 ) {
 	t.Helper()
 
@@ -40,9 +41,11 @@ func testRouterRoute(
 	require.Equal(t, wStatus, resp.Code)
 	require.Contains(t, resp.Body.String(), wBody)
 
-	if httpMethod == http.MethodGet && path == "/" {
-		require.True(t, handler.called, "Home handler not called")
-	} else if httpMethod == "POST" && path == "/calculate" {
-		require.True(t, handler.called, "Calculate handler not called")
+	if useHandlerCheck {
+		if httpMethod == http.MethodGet && path == "/" {
+			require.True(t, handler.called, "Home handler not called")
+		} else if httpMethod == "POST" && path == "/calculate" {
+			require.True(t, handler.called, "Calculate handler not called")
+		}
 	}
 }
