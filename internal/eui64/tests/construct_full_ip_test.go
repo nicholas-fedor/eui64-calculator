@@ -68,6 +68,12 @@ func TestConstructFullIP(t *testing.T) {
 			mac:         []byte{0x00, 0x14, 0x22, 0x01, 0x23, 0x45},
 			wantIP:      "::214:22ff:fe01:2345",
 		},
+		{
+			name:        "Prefix with single empty hextet",
+			prefixParts: []string{"2001", "", "0db8", "abcd"},
+			mac:         []byte{0x00, 0x14, 0x22, 0x01, 0x23, 0x45},
+			wantIP:      "2001:0:db8:abcd:214:22ff:fe01:2345",
+		},
 	}
 
 	for _, testCase := range tests {
