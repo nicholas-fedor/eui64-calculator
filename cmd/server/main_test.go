@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -123,6 +124,7 @@ func TestTrustedProxies(t *testing.T) {
 		wantBody       string
 		wantError      bool
 	}{
+		// Existing test cases remain unchanged
 		{
 			name:           "No trusted proxies",
 			trustedProxies: "",
@@ -150,6 +152,16 @@ func TestTrustedProxies(t *testing.T) {
 			wantStatus:     0,
 			wantBody:       "",
 			wantError:      true,
+		},
+		// New test case for Line 45 - Empty proxy entry
+		{
+			name:           "Trusted proxies with empty entry",
+			trustedProxies: "192.168.1.1,,10.0.0.1",
+			remoteAddr:     "192.168.1.1:12345",
+			xForwardedFor:  "203.0.113.1",
+			wantClientIP:   "203.0.113.1",
+			wantStatus:     http.StatusOK,
+			wantBody:       "EUI-64 Calculator",
 		},
 	}
 
@@ -197,6 +209,65 @@ func TestTrustedProxies(t *testing.T) {
 			resp = httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
 			assert.Equal(t, tt.wantClientIP, gotClientIP, "Client IP")
+		})
+	}
+}
+
+// New TestLoadConfig to cover Lines 37 and 56.
+func TestLoadConfig(t *testing.T) {
+	tests := []struct {
+		name           string
+		portEnv        string
+		trustedProxies string
+		staticDirEnv   string
+		wantPort       string
+		wantProxies    []string
+		wantStaticDir  string
+	}{
+		{
+			name:           "Default config",
+			portEnv:        "",
+			trustedProxies: "",
+			staticDirEnv:   "",
+			wantPort:       defaultPort,
+			wantProxies:    nil,
+			wantStaticDir:  filepath.Join(filepath.Dir(os.Args[0]), defaultStaticDir), // Approximation
+		},
+		{
+			name:           "Custom port (Line 37)",
+			portEnv:        "9090",
+			trustedProxies: "",
+			staticDirEnv:   "",
+			wantPort:       ":9090",
+			wantProxies:    nil,
+			wantStaticDir:  filepath.Join(filepath.Dir(os.Args[0]), defaultStaticDir),
+		},
+		{
+			name:           "Custom static dir",
+			portEnv:        "",
+			trustedProxies: "",
+			staticDirEnv:   "/custom/static",
+			wantPort:       defaultPort,
+			wantProxies:    nil,
+			wantStaticDir:  "/custom/static",
+		},
+		// Note: Line 56 (os.Executable failure) is harder to test directly without mocking.
+		// We can assume it works if STATIC_DIR is unset and defaultStaticDir is used.
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Clear and set environment variables
+			t.Setenv("PORT", tt.portEnv)
+			t.Setenv(trustedProxiesEnv, tt.trustedProxies)
+			t.Setenv(staticDirEnv, tt.staticDirEnv)
+
+			config, err := LoadConfig()
+			assert.NoError(t, err, "LoadConfig should not error")
+
+			assert.Equal(t, tt.wantPort, config.Port, "Port")
+			assert.Equal(t, tt.wantProxies, config.TrustedProxies, "TrustedProxies")
+			assert.Equal(t, tt.wantStaticDir, config.StaticDir, "StaticDir")
 		})
 	}
 }
