@@ -14,11 +14,19 @@ const (
 	eui64Bytes       = 8    // eui64Bytes is the length of an EUI-64 identifier in bytes.
 	fffeMarkerLow    = 0xFF // fffeMarkerLow is the low byte of the EUI-64 FFFE marker.
 	fffeMarkerHigh   = 0xFE // fffeMarkerHigh is the high byte of the EUI-64 FFFE marker.
+
+	// IPv6 hextet indices for EUI-64 insertion.
+	hextetEUI64First  = 4 // First hextet index where EUI-64 bytes are inserted.
+	hextetEUI64Second = 5 // Second hextet index for EUI-64 bytes.
+	hextetEUI64Third  = 6 // Third hextet index for EUI-64 bytes.
+	hextetEUI64Fourth = 7 // Fourth hextet index for EUI-64 bytes.
+
+	// Bit shift constant for combining bytes into a 16-bit hextet.
+	byteShift = 8 // Number of bits to shift a byte to form a uint16.
 )
 
 // Calculator defines the interface for computing EUI-64 identifiers and IPv6 addresses.
 type Calculator interface {
-	// CalculateEUI64 computes the EUI-64 interface ID and full IPv6 address from a MAC address and IPv6 prefix.
 	CalculateEUI64(mac, prefix string) (string, string, error)
 }
 
@@ -82,14 +90,14 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 			ip6[i] = 0
 		} else {
 			switch i {
-			case 4:
-				ip6[i] = uint16(eui64[0])<<8 | uint16(eui64[1])
-			case 5:
-				ip6[i] = uint16(eui64[2])<<8 | uint16(eui64[3])
-			case 6:
-				ip6[i] = uint16(eui64[4])<<8 | uint16(eui64[5])
-			case 7:
-				ip6[i] = uint16(eui64[6])<<8 | uint16(eui64[7])
+			case hextetEUI64First:
+				ip6[i] = uint16(eui64[0])<<byteShift | uint16(eui64[1])
+			case hextetEUI64Second:
+				ip6[i] = uint16(eui64[2])<<byteShift | uint16(eui64[3])
+			case hextetEUI64Third:
+				ip6[i] = uint16(eui64[4])<<byteShift | uint16(eui64[5])
+			case hextetEUI64Fourth:
+				ip6[i] = uint16(eui64[6])<<byteShift | uint16(eui64[7])
 			}
 		}
 	}
