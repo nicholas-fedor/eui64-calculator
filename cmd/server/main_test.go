@@ -16,15 +16,19 @@ import (
 // It loads the server configuration and sets up the router, failing the test if either step encounters an error.
 func setupRouter(t *testing.T) *gin.Engine {
 	t.Helper()
+
 	config, err := LoadConfig()
 	if err != nil {
 		t.Fatalf("Failed to load config: %v", err)
 	}
+
 	config.StaticDir = filepath.Join("..", "..", "static")
+
 	r, err := SetupRouter(config)
 	if err != nil {
 		t.Fatalf("Failed to setup router: %v", err)
 	}
+
 	return r
 }
 
@@ -88,6 +92,7 @@ func TestRouterSetup(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			router := setupRouter(t)
+
 			var req *http.Request
 			if tt.method == "POST" {
 				req, _ = http.NewRequest(tt.method, tt.path, strings.NewReader(tt.formData.Encode()))
@@ -95,6 +100,7 @@ func TestRouterSetup(t *testing.T) {
 			} else {
 				req, _ = http.NewRequest(tt.method, tt.path, nil)
 			}
+
 			resp := httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
 			assert.Equal(t, tt.wantStatus, resp.Code, "Status code")
@@ -158,29 +164,36 @@ func TestTrustedProxies(t *testing.T) {
 			if tt.wantError {
 				_, err := SetupRouter(Config{Port: defaultPort, TrustedProxies: strings.Split(tt.trustedProxies, ",")})
 				assert.Error(t, err, "Expected error for invalid proxy")
+
 				return
 			}
 
 			router := setupRouter(t)
-			req, _ := http.NewRequest("GET", "/", nil)
+			req, _ := http.NewRequest(http.MethodGet, "/", nil)
 			req.RemoteAddr = tt.remoteAddr
+
 			if tt.xForwardedFor != "" {
 				req.Header.Set("X-Forwarded-For", tt.xForwardedFor)
 			}
+
 			resp := httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
 			assert.Equal(t, tt.wantStatus, resp.Code, "Status code")
 			assert.Contains(t, resp.Body.String(), tt.wantBody, "Response body")
 
 			var gotClientIP string
+
 			router.GET("/test-ip", func(c *gin.Context) {
 				gotClientIP = c.ClientIP()
 			})
-			req, _ = http.NewRequest("GET", "/test-ip", nil)
+
+			req, _ = http.NewRequest(http.MethodGet, "/test-ip", nil)
 			req.RemoteAddr = tt.remoteAddr
+
 			if tt.xForwardedFor != "" {
 				req.Header.Set("X-Forwarded-For", tt.xForwardedFor)
 			}
+
 			resp = httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
 			assert.Equal(t, tt.wantClientIP, gotClientIP, "Client IP")

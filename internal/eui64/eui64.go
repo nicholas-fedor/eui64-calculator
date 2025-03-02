@@ -39,6 +39,7 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 	if err != nil {
 		return "", "", fmt.Errorf("parsing MAC address: %w", err)
 	}
+
 	if len(mac) != macBytes {
 		return "", "", fmt.Errorf("MAC address must be %d bytes, got %d", macBytes, len(mac))
 	}
@@ -59,6 +60,7 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 	}
 
 	prefixStr = strings.TrimSuffix(prefixStr, "::")
+
 	prefixParts := strings.Split(prefixStr, ":")
 	if len(prefixParts) > prefixMaxHextets {
 		return "", "", fmt.Errorf("IPv6 prefix exceeds %d hextets, got %d", prefixMaxHextets, len(prefixParts))
@@ -100,12 +102,15 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 // ensuring a compact and valid IPv6 address format.
 func ip6ToString(ip6 []uint16) string {
 	allZeros := true
+
 	for _, h := range ip6 {
 		if h != 0 {
 			allZeros = false
+
 			break
 		}
 	}
+
 	if allZeros {
 		return "::"
 	}
@@ -113,11 +118,13 @@ func ip6ToString(ip6 []uint16) string {
 	// Find the longest run of zeros for compression.
 	bestStart, bestLen := -1, 0
 	start, length := -1, 0
+
 	for i, h := range ip6 {
 		if h == 0 {
 			if start == -1 {
 				start = i
 			}
+
 			length++
 			if length > bestLen && length > 1 {
 				bestStart, bestLen = start, length
@@ -126,26 +133,35 @@ func ip6ToString(ip6 []uint16) string {
 			start, length = -1, 0
 		}
 	}
+
 	if start != -1 && length > bestLen && length > 1 {
 		bestStart, bestLen = start, length
 	}
 
 	var b strings.Builder
+
 	prevWasCompression := false
+
 	for i := 0; i < len(ip6); i++ {
 		if i == bestStart && bestLen > 1 {
 			b.WriteString("::")
+
 			prevWasCompression = true
 			i += bestLen - 1
+
 			continue
 		}
+
 		if ip6[i] != 0 || (i < bestStart || i >= bestStart+bestLen) {
 			if i > 0 && !prevWasCompression {
 				b.WriteByte(':')
 			}
+
 			b.WriteString(fmt.Sprintf("%x", ip6[i]))
+
 			prevWasCompression = false
 		}
 	}
+
 	return b.String()
 }

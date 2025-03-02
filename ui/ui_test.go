@@ -14,10 +14,12 @@ import (
 // renderToString renders a templ.Component to a string for testing.
 func renderToString(t *testing.T, component templ.Component) string {
 	var buf bytes.Buffer
+
 	err := component.Render(context.TODO(), &buf)
 	if err != nil {
 		t.Fatalf("Failed to render template: %v", err)
 	}
+
 	return buf.String()
 }
 
@@ -27,6 +29,7 @@ func parseHTML(t *testing.T, html string) *goquery.Document {
 	if err != nil {
 		t.Fatalf("Failed to parse HTML: %v", err)
 	}
+
 	return doc
 }
 

@@ -36,6 +36,7 @@ func LoadConfig() (Config, error) {
 	if port := os.Getenv("PORT"); port != "" {
 		config.Port = ":" + port
 	}
+
 	if proxies := os.Getenv(trustedProxiesEnv); proxies != "" {
 		config.TrustedProxies = strings.Split(proxies, ",")
 		for i, proxy := range config.TrustedProxies {
@@ -45,6 +46,7 @@ func LoadConfig() (Config, error) {
 			}
 		}
 	}
+
 	if staticDir := os.Getenv(staticDirEnv); staticDir != "" {
 		config.StaticDir = staticDir
 	} else {
@@ -56,6 +58,7 @@ func LoadConfig() (Config, error) {
 			config.StaticDir = filepath.Join(filepath.Dir(exePath), defaultStaticDir)
 		}
 	}
+
 	return config, nil
 }
 
@@ -96,6 +99,7 @@ func main() {
 	}
 
 	slog.Info("Starting server", "port", config.Port, "static_dir", config.StaticDir)
+
 	if err := router.Run(config.Port); err != nil {
 		slog.Error("Server failed", "error", err)
 		os.Exit(1)
