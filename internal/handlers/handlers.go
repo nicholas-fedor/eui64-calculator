@@ -1,9 +1,8 @@
 package handlers
 
 import (
-	"net/http"
-
 	"log/slog"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nicholas-fedor/eui64-calculator/internal/validators"
@@ -46,24 +45,32 @@ func (h *Handler) Calculate(c *gin.Context) {
 
 	if err := validators.ValidateMAC(mac); err != nil {
 		data.Error = "Please enter a valid MAC address (e.g., 00-14-22-01-23-45)"
+
 		slog.Warn("MAC validation failed", "mac", mac, "error", err)
 		h.renderResult(c, data)
+
 		return
 	}
+
 	if err := validators.ValidateIPv6Prefix(prefix); err != nil {
 		data.Error = "Please enter a valid IPv6 prefix (e.g., 2001:db8::)"
+
 		slog.Warn("Prefix validation failed", "prefix", prefix, "error", err)
 		h.renderResult(c, data)
+
 		return
 	}
 
 	interfaceID, fullIP, err := h.calc.CalculateEUI64(mac, prefix)
 	data.InterfaceID = interfaceID
 	data.FullIP = fullIP
+
 	if err != nil {
 		data.Error = "Failed to calculate EUI-64 address"
+
 		slog.Error("EUI-64 calculation failed", "mac", mac, "prefix", prefix, "error", err)
 	}
+
 	h.renderResult(c, data)
 }
 

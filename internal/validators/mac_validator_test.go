@@ -1,25 +1,37 @@
 package validators
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 // TestValidateMAC tests the ValidateMAC function with various MAC address inputs.
-// It ensures the function accepts valid 48-bit MAC addresses and rejects malformed or incorrect ones,
-// verifying error messages for invalid cases.
+// It ensures the function accepts valid 48-bit MAC addresses and rejects empty, overly long, or malformed inputs,
+// verifying error messages for each validation step.
 func TestValidateMAC(t *testing.T) {
 	tests := []struct {
 		name    string
 		mac     string
 		wantErr string
 	}{
-		{"Valid MAC", "00-14-22-01-23-45", ""},
+		// Valid cases
+		{"Valid MAC with hyphens", "00-14-22-01-23-45", ""},
+		{"Valid MAC with colons", "00:14:22:01:23:45", ""},
+
+		// Empty check
 		{"Empty MAC", "", "MAC address is required"},
-		{"Invalid MAC format", "invalid-mac", "parsing MAC address"},
+		{"Whitespace-only MAC", "   ", "MAC address is required"},
+
+		// Length check
+		{"MAC just over max length", "00-14-22-01-23-45-6", fmt.Sprintf("MAC address string exceeds maximum length of %d characters", macStrLen)},
+		{"MAC exceeds max length", "00-14-22-01-23-45-6789", fmt.Sprintf("MAC address string exceeds maximum length of %d characters", macStrLen)},
+		{"MAC with too many parts", "00-14-22-01-23-45-67", fmt.Sprintf("MAC address string exceeds maximum length of %d characters", macStrLen)},
+
+		// Parsing errors
+		{"Invalid MAC format (non-hex)", "invalid-mac", "parsing MAC address"},
 		{"MAC too short", "00-14-22-01-23", "parsing MAC address"},
-		{"MAC with too many parts", "00-14-22-01-23-45-67", "parsing MAC address"},
 	}
 
 	for _, tt := range tests {

@@ -30,25 +30,33 @@ type Config struct {
 
 // LoadConfig loads server configuration from environment variables.
 // It defaults to port ":8080" if PORT is unset and processes TRUSTED_PROXIES as a comma-separated list,
-// trimming whitespace and logging warnings for empty entries. Returns the configuration and any error encountered.
+// trimming whitespace, logging warnings for empty entries, and filtering them out. Returns the configuration and any error encountered.
 func LoadConfig() (Config, error) {
 	config := Config{Port: defaultPort, StaticDir: defaultStaticDir}
 	if port := os.Getenv("PORT"); port != "" {
 		config.Port = ":" + port
 	}
+
 	if proxies := os.Getenv(trustedProxiesEnv); proxies != "" {
-		config.TrustedProxies = strings.Split(proxies, ",")
-		for i, proxy := range config.TrustedProxies {
-			config.TrustedProxies[i] = strings.TrimSpace(proxy)
-			if config.TrustedProxies[i] == "" {
+		proxyList := strings.Split(proxies, ",")
+
+		var validProxies []string
+
+		for _, proxy := range proxyList {
+			trimmedProxy := strings.TrimSpace(proxy)
+			if trimmedProxy == "" {
 				slog.Warn("Empty proxy entry in TRUSTED_PROXIES")
+			} else {
+				validProxies = append(validProxies, trimmedProxy)
 			}
 		}
+
+		config.TrustedProxies = validProxies
 	}
+
 	if staticDir := os.Getenv(staticDirEnv); staticDir != "" {
 		config.StaticDir = staticDir
 	} else {
-		// Resolve defaultStaticDir relative to the executable's directory
 		exePath, err := os.Executable()
 		if err != nil {
 			slog.Warn("Failed to determine executable path, using default static dir", "error", err)
@@ -56,6 +64,7 @@ func LoadConfig() (Config, error) {
 			config.StaticDir = filepath.Join(filepath.Dir(exePath), defaultStaticDir)
 		}
 	}
+
 	return config, nil
 }
 
@@ -96,6 +105,7 @@ func main() {
 	}
 
 	slog.Info("Starting server", "port", config.Port, "static_dir", config.StaticDir)
+
 	if err := router.Run(config.Port); err != nil {
 		slog.Error("Server failed", "error", err)
 		os.Exit(1)

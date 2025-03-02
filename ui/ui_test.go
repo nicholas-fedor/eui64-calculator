@@ -14,10 +14,12 @@ import (
 // renderToString renders a templ.Component to a string for testing.
 func renderToString(t *testing.T, component templ.Component) string {
 	var buf bytes.Buffer
+
 	err := component.Render(context.TODO(), &buf)
 	if err != nil {
 		t.Fatalf("Failed to render template: %v", err)
 	}
+
 	return buf.String()
 }
 
@@ -27,6 +29,7 @@ func parseHTML(t *testing.T, html string) *goquery.Document {
 	if err != nil {
 		t.Fatalf("Failed to parse HTML: %v", err)
 	}
+
 	return doc
 }
 
@@ -52,7 +55,9 @@ func TestHomeContent(t *testing.T) {
 			assert.Equal(t, 1, doc.Find("form[hx-target='.result-container']").Length(), "Form hx-target not found")
 			assert.Equal(t, 1, doc.Find("form[hx-swap='innerHTML']").Length(), "Form hx-swap not found")
 			assert.Equal(t, "MAC Address", doc.Find("label[for='mac']").Text(), "Incorrect MAC label text")
-			assert.Equal(t, "xx-xx-xx-xx-xx-xx", doc.Find("input#mac").AttrOr("placeholder", ""), "Incorrect MAC input placeholder")
+			assert.Equal(t, "xx-xx-xx-xx-xx-xx or xx:xx:xx:xx:xx:xx", doc.Find("input#mac").AttrOr("placeholder", ""), "Incorrect MAC input placeholder")
+			assert.Equal(t, "[0-9a-fA-F]{2}([-:][0-9a-fA-F]{2}){5}", doc.Find("input#mac").AttrOr("pattern", ""), "Incorrect MAC pattern")
+			assert.Equal(t, "MAC address must be in format xx-xx-xx-xx-xx-xx or xx:xx:xx:xx:xx:xx (e.g., 00-14-22-01-23-45 or 00:14:22:01:23:45)", doc.Find("input#mac").AttrOr("title", ""), "Incorrect MAC title")
 			assert.Equal(t, "Start of IPv6 Address", doc.Find("label[for='ip-start']").Text(), "Incorrect IP label text")
 			assert.Equal(t, "xxxx:xxxx:xxxx:xxxx", doc.Find("input#ip-start").AttrOr("placeholder", ""), "Incorrect IP input placeholder")
 			assert.Equal(t, "Calculate", doc.Find("button.form-submit").Text(), "Incorrect submit button text")

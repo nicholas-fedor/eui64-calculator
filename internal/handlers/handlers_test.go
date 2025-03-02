@@ -21,6 +21,7 @@ func setupRouter(t *testing.T) *gin.Engine {
 	handler := NewHandler(&eui64.DefaultCalculator{})
 	r.GET("/", handler.Home)
 	r.POST("/calculate", handler.Calculate)
+
 	return r
 }
 
@@ -42,7 +43,7 @@ func TestHomeHandler(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			router := setupRouter(t)
-			req, _ := http.NewRequest("GET", "/", nil)
+			req, _ := http.NewRequest(http.MethodGet, "/", nil)
 			resp := httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
 			assert.Equal(t, tt.wantStatus, resp.Code)
@@ -84,8 +85,9 @@ func TestCalculateHandlerValid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			router := setupRouter(t)
-			req, _ := http.NewRequest("POST", "/calculate", strings.NewReader(tt.formData.Encode()))
+			req, _ := http.NewRequest(http.MethodPost, "/calculate", strings.NewReader(tt.formData.Encode()))
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
 			resp := httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
 			assert.Equal(t, tt.wantStatus, resp.Code)
@@ -154,8 +156,9 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			router := setupRouter(t)
-			req, _ := http.NewRequest("POST", "/calculate", strings.NewReader(tt.formData.Encode()))
+			req, _ := http.NewRequest(http.MethodPost, "/calculate", strings.NewReader(tt.formData.Encode()))
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
 			resp := httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
 			assert.Equal(t, tt.wantStatus, resp.Code)
