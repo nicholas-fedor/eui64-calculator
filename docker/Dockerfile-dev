@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=golang:1.24.0
+ARG BASE_IMAGE=golang:1.24.1
 
 # Test stage
 FROM $BASE_IMAGE AS tester
