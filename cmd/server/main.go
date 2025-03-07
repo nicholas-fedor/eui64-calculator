@@ -15,7 +15,7 @@ import (
 
 // Constants defining default configuration values and environment variable names.
 const (
-	defaultPort       = ":8080"           // defaultPort is the default server port if PORT is unset.
+	defaultPort       = "8080"            // defaultPort is the default server port if PORT is unset.
 	trustedProxiesEnv = "TRUSTED_PROXIES" // trustedProxiesEnv is the environment variable for trusted proxy IPs.
 	staticDirEnv      = "STATIC_DIR"      // staticDirEnv is the environment variable for the static directory.
 	defaultStaticDir  = "static"          // defaultStaticDir is the default static directory relative to the project root.
@@ -23,7 +23,7 @@ const (
 
 // Config holds server configuration parameters.
 type Config struct {
-	Port           string   // Port is the server listening port (e.g., ":8080").
+	Port           string   // Port is the server listening port (e.g., "8080").
 	TrustedProxies []string // TrustedProxies lists IP addresses of trusted reverse proxies.
 	StaticDir      string   // StaticDir is the directory containing static files.
 }
@@ -32,7 +32,7 @@ type Config struct {
 // It defaults to port ":8080" if PORT is unset and processes TRUSTED_PROXIES as a comma-separated list,
 // trimming whitespace, logging warnings for empty entries, and filtering them out. Returns the configuration and any error encountered.
 func LoadConfig() (Config, error) {
-	config := Config{Port: defaultPort, StaticDir: defaultStaticDir}
+	config := Config{Port: ":" + defaultPort, StaticDir: defaultStaticDir}
 	if port := os.Getenv("PORT"); port != "" {
 		config.Port = ":" + port
 	}
