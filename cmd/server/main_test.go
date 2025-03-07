@@ -229,7 +229,7 @@ func TestLoadConfig(t *testing.T) {
 			portEnv:        "",
 			trustedProxies: "",
 			staticDirEnv:   "",
-			wantPort:       defaultPort,
+			wantPort:       ":" + defaultPort,
 			wantProxies:    nil,
 			wantStaticDir:  filepath.Join(filepath.Dir(os.Args[0]), defaultStaticDir), // Approximation
 		},
@@ -247,7 +247,7 @@ func TestLoadConfig(t *testing.T) {
 			portEnv:        "",
 			trustedProxies: "",
 			staticDirEnv:   "/custom/static",
-			wantPort:       defaultPort,
+			wantPort:       ":" + defaultPort,
 			wantProxies:    nil,
 			wantStaticDir:  "/custom/static",
 		},
