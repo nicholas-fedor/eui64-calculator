@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
 	"github.com/nicholas-fedor/eui64-calculator/internal/validators"
 	"github.com/nicholas-fedor/eui64-calculator/ui"
 )

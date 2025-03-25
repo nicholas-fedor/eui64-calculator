@@ -2,13 +2,13 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+
 	"github.com/nicholas-fedor/eui64-calculator/internal/eui64"
 	"github.com/nicholas-fedor/eui64-calculator/internal/handlers"
 )
@@ -21,6 +21,14 @@ const (
 	defaultStaticDir  = "static"          // defaultStaticDir is the default static directory relative to the project root.
 )
 
+// Define static error variables.
+var (
+	ErrSetTrustedProxies = errors.New("failed to set trusted proxies")
+	ErrLoadConfig        = errors.New("failed to load config")
+	ErrSetupRouter       = errors.New("failed to setup router")
+	ErrServerFailed      = errors.New("server failed")
+)
+
 // Config holds server configuration parameters.
 type Config struct {
 	Port           string   // Port is the server listening port (e.g., "8080").
@@ -30,8 +38,8 @@ type Config struct {
 
 // LoadConfig loads server configuration from environment variables.
 // It defaults to port ":8080" if PORT is unset and processes TRUSTED_PROXIES as a comma-separated list,
-// trimming whitespace, logging warnings for empty entries, and filtering them out. Returns the configuration and any error encountered.
-func LoadConfig() (Config, error) {
+// trimming whitespace, logging warnings for empty entries, and filtering them out.
+func LoadConfig() Config {
 	config := Config{Port: ":" + defaultPort, StaticDir: defaultStaticDir}
 	if port := os.Getenv("PORT"); port != "" {
 		config.Port = ":" + port
@@ -65,7 +73,7 @@ func LoadConfig() (Config, error) {
 		}
 	}
 
-	return config, nil
+	return config
 }
 
 // SetupRouter configures and returns a new Gin router with middleware and routes.
@@ -73,41 +81,37 @@ func LoadConfig() (Config, error) {
 // and defines routes for the home page, EUI-64 calculation, and static file serving. Returns the router and any error.
 func SetupRouter(config Config) (*gin.Engine, error) {
 	gin.SetMode(gin.ReleaseMode)
-	r := gin.New()
+	router := gin.New()
 	gin.ForceConsoleColor() // Forces colored console output for logs, even in non-terminal environments.
-	r.Use(gin.Logger(), gin.Recovery())
+	router.Use(gin.Logger(), gin.Recovery())
 
-	if err := r.SetTrustedProxies(config.TrustedProxies); err != nil {
-		return nil, errors.Join(fmt.Errorf("failed to set trusted proxies"), err)
+	if err := router.SetTrustedProxies(config.TrustedProxies); err != nil {
+		return nil, errors.Join(ErrSetTrustedProxies, err)
 	}
 
 	handler := handlers.NewHandler(&eui64.DefaultCalculator{})
-	r.GET("/", handler.Home)
-	r.POST("/calculate", handler.Calculate)
-	r.Static("/static", config.StaticDir) // Use configurable static directory
+	router.GET("/", handler.Home)
+	router.POST("/calculate", handler.Calculate)
+	router.Static("/static", config.StaticDir) // Use configurable static directory
 
-	return r, nil
+	return router, nil
 }
 
 // main initializes and runs the EUI-64 calculator web server.
 // It loads configuration, sets up the router, and starts the server, logging errors and exiting with status 1 on failure.
 func main() {
-	config, err := LoadConfig()
-	if err != nil {
-		slog.Error("Failed to load config", "error", err)
-		os.Exit(1)
-	}
+	config := LoadConfig()
 
 	router, err := SetupRouter(config)
 	if err != nil {
-		slog.Error("Failed to setup router", "error", err)
+		slog.Error(ErrSetupRouter.Error(), "error", err)
 		os.Exit(1)
 	}
 
 	slog.Info("Starting server", "port", config.Port, "static_dir", config.StaticDir)
 
 	if err := router.Run(config.Port); err != nil {
-		slog.Error("Server failed", "error", err)
+		slog.Error(ErrServerFailed.Error(), "error", err)
 		os.Exit(1)
 	}
 }

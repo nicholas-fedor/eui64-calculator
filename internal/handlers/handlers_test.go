@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	// Added for context support.
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -8,8 +9,9 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nicholas-fedor/eui64-calculator/internal/eui64"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/nicholas-fedor/eui64-calculator/internal/eui64"
 )
 
 // setupRouter creates a Gin router for testing handler functions.
@@ -43,7 +45,8 @@ func TestHomeHandler(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			router := setupRouter(t)
-			req, _ := http.NewRequest(http.MethodGet, "/", nil)
+			ctx := t.Context() // Use a basic context for tests
+			req, _ := http.NewRequestWithContext(ctx, http.MethodGet, "/", nil)
 			resp := httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
 			assert.Equal(t, tt.wantStatus, resp.Code)
@@ -85,7 +88,13 @@ func TestCalculateHandlerValid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			router := setupRouter(t)
-			req, _ := http.NewRequest(http.MethodPost, "/calculate", strings.NewReader(tt.formData.Encode()))
+			ctx := t.Context() // Use a basic context for tests
+			req, _ := http.NewRequestWithContext(
+				ctx,
+				http.MethodPost,
+				"/calculate",
+				strings.NewReader(tt.formData.Encode()),
+			)
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 			resp := httptest.NewRecorder()
@@ -156,7 +165,13 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			router := setupRouter(t)
-			req, _ := http.NewRequest(http.MethodPost, "/calculate", strings.NewReader(tt.formData.Encode()))
+			ctx := t.Context() // Use a basic context for tests
+			req, _ := http.NewRequestWithContext(
+				ctx,
+				http.MethodPost,
+				"/calculate",
+				strings.NewReader(tt.formData.Encode()),
+			)
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 			resp := httptest.NewRecorder()
