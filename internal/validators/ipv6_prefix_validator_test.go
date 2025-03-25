@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // TestValidateIPv6Prefix tests the ValidateIPv6Prefix function with various prefix inputs.
@@ -27,11 +28,23 @@ func TestValidateIPv6Prefix(t *testing.T) {
 		{"Whitespace-only prefix", "   ", "a non-blank IPv6 prefix is expected"},
 
 		// Length check
-		{"Prefix just over max length", "2001:0db8:85a3:abcd5", fmt.Sprintf("IPv6 prefix exceeds maximum length of %d characters", maxPrefixStrLength)},
-		{"Prefix exceeds max length", "2001:db8:85a3:abcd:1234", fmt.Sprintf("IPv6 prefix exceeds maximum length of %d characters", maxPrefixStrLength)},
+		{
+			"Prefix just over max length",
+			"2001:0db8:85a3:abcd5",
+			fmt.Sprintf("IPv6 prefix exceeds maximum length of %d characters", maxPrefixStrLength),
+		},
+		{
+			"Prefix exceeds max length",
+			"2001:db8:85a3:abcd:1234",
+			fmt.Sprintf("IPv6 prefix exceeds maximum length of %d characters", maxPrefixStrLength),
+		},
 
 		// Hextet count check
-		{"Too many hextets", "2001:db8:85a3:0:0", fmt.Sprintf("IPv6 prefix must be %d or fewer hextets", maxHextets)},
+		{
+			"Too many hextets",
+			"2001:db8:85a3:0:0",
+			fmt.Sprintf("IPv6 prefix must be %d or fewer hextets", maxHextets),
+		},
 
 		// Hextet content checks
 		{"Invalid character in hextet", "2001:db8:85a3:g000", "invalid character in hextet"},
@@ -44,7 +57,7 @@ func TestValidateIPv6Prefix(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			err := ValidateIPv6Prefix(tt.prefix)
 			if tt.wantErr != "" {
-				assert.Error(t, err)
+				require.Error(t, err)
 				assert.Equal(t, tt.wantErr, err.Error())
 			} else {
 				assert.NoError(t, err)

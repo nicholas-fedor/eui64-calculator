@@ -12,6 +12,16 @@ const (
 	macStrLen = 17 // macStrLen is the maximum string length for "xx-xx-xx-xx-xx-xx".
 )
 
+// Static error variables.
+var (
+	ErrMACRequired      = errors.New("MAC address is required")
+	ErrMACLengthExceeds = fmt.Errorf(
+		"MAC address string exceeds maximum length of %d characters",
+		macStrLen,
+	)
+	ErrMACParseFailed = errors.New("parsing MAC address")
+)
+
 // ValidateMAC validates a MAC address string for correctness.
 // It trims whitespace, ensures the address is non-empty, checks the string length,
 // and parses it into a valid MAC address using net.ParseMAC.
@@ -19,16 +29,16 @@ const (
 func ValidateMAC(macStr string) error {
 	macStr = strings.TrimSpace(macStr)
 	if macStr == "" {
-		return errors.New("MAC address is required")
+		return ErrMACRequired
 	}
 
 	if len(macStr) > macStrLen {
-		return fmt.Errorf("MAC address string exceeds maximum length of %d characters", macStrLen)
+		return ErrMACLengthExceeds
 	}
 
 	_, err := net.ParseMAC(macStr)
 	if err != nil {
-		return fmt.Errorf("parsing MAC address: %w", err)
+		return fmt.Errorf("%w: %w", ErrMACParseFailed, err)
 	}
 
 	return nil
