@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // TestCalculateEUI64Valid tests the CalculateEUI64 function with valid inputs.
@@ -58,7 +59,7 @@ func TestCalculateEUI64Valid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			interfaceID, fullIP, err := CalculateEUI64(tt.mac, tt.prefix)
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			assert.Equal(t, tt.wantInterfaceID, interfaceID)
 			assert.Equal(t, tt.wantFullIP, fullIP)
 		})
@@ -110,7 +111,7 @@ func TestCalculateEUI64Invalid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			interfaceID, fullIP, err := CalculateEUI64(tt.mac, tt.prefix)
-			assert.Error(t, err)
+			require.Error(t, err)
 			assert.Contains(t, err.Error(), tt.wantErr)
 			assert.Empty(t, interfaceID)
 			assert.Empty(t, fullIP)

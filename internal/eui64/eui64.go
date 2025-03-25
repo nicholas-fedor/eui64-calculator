@@ -1,8 +1,10 @@
 package eui64
 
 import (
+	"errors"
 	"fmt"
 	"net"
+	"strconv"
 	"strings"
 )
 
@@ -25,6 +27,14 @@ const (
 	byteShift = 8 // Number of bits to shift a byte to form a uint16.
 )
 
+// Static error variables.
+var (
+	ErrParseMAC             = errors.New("parsing MAC address")
+	ErrInvalidMACLength     = fmt.Errorf("MAC address must be %d bytes", macBytes)
+	ErrPrefixExceedsHextets = fmt.Errorf("IPv6 prefix exceeds %d hextets", prefixMaxHextets)
+	ErrInvalidEmptyHextet   = errors.New("invalid empty hextet in IPv6 prefix")
+)
+
 // Calculator defines the interface for computing EUI-64 identifiers and IPv6 addresses.
 type Calculator interface {
 	CalculateEUI64(mac, prefix string) (string, string, error)
@@ -45,11 +55,11 @@ func (d *DefaultCalculator) CalculateEUI64(mac, prefix string) (string, string, 
 func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 	mac, err := net.ParseMAC(macStr)
 	if err != nil {
-		return "", "", fmt.Errorf("parsing MAC address: %w", err)
+		return "", "", fmt.Errorf("%w: %w", ErrParseMAC, err)
 	}
 
 	if len(mac) != macBytes {
-		return "", "", fmt.Errorf("MAC address must be %d bytes, got %d", macBytes, len(mac))
+		return "", "", fmt.Errorf("%w, got %d", ErrInvalidMACLength, len(mac))
 	}
 
 	eui64 := make([]byte, eui64Bytes)
@@ -71,34 +81,36 @@ func CalculateEUI64(macStr, prefixStr string) (string, string, error) {
 
 	prefixParts := strings.Split(prefixStr, ":")
 	if len(prefixParts) > prefixMaxHextets {
-		return "", "", fmt.Errorf("IPv6 prefix exceeds %d hextets, got %d", prefixMaxHextets, len(prefixParts))
+		return "", "", fmt.Errorf("%w, got %d", ErrPrefixExceedsHextets, len(prefixParts))
 	}
 
 	for i, part := range prefixParts {
 		if part == "" && i != 0 && i != len(prefixParts)-1 {
-			return "", "", fmt.Errorf("invalid empty hextet in IPv6 prefix: %s", prefixStr)
+			return "", "", fmt.Errorf("%w: %s", ErrInvalidEmptyHextet, prefixStr)
 		}
 	}
 
 	ip6 := make([]uint16, ipv6Hextets)
 	for i := range ip6 {
-		if i < len(prefixParts) && prefixParts[i] != "" {
+		switch {
+		case i < len(prefixParts) && prefixParts[i] != "":
 			if _, err := fmt.Sscanf(prefixParts[i], "%x", &ip6[i]); err != nil {
-				return "", "", fmt.Errorf("invalid hextet %q in IPv6 prefix: %w", prefixParts[i], err)
+				return "", "", fmt.Errorf(
+					"invalid hextet %q in IPv6 prefix: %w",
+					prefixParts[i],
+					err,
+				)
 			}
-		} else if i < prefixMaxHextets {
+		case i < prefixMaxHextets:
 			ip6[i] = 0
-		} else {
-			switch i {
-			case hextetEUI64First:
-				ip6[i] = uint16(eui64[0])<<byteShift | uint16(eui64[1])
-			case hextetEUI64Second:
-				ip6[i] = uint16(eui64[2])<<byteShift | uint16(eui64[3])
-			case hextetEUI64Third:
-				ip6[i] = uint16(eui64[4])<<byteShift | uint16(eui64[5])
-			case hextetEUI64Fourth:
-				ip6[i] = uint16(eui64[6])<<byteShift | uint16(eui64[7])
-			}
+		case i == hextetEUI64First:
+			ip6[i] = uint16(eui64[0])<<byteShift | uint16(eui64[1])
+		case i == hextetEUI64Second:
+			ip6[i] = uint16(eui64[2])<<byteShift | uint16(eui64[3])
+		case i == hextetEUI64Third:
+			ip6[i] = uint16(eui64[4])<<byteShift | uint16(eui64[5])
+		case i == hextetEUI64Fourth:
+			ip6[i] = uint16(eui64[6])<<byteShift | uint16(eui64[7])
 		}
 	}
 
@@ -146,13 +158,13 @@ func ip6ToString(ip6 []uint16) string {
 		bestStart, bestLen = start, length
 	}
 
-	var b strings.Builder
+	var stringBuilder strings.Builder
 
 	prevWasCompression := false
 
 	for i := 0; i < len(ip6); i++ {
 		if i == bestStart && bestLen > 1 {
-			b.WriteString("::")
+			stringBuilder.WriteString("::")
 
 			prevWasCompression = true
 			i += bestLen - 1
@@ -162,14 +174,14 @@ func ip6ToString(ip6 []uint16) string {
 
 		if ip6[i] != 0 || (i < bestStart || i >= bestStart+bestLen) {
 			if i > 0 && !prevWasCompression {
-				b.WriteByte(':')
+				stringBuilder.WriteByte(':')
 			}
 
-			b.WriteString(fmt.Sprintf("%x", ip6[i]))
+			stringBuilder.WriteString(strconv.FormatUint(uint64(ip6[i]), 16))
 
 			prevWasCompression = false
 		}
 	}
 
-	return b.String()
+	return stringBuilder.String()
 }
