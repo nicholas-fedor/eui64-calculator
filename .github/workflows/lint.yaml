@@ -29,7 +29,7 @@ jobs:
         run: templ generate
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@a5307c8f68bcd21ff73283f8629eb09caa60d7a7
+        uses: golangci/golangci-lint-action@f51fbec16fce4359832f3092bd8f6fdf12f16151
         with:
           args: --timeout=5m
 
