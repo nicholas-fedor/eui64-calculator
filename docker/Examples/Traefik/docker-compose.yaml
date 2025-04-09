@@ -23,7 +23,7 @@ services:
     container_name: eui64-calculator
     environment:
       - TRUSTED_PROXIES=${TRUSTED_PROXIES}
-    image: nickfedor/eui64-calculator:latest@sha256:256eee558e43f62fdb87b807d7f9aaae77ca72e429a7ea693127c85372d2e432
+    image: nickfedor/eui64-calculator:latest@sha256:19e9f73607538391c63afb373ad412e45b0c5c9bde9719592ed60c3c86b77e7a
     labels:
       - traefik.docker.network=eui64-calculator
       - traefik.enable=true
