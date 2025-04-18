@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=golang:1.24.2@sha256:1ecc479bc712a6bdb56df3e346e33edcc141f469f82840bab9f4bc2bc41bf91d
+ARG BASE_IMAGE=golang:1.24.2@sha256:d9db32125db0c3a680cfb7a1afcaefb89c898a075ec148fdc2f0f646cc2ed509
 
 # Test stage
 FROM $BASE_IMAGE AS tester
