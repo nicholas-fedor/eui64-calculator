@@ -54,7 +54,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    image: traefik:latest@sha256:677f5ab74b0ccce89f8ceecc99f10b9cc17d1f607652efc753b4e992efb2f826
+    image: traefik:latest@sha256:4cf907247939b5d20bf4eff73abd21cb413c339600dde76dbc94a874b2578a27
     restart: unless-stopped
     networks:
       - eui64-calculator
