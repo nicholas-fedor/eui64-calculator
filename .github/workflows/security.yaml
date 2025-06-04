@@ -44,6 +44,12 @@ jobs:
     name: govulncheck
     runs-on: ubuntu-latest
     steps:
+      - name: Install templ
+        run: go install github.com/a-h/templ/cmd/templ@latest
+
+      - name: Generate templates
+        run: templ generate
+      
       - id: govulncheck
         uses: nicholas-fedor/govulncheck-action@2f1c2deb561929b6c51a124dd0537a9bbf694334
         with:
