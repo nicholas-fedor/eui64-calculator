@@ -1,0 +1,12 @@
+# Configuration for GitHub Issues in nicholas-fedor/eui64-calculator
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Support and Questions
+    url: https://github.com/nicholas-fedor/eui64-calculator/discussions
+    about: Ask questions or seek support in the Discussions forum.
+  - name: 🌟 Feature Requests
+    url: https://github.com/nicholas-fedor/eui64-calculator/issues/new?template=feature_request.yaml
+    about: Suggest new features or enhancements for the EUI-64 Calculator.
+  - name: 📖 Documentation and Contributing
+    url: https://github.com/nicholas-fedor/eui64-calculator/blob/main/CONTRIBUTING.md
+    about: Learn how to contribute or report issues effectively.
