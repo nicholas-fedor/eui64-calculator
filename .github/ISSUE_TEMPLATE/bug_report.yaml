@@ -10,7 +10,7 @@ body:
 
         - **Note**: The Docker image uses a minimal `distroless` base with limited logging. Use `docker logs` or run locally for debugging.
         - For support, [start a discussion](https://github.com/nicholas-fedor/eui64-calculator/discussions/new?category=support).
-        - For features, use the [feature request form](https://github.com/nicholas-fedor/eui64-calculator/issues/new?template=feature_request.yml).
+        - For features, use the [feature request form](https://github.com/nicholas-fedor/eui64-calculator/issues/new?template=feature_request.yaml).
         - Check [existing issues](https://github.com/nicholas-fedor/eui64-calculator/issues) to avoid duplicates.
 
   - type: checkboxes

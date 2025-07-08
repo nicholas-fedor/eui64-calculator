@@ -1,0 +1,51 @@
+name: 🚀 Feature Request
+description: Suggest a new feature or enhancement for the EUI-64 Calculator.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thanks for suggesting a feature!
+
+        Before submitting, please:
+        - Search [existing issues](https://github.com/nicholas-fedor/eui64-calculator/issues) and [discussions](https://github.com/nicholas-fedor/eui64-calculator/discussions).
+        - For support, use [Discussions](https://github.com/nicholas-fedor/eui64-calculator/discussions).
+        - See [Contributing](https://github.com/nicholas-fedor/eui64-calculator#contributing) for guidelines.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I checked [existing issues](https://github.com/nicholas-fedor/eui64-calculator/issues) and [discussions](https://github.com/nicholas-fedor/eui64-calculator/discussions) for duplicates.
+          required: true
+        - label: This is a feature request, not a support question.
+          required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: Describe the feature or enhancement you’d like to see.
+      placeholder: e.g., Add support for EUI-48 to EUI-64 conversion in the web UI.
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case or Expected Behavior
+      description: Explain how this feature would be used or what it should do.
+      placeholder: e.g., Users could input an EUI-48 address and get an EUI-64 output instantly.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Provide any extra details, such as why this feature is needed.
+      placeholder: e.g., This would help network admins streamline IPv6 configuration.
+    validations:
+      required: false
