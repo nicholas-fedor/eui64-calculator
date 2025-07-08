@@ -1,0 +1,135 @@
+name: 🐛 Bug report
+description: Report a bug or issue with the EUI-64 Calculator.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thanks for reporting a bug!
+
+        - **Note**: The Docker image uses a minimal `distroless` base with limited logging. Use `docker logs` or run locally for debugging.
+        - For support, [start a discussion](https://github.com/nicholas-fedor/eui64-calculator/discussions/new?category=support).
+        - For features, use the [feature request form](https://github.com/nicholas-fedor/eui64-calculator/issues/new?template=feature_request.yml).
+        - Check [existing issues](https://github.com/nicholas-fedor/eui64-calculator/issues) to avoid duplicates.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I checked [existing issues](https://github.com/nicholas-fedor/eui64-calculator/issues) and found no duplicates.
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue clearly and concisely.
+      placeholder: e.g., The calculator returned an invalid EUI-64 address.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: List the steps to reproduce the issue.
+      placeholder: |
+        1. Enter MAC address "00-14-22-01-23-45".
+        2. Enter IPv6 prefix "2001:db8::/32".
+        3. Click "Calculate".
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Where does the issue occur?
+      options:
+        - Web Interface (UI)
+        - Calculation Logic
+        - Docker Deployment
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: system
+    attributes:
+      label: OS / Architecture
+      placeholder: e.g., linux/amd64
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser (if web-related)
+      placeholder: e.g., Firefox 128.0
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Run `eui64-calculator --version` or check Docker image tag.
+      placeholder: e.g., v0.1.11
+    validations:
+      required: true
+
+  - type: dropdown
+    id: install-method
+    attributes:
+      label: Installation Method
+      options:
+        - Docker
+        - Binary
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Input Values
+      description: Provide the MAC address and IPv6 prefix used.
+      placeholder: |
+        MAC Address: 00-14-22-01-23-45
+        IPv6 Prefix: 2001:db8::/32
+    validations:
+      required: false
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: Configuration
+      description: Include any custom settings (e.g., Docker Compose, environment variables). Omit sensitive data.
+      render: yaml
+      placeholder: |
+        # Example
+        docker-compose:
+          image: nickfedor/eui64-calculator:latest
+        env:
+          LOG_LEVEL: debug
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: EUI64-Calculator Logs
+      description: Retrieve logs using `docker logs eui64-calculator` (Docker) or console output (local). Note that the distroless image has limited logging. Paste relevant JSON or text.
+      render: json
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Information
+      description: Add screenshots, proposed fixes, or other details. Drag and drop images or paste text.
+    validations:
+      required: false
