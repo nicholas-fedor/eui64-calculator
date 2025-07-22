@@ -1,6 +1,6 @@
 module github.com/nicholas-fedor/eui64-calculator
 
-go 1.24.0
+go 1.24.5
 
 require (
 	github.com/PuerkitoBio/goquery v1.10.3
