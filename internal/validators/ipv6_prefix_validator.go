@@ -1,3 +1,6 @@
+// Package validators provides validation functions for input data in the EUI-64 calculator application.
+// It includes validators for MAC addresses and IPv6 prefixes, ensuring they meet format and length requirements
+// before proceeding with calculations.
 package validators
 
 import (

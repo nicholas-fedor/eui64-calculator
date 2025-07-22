@@ -1,3 +1,6 @@
+// Package eui64 provides functionality for calculating EUI-64 interface identifiers and full IPv6 addresses from MAC addresses and prefixes.
+// It includes the Calculator interface and a default implementation using the standard EUI-64 algorithm,
+// along with helper functions for parsing, conversion, and string formatting of IPv6 addresses.
 package eui64
 
 import (

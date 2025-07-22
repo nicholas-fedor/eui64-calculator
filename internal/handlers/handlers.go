@@ -1,3 +1,7 @@
+// Package handlers provides HTTP request handlers for the EUI-64 calculator application using the Gin framework.
+// It defines the Handler struct with dependency injection for the EUI-64 calculator,
+// and includes handlers for rendering the home page, processing calculation requests with validation,
+// and rendering results or errors.
 package handlers
 
 import (
@@ -31,7 +35,7 @@ func NewHandler(calc Calculator) *Handler {
 // It serves the initial form for entering MAC and IPv6 prefix values, aborting with a 500 status on render failure.
 func (h *Handler) Home(c *gin.Context) {
 	if err := ui.Home().Render(c.Request.Context(), c.Writer); err != nil {
-		slog.Error("Failed to render home page", "error", err)
+		slog.ErrorContext(c.Request.Context(), "Failed to render home page", "error", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 	}
 }
@@ -47,7 +51,7 @@ func (h *Handler) Calculate(c *gin.Context) {
 	if err := validators.ValidateMAC(mac); err != nil {
 		data.Error = "Please enter a valid MAC address (e.g., 00-14-22-01-23-45)"
 
-		slog.Warn("MAC validation failed", "mac", mac, "error", err)
+		slog.WarnContext(c.Request.Context(), "MAC validation failed", "mac", mac, "error", err)
 		h.renderResult(c, data)
 
 		return
@@ -56,7 +60,14 @@ func (h *Handler) Calculate(c *gin.Context) {
 	if err := validators.ValidateIPv6Prefix(prefix); err != nil {
 		data.Error = "Please enter a valid IPv6 prefix (e.g., 2001:db8::)"
 
-		slog.Warn("Prefix validation failed", "prefix", prefix, "error", err)
+		slog.WarnContext(
+			c.Request.Context(),
+			"Prefix validation failed",
+			"prefix",
+			prefix,
+			"error",
+			err,
+		)
 		h.renderResult(c, data)
 
 		return
@@ -69,7 +80,16 @@ func (h *Handler) Calculate(c *gin.Context) {
 	if err != nil {
 		data.Error = "Failed to calculate EUI-64 address"
 
-		slog.Error("EUI-64 calculation failed", "mac", mac, "prefix", prefix, "error", err)
+		slog.ErrorContext(
+			c.Request.Context(),
+			"EUI-64 calculation failed",
+			"mac",
+			mac,
+			"prefix",
+			prefix,
+			"error",
+			err,
+		)
 	}
 
 	h.renderResult(c, data)
@@ -80,7 +100,7 @@ func (h *Handler) Calculate(c *gin.Context) {
 // aborting with a 500 status if rendering fails.
 func (h *Handler) renderResult(c *gin.Context, data ui.ResultData) {
 	if err := ui.Result(data).Render(c.Request.Context(), c.Writer); err != nil {
-		slog.Error("Failed to render result", "error", err)
+		slog.ErrorContext(c.Request.Context(), "Failed to render result", "error", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 	}
 }
