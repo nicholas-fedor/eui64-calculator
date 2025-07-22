@@ -38,7 +38,8 @@ release:
   prerelease: auto
 
 dockers:
-  - image_templates:
+  - dockerfile: build/docker/Dockerfile.prod
+    image_templates:
       - "docker.io/nickfedor/eui64-calculator:{{ .Tag }}"
       - "docker.io/nickfedor/eui64-calculator:{{ if .IsSnapshot }}latest-dev{{ else }}latest{{ end }}"
       - "ghcr.io/nicholas-fedor/eui64-calculator:{{ .Tag }}"

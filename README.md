@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 <div align="center">
 
 # EUI-64 Calculator
@@ -6,8 +7,9 @@ A EUI-64 address calculator implemented in Go, HTMX, and Templ.
 
 This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EUI64-Calculator)
 
-![EUI-64 Calculator Screenshot](eui64-calculator_screenshot.png)
+![EUI-64 Calculator Screenshot](./.github/assets/eui64-calculator_screenshot.png)
 <br/><br/>
+<!-- markdownlint-restore -->
 
   [![CircleCI](https://dl.circleci.com/status-badge/img/gh/nicholas-fedor/eui64-calculator/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/nicholas-fedor/eui64-calculator/tree/main)
   [![codecov](https://codecov.io/gh/nicholas-fedor/eui64-calculator/branch/main/graph/badge.svg)](https://codecov.io/gh/nicholas-fedor/eui64-calculator)
@@ -18,7 +20,7 @@ This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.co
   [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1c48cfb7646d4009aa8c6f71287670b8)](https://www.codacy.com/gh/nicholas-fedor/eui64-calculator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nicholas-fedor/eui64-calculator&amp;utm_campaign=Badge_Grade)
   [![All Contributors](https://img.shields.io/github/all-contributors/nicholas-fedor/eui64-calculator)](#contributors)
   [![Pulls from DockerHub](https://img.shields.io/docker/pulls/nickfedor/eui64-calculator.svg)](https://hub.docker.com/r/nickfedor/eui64-calculator)
-  
+
 </div>
 
 ## Overview

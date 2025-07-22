@@ -1,6 +1,10 @@
+// Package main provides the entry point for the EUI-64 calculator web server.
+// It loads configuration from environment variables, sets up the Gin router with routes and middleware,
+// and starts the HTTP server, handling errors by logging and exiting with a non-zero status.
 package main
 
 import (
+	"context"
 	"errors"
 	"log/slog"
 	"os"
@@ -53,7 +57,7 @@ func LoadConfig() Config {
 		for _, proxy := range proxyList {
 			trimmedProxy := strings.TrimSpace(proxy)
 			if trimmedProxy == "" {
-				slog.Warn("Empty proxy entry in TRUSTED_PROXIES")
+				slog.WarnContext(context.Background(), "Empty proxy entry in TRUSTED_PROXIES")
 			} else {
 				validProxies = append(validProxies, trimmedProxy)
 			}
@@ -67,7 +71,7 @@ func LoadConfig() Config {
 	} else {
 		exePath, err := os.Executable()
 		if err != nil {
-			slog.Warn("Failed to determine executable path, using default static dir", "error", err)
+			slog.WarnContext(context.Background(), "Failed to determine executable path, using default static dir", "error", err)
 		} else {
 			config.StaticDir = filepath.Join(filepath.Dir(exePath), defaultStaticDir)
 		}
@@ -104,14 +108,21 @@ func main() {
 
 	router, err := SetupRouter(config)
 	if err != nil {
-		slog.Error(ErrSetupRouter.Error(), "error", err)
+		slog.ErrorContext(context.Background(), ErrSetupRouter.Error(), "error", err)
 		os.Exit(1)
 	}
 
-	slog.Info("Starting server", "port", config.Port, "static_dir", config.StaticDir)
+	slog.InfoContext(
+		context.Background(),
+		"Starting server",
+		"port",
+		config.Port,
+		"static_dir",
+		config.StaticDir,
+	)
 
 	if err := router.Run(config.Port); err != nil {
-		slog.Error(ErrServerFailed.Error(), "error", err)
+		slog.ErrorContext(context.Background(), ErrServerFailed.Error(), "error", err)
 		os.Exit(1)
 	}
 }
