@@ -7,12 +7,10 @@ on:
         description: "Docker Hub namespace for image names (e.g., 'nickfedor')"
         required: true
         type: string
-        default: "nickfedor"
       ghcr_namespace:
         description: "GitHub Container Registry namespace for image names (e.g., 'nicholas-fedor')"
         required: true
         type: string
-        default: "nicholas-fedor"
 
 jobs:
   build:
