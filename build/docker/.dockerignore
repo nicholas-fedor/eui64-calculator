@@ -6,4 +6,4 @@ test/
 # Ensure necessary files are included
 !go.mod
 !go.sum
-!static/
+!cmd/server/static/

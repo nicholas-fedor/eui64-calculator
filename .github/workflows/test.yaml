@@ -19,14 +19,14 @@ jobs:
         with:
           go-version: 1.25.x
 
+      - name: Install templ
+        run: go install github.com/a-h/templ/cmd/templ@v0.3.924
+
       - name: Install dependencies
         run: go mod download
 
-      - name: Install templ
-        run: go install github.com/a-h/templ/cmd/templ@latest
-
       - name: Generate templates
-        run: templ generate
+        run: go generate ./...
 
       - name: Run tests
         run: |

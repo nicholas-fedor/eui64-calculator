@@ -1,0 +1,90 @@
+name: Create Docker Manifests
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: "Version tag for production builds (ignored for dev)"
+        required: false
+        type: string
+      project_name:
+        description: "Name of the project for Docker image names"
+        required: true
+        type: string
+        default: "eui64-calculator"
+      docker_namespace:
+        description: "Docker Hub namespace for image names (e.g., 'nickfedor')"
+        required: true
+        type: string
+        default: "nickfedor"
+      ghcr_namespace:
+        description: "GitHub Container Registry namespace for image names (e.g., 'nicholas-fedor')"
+        required: true
+        type: string
+        default: "nicholas-fedor"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493
+        with:
+          fetch-depth: 0
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Create Docker manifests
+        run: |
+          docker buildx imagetools create -t ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:${{ inputs.version }} \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:amd64-${{ inputs.version }} \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:i386-${{ inputs.version }} \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:armhf-${{ inputs.version }} \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:arm64v8-${{ inputs.version }} \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:riscv64-${{ inputs.version }}
+          docker buildx imagetools create -t ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:latest \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:amd64-latest \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:i386-latest \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:armhf-latest \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:arm64v8-latest \
+            ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:riscv64-latest
+          docker buildx imagetools create -t ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:${{ inputs.version }} \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:amd64-${{ inputs.version }} \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:i386-${{ inputs.version }} \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:armhf-${{ inputs.version }} \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:arm64v8-${{ inputs.version }} \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:riscv64-${{ inputs.version }}
+          docker buildx imagetools create -t ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:latest \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:amd64-latest \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:i386-latest \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:armhf-latest \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:arm64v8-latest \
+            ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:riscv64-latest
+
+      - name: Install Cosign
+        run: |
+          curl -sSfL https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64 -o /usr/local/bin/cosign
+          chmod +x /usr/local/bin/cosign
+
+      - name: Sign Docker Manifests with Cosign (Keyless)
+        run: |
+          cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:${{ inputs.version }}
+          cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:latest
+          cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:${{ inputs.version }}
+          cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:latest
+        shell: bash
