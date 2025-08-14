@@ -107,23 +107,47 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 
 ```console
 .
-├── .dockerignore
-├── .gitignore
-├── Dockerfile
-├── go.mod
-├── go.sum
-├── LICENSE
-├── README.md
+├── .github
+│   ├── workflows
+│   │   ├── create-manifests.yaml
+│   │   ├── lint-go.yaml
+│   │   ├── build.yaml
+│   │   ├── clean-cache.yaml
+│   │   ├── pull-request.yaml
+│   │   ├── release.yaml
+│   │   ├── security.yaml
+│   │   └── test.yaml
+│   ├── ISSUE_TEMPLATE
+│   │   ├── bug_report.yaml
+│   │   ├── config.yaml
+│   │   └── feature_request.yaml
+│   ├── assets
+│   │   ├── eui64-calculator_screenshot.png
+│   │   └── eui64-calculator_social-preview_1280x640.png
+│   └── renovate.json
+├── build
+│   ├── docker
+│   │   ├── Dockerfile
+│   │   └── .dockerignore
+│   ├── golangci-lint
+│   │   └── golangci.yaml
+│   └── goreleaser
+│       └── goreleaser.yaml
 ├── cmd
 │   └── server
+│       ├── static
+│       │   ├── favicon.ico
+│       │   └── styles.css
 │       ├── main.go
 │       └── main_test.go
-├── docker
-│   ├── docker-compose.yaml
-│   ├── Dockerfile-dev
-│   └── Examples
-│       └── Traefik
 ├── internal
+│   ├── ui
+│   │   ├── doc.go
+│   │   ├── generate.go
+│   │   ├── home.templ
+│   │   ├── layout.templ
+│   │   ├── result.templ
+│   │   └── ui_test.go
 │   ├── eui64
 │   │   ├── eui64.go
 │   │   └── eui64_test.go
@@ -135,17 +159,23 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 │       ├── ipv6_prefix_validator_test.go
 │       ├── mac_validator.go
 │       └── mac_validator_test.go
-├── static
-│   ├── favicon.ico
-│   └── styles.css
-└── ui
-    ├── home.templ
-    ├── home_templ.go
-    ├── layout.templ
-    ├── layout_templ.go
-    ├── result.templ
-    ├── result_templ.go
-    └── ui_test.go
+├── .all-contributorsrc
+├── .circleci
+│   └── config.yml
+├── .codacy.yml
+├── .gitattributes
+├── .gitignore
+├── LICENSE
+├── README.md
+├── examples
+│   ├── Traefik
+│   │   ├── .env
+│   │   ├── README.md
+│   │   ├── docker-compose.yaml
+│   │   └── traefik.yaml
+│   └── docker-compose.yaml
+├── go.mod
+└── go.sum
 ```
 
 ### Dependencies

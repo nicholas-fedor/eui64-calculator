@@ -10,8 +10,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/nicholas-fedor/eui64-calculator/internal/ui"
 	"github.com/nicholas-fedor/eui64-calculator/internal/validators"
-	"github.com/nicholas-fedor/eui64-calculator/ui"
 )
 
 // Calculator defines the interface for EUI-64 calculation logic used by handlers.

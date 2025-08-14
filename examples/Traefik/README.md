@@ -22,8 +22,8 @@ The `traefik.yaml` file is set by default to obtain a Let's Encrypt staging cert
         ├─── traefik.yaml
         ├───Certs
         |   └─── acme.json
-        ├───Configs
         └───Secrets
+            ├─── CLOUDFLARE_EMAIL
             └─── CLOUDFLARE_DNS_API_TOKEN
     ```
 

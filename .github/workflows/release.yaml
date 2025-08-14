@@ -1,38 +1,60 @@
-name: Release (Production)
+name: Release
 
 on:
   push:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
-  workflow_dispatch: {}
-
-permissions:
-  contents: write
-  packages: write
-  attestations: write
-  id-token: write
 
 jobs:
   lint:
-    uses: ./.github/workflows/lint.yaml
+    name: Lint the project
+    permissions:
+      contents: read
+    uses: ./.github/workflows/lint-go.yaml
 
   test:
+    name: Run unit tests
+    permissions:
+      contents: read
     uses: ./.github/workflows/test.yaml
 
   build:
-    uses: ./.github/workflows/build.yaml
-    secrets: inherit
+    name: Build the Release
     needs:
       - test
       - lint
+    permissions:
+      contents: write
+      packages: write
+      attestations: write
+      id-token: write
+    secrets: inherit
+    uses: ./.github/workflows/build.yaml
+    with:
+      docker_namespace: nickfedor
+      ghcr_namespace: nicholas-fedor
 
-  renew-docs:
-    name: Refresh pkg.go.dev
+  manifest:
+    name: Create image manifests
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Pull new module version
-        uses: nicholas-fedor/go-proxy-pull-action@46417d8eaef74a5c72cdf1a26e4e757b1343a737
-        with:
-          goproxy: https://proxy.golang.org
-          import_path: github.com/nicholas-fedor/eui64-calculator
+    permissions:
+      contents: read # For code checkout
+      packages: write # For pushing manifests
+    secrets: inherit
+    uses: ./.github/workflows/create-manifests.yaml
+    with:
+      version: ${{ github.ref_name }} # Tag name (e.g., v1.2.3)
+      project_name: eui64-calculator
+      docker_namespace: nickfedor
+      ghcr_namespace: nicholas-fedor
+
+  Update-Go-Docs:
+    name: Update Go docs
+    needs:
+      - lint
+      - test
+      - build
+      - manifest
+    permissions:
+      contents: read
+    uses: ./.github/workflows/update-go-docs.yaml

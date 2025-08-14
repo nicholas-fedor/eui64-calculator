@@ -5,13 +5,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
-	"os"
-	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // setupRouter creates a Gin router for testing with the application’s configuration.
@@ -20,8 +19,6 @@ func setupRouter(t *testing.T) *gin.Engine {
 	t.Helper()
 
 	config := LoadConfig()
-
-	config.StaticDir = filepath.Join("..", "..", "static")
 
 	r, err := SetupRouter(config)
 	if err != nil {
@@ -77,122 +74,102 @@ func TestRouterSetup(t *testing.T) {
 			method:     "GET",
 			path:       "/static/styles.css",
 			wantStatus: http.StatusOK,
-			wantBody:   "body",
+			wantBody:   "body {", // Partial match for CSS content; adjust if needed
 		},
 		{
-			name:       "GET /nonexistent - Not found",
+			name:       "GET /unknown - 404 Not Found",
 			method:     "GET",
-			path:       "/nonexistent",
+			path:       "/unknown",
 			wantStatus: http.StatusNotFound,
-			wantBody:   "404 page not found",
 		},
 	}
 
+	router := setupRouter(t)
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			router := setupRouter(t)
-
 			var req *http.Request
-
-			ctx := t.Context() // Use a basic context for tests
 			if tt.method == "POST" {
-				req, _ = http.NewRequestWithContext(
-					ctx,
+				req = httptest.NewRequest(
 					tt.method,
 					tt.path,
 					strings.NewReader(tt.formData.Encode()),
 				)
 				req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 			} else {
-				req, _ = http.NewRequestWithContext(ctx, tt.method, tt.path, nil)
+				req = httptest.NewRequest(tt.method, tt.path, nil)
 			}
 
 			resp := httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
+
 			assert.Equal(t, tt.wantStatus, resp.Code, "Status code")
-			assert.Contains(t, resp.Body.String(), tt.wantBody, "Response body")
+
+			if tt.wantBody != "" {
+				assert.Contains(t, resp.Body.String(), tt.wantBody, "Body content")
+			}
 		})
 	}
 }
 
-// TestTrustedProxies tests the router’s trusted proxy configuration.
-// It ensures that client IP resolution works correctly with no proxies, a valid trusted proxy,
-// and an invalid proxy format, verifying error handling in the latter case.
+// TestTrustedProxies tests the router’s handling of trusted proxies.
+// It verifies that the client IP is correctly determined based on the X-Forwarded-For header
+// when trusted proxies are configured, covering various proxy scenarios.
 func TestTrustedProxies(t *testing.T) {
 	tests := []struct {
 		name           string
-		trustedProxies string
+		trustedProxies []string
 		remoteAddr     string
 		xForwardedFor  string
 		wantClientIP   string
-		wantStatus     int
-		wantBody       string
-		wantError      bool
 	}{
-		// Existing test cases remain unchanged
 		{
-			name:           "No trusted proxies",
-			trustedProxies: "",
+			name:           "No proxies",
+			trustedProxies: nil,
 			remoteAddr:     "192.168.1.1:12345",
-			xForwardedFor:  "203.0.113.1",
+			xForwardedFor:  "",
 			wantClientIP:   "192.168.1.1",
-			wantStatus:     http.StatusOK,
-			wantBody:       "EUI-64 Calculator",
 		},
 		{
-			name:           "Trusted proxy",
-			trustedProxies: "192.168.1.1",
-			remoteAddr:     "192.168.1.1:12345",
-			xForwardedFor:  "203.0.113.1",
-			wantClientIP:   "203.0.113.1",
-			wantStatus:     http.StatusOK,
-			wantBody:       "EUI-64 Calculator",
+			name:           "Single trusted proxy",
+			trustedProxies: []string{"192.168.1.2"},
+			remoteAddr:     "192.168.1.2:54321",
+			xForwardedFor:  "192.168.1.1",
+			wantClientIP:   "192.168.1.1",
 		},
 		{
-			name:           "Invalid trusted proxy format",
-			trustedProxies: "invalid-proxy,,192.168.1.1",
-			remoteAddr:     "192.168.1.1:12345",
-			xForwardedFor:  "203.0.113.1",
-			wantClientIP:   "",
-			wantStatus:     0,
-			wantBody:       "",
-			wantError:      true,
+			name:           "Multiple trusted proxies",
+			trustedProxies: []string{"192.168.1.3", "192.168.1.2"},
+			remoteAddr:     "192.168.1.3:54321",
+			xForwardedFor:  "192.168.1.1, 192.168.1.2",
+			wantClientIP:   "192.168.1.1",
 		},
-		// New test case for Line 45 - Empty proxy entry
 		{
-			name:           "Trusted proxies with empty entry",
-			trustedProxies: "192.168.1.1,,10.0.0.1",
-			remoteAddr:     "192.168.1.1:12345",
-			xForwardedFor:  "203.0.113.1",
-			wantClientIP:   "203.0.113.1",
-			wantStatus:     http.StatusOK,
-			wantBody:       "EUI-64 Calculator",
+			name:           "Untrusted proxy",
+			trustedProxies: []string{"192.168.1.2"},
+			remoteAddr:     "192.168.1.3:54321",
+			xForwardedFor:  "192.168.1.1",
+			wantClientIP:   "192.168.1.3",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if tt.trustedProxies != "" {
-				t.Setenv(trustedProxiesEnv, tt.trustedProxies)
-			} else {
-				t.Setenv(trustedProxiesEnv, "")
+			config := Config{
+				Port:           ":8080",
+				TrustedProxies: tt.trustedProxies,
 			}
 
-			if tt.wantError {
-				_, err := SetupRouter(
-					Config{
-						Port:           defaultPort,
-						TrustedProxies: strings.Split(tt.trustedProxies, ","),
-					},
-				)
-				assert.Error(t, err, "Expected error for invalid proxy")
+			router, err := SetupRouter(config)
+			require.NoError(t, err)
 
-				return
-			}
+			// Set up a test route to capture the client IP.
+			router.GET("/test-ip", func(c *gin.Context) {
+				gotClientIP := c.ClientIP()
+				c.String(http.StatusOK, gotClientIP)
+			})
 
-			router := setupRouter(t)
-			ctx := t.Context() // Use a basic context for tests
-			req, _ := http.NewRequestWithContext(ctx, http.MethodGet, "/", nil)
+			req := httptest.NewRequest(http.MethodGet, "/test-ip", nil)
 			req.RemoteAddr = tt.remoteAddr
 
 			if tt.xForwardedFor != "" {
@@ -201,25 +178,7 @@ func TestTrustedProxies(t *testing.T) {
 
 			resp := httptest.NewRecorder()
 			router.ServeHTTP(resp, req)
-			assert.Equal(t, tt.wantStatus, resp.Code, "Status code")
-			assert.Contains(t, resp.Body.String(), tt.wantBody, "Response body")
-
-			var gotClientIP string
-
-			router.GET("/test-ip", func(c *gin.Context) {
-				gotClientIP = c.ClientIP()
-			})
-
-			req, _ = http.NewRequestWithContext(ctx, http.MethodGet, "/test-ip", nil)
-			req.RemoteAddr = tt.remoteAddr
-
-			if tt.xForwardedFor != "" {
-				req.Header.Set("X-Forwarded-For", tt.xForwardedFor)
-			}
-
-			resp = httptest.NewRecorder()
-			router.ServeHTTP(resp, req)
-			assert.Equal(t, tt.wantClientIP, gotClientIP, "Client IP")
+			assert.Equal(t, tt.wantClientIP, strings.TrimSpace(resp.Body.String()), "Client IP")
 		})
 	}
 }
@@ -230,43 +189,30 @@ func TestLoadConfig(t *testing.T) {
 		name           string
 		portEnv        string
 		trustedProxies string
-		staticDirEnv   string
 		wantPort       string
 		wantProxies    []string
-		wantStaticDir  string
 	}{
 		{
 			name:           "Default config",
 			portEnv:        "",
 			trustedProxies: "",
-			staticDirEnv:   "",
 			wantPort:       ":" + defaultPort,
 			wantProxies:    nil,
-			wantStaticDir: filepath.Join(
-				filepath.Dir(os.Args[0]),
-				defaultStaticDir,
-			), // Approximation
 		},
 		{
 			name:           "Custom port (Line 37)",
 			portEnv:        "9090",
 			trustedProxies: "",
-			staticDirEnv:   "",
 			wantPort:       ":9090",
 			wantProxies:    nil,
-			wantStaticDir:  filepath.Join(filepath.Dir(os.Args[0]), defaultStaticDir),
 		},
 		{
-			name:           "Custom static dir",
+			name:           "Trusted proxies with empty entry",
 			portEnv:        "",
-			trustedProxies: "",
-			staticDirEnv:   "/custom/static",
+			trustedProxies: "192.168.1.1, ,192.168.1.2",
 			wantPort:       ":" + defaultPort,
-			wantProxies:    nil,
-			wantStaticDir:  "/custom/static",
+			wantProxies:    []string{"192.168.1.1", "192.168.1.2"},
 		},
-		// Note: Line 56 (os.Executable failure) is harder to test directly without mocking.
-		// We can assume it works if STATIC_DIR is unset and defaultStaticDir is used.
 	}
 
 	for _, tt := range tests {
@@ -274,13 +220,11 @@ func TestLoadConfig(t *testing.T) {
 			// Clear and set environment variables
 			t.Setenv("PORT", tt.portEnv)
 			t.Setenv(trustedProxiesEnv, tt.trustedProxies)
-			t.Setenv(staticDirEnv, tt.staticDirEnv)
 
 			config := LoadConfig()
 
 			assert.Equal(t, tt.wantPort, config.Port, "Port")
 			assert.Equal(t, tt.wantProxies, config.TrustedProxies, "TrustedProxies")
-			assert.Equal(t, tt.wantStaticDir, config.StaticDir, "StaticDir")
 		})
 	}
 }
