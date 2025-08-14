@@ -13,7 +13,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: '0 0 * * *' # Runs daily at midnight UTC
+    - cron: "0 0 * * *" # Runs daily at midnight UTC
 
 permissions:
   contents: read
@@ -22,7 +22,7 @@ permissions:
   security-events: write
 
 env:
-  GO_VERSION: 1.24.x
+  GO_VERSION: 1.25.x
   OUTPUT_FILE: results.sarif
 
 jobs:
