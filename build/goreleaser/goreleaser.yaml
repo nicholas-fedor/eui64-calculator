@@ -206,8 +206,8 @@ dockers:
     # Docker build flags.
     # Templates: allowed.
     build_flag_templates:
-      # Conditionally sets Docker Buildx output to local (type=docker) if DRY_RUN=true, otherwise pushes to a registry (type=registry).
-      - '--output={{ if eq .Env.DRY_RUN "true" }}type=docker{{ else }}type=registry{{ end }}'
+      # Sets Docker Buildx output to pushe to a registry (type=registry).
+      - --output=type=registry
       # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
       - --attest=type=provenance,mode=max
       # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
@@ -255,8 +255,8 @@ dockers:
     # Docker build flags.
     # Templates: allowed.
     build_flag_templates:
-      # Conditionally set Docker Buildx output to local (type=docker) if DRY_RUN=true, otherwise pushes to a registry (type=registry).
-      - '--output={{ if eq .Env.DRY_RUN "true" }}type=docker{{ else }}type=registry{{ end }}'
+      # Sets Docker Buildx output to pushe to a registry (type=registry).
+      - --output=type=registry
       # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
       - --attest=type=provenance,mode=max
       # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
@@ -308,8 +308,8 @@ dockers:
     # Docker build flags.
     # Templates: allowed.
     build_flag_templates:
-      # Conditionally set Docker Buildx output to local (type=docker) if DRY_RUN=true, otherwise pushes to a registry (type=registry).
-      - '--output={{ if eq .Env.DRY_RUN "true" }}type=docker{{ else }}type=registry{{ end }}'
+      # Sets Docker Buildx output to pushe to a registry (type=registry).
+      - --output=type=registry
       # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
       - --attest=type=provenance,mode=max
       # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
@@ -360,8 +360,8 @@ dockers:
     # Docker build flags.
     # Templates: allowed.
     build_flag_templates:
-      # Conditionally set Docker Buildx output to local (type=docker) if DRY_RUN=true, otherwise pushes to a registry (type=registry).
-      - '--output={{ if eq .Env.DRY_RUN "true" }}type=docker{{ else }}type=registry{{ end }}'
+      # Sets Docker Buildx output to pushe to a registry (type=registry).
+      - --output=type=registry
       # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
       - --attest=type=provenance,mode=max
       # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
@@ -410,8 +410,8 @@ dockers:
     # Docker build flags.
     # Templates: allowed.
     build_flag_templates:
-      # Conditionally set Docker Buildx output to local (type=docker) if DRY_RUN=true, otherwise pushes to a registry (type=registry).
-      - '--output={{ if eq .Env.DRY_RUN "true" }}type=docker{{ else }}type=registry{{ end }}'
+      # Sets Docker Buildx output to pushe to a registry (type=registry).
+      - --output=type=registry
       # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
       - --attest=type=provenance,mode=max
       # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
