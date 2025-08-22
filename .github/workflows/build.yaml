@@ -3,6 +3,10 @@ name: Build
 on:
   workflow_call:
     inputs:
+      project_name:
+        description: "Name of the project for Docker image names"
+        required: true
+        type: string
       docker_namespace:
         description: "Docker Hub namespace for image names (e.g., 'nickfedor')"
         required: true
@@ -101,6 +105,8 @@ jobs:
           args: release --clean --config build/goreleaser/goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_NAMESPACE: ${{ inputs.docker_namespace }}
+          GHCR_NAMESPACE: ${{ inputs.ghcr_namespace }}
 
       - name: Install Cosign
         run: |
@@ -110,10 +116,10 @@ jobs:
       - name: Sign Docker Images with Cosign (Keyless)
         run: |
           for arch in amd64 i386 armhf arm64v8 riscv64; do
-            cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ${{ inputs.docker_namespace }}/eui64-calculator:${arch}-${{ github.ref_name }}
-            cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ${{ inputs.docker_namespace }}/eui64-calculator:${arch}-latest
-            cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ghcr.io/${{ inputs.ghcr_namespace }}/eui64-calculator:${arch}-${{ github.ref_name }}
-            cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ghcr.io/${{ inputs.ghcr_namespace }}/eui64-calculator:${arch}-latest
+            cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:${arch}-${{ github.ref_name }}
+            cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:${arch}-latest
+            cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:${arch}-${{ github.ref_name }}
+            cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:${arch}-latest
           done
         shell: bash
 
