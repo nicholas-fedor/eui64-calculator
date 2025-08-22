@@ -80,8 +80,8 @@ jobs:
 
       - name: Sign Docker Manifests with Cosign (Keyless)
         run: |
-          cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:${{ inputs.version }}
-          cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:latest
-          cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:${{ inputs.version }}
-          cosign sign --identity-token=${{ secrets.GITHUB_TOKEN }} ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:latest
+          cosign sign --yes ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:${{ inputs.version }}
+          cosign sign --yes ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:latest
+          cosign sign --yes ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:${{ inputs.version }}
+          cosign sign --yes ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:latest
         shell: bash
