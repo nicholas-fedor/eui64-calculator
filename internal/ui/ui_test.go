@@ -2,6 +2,7 @@ package ui
 
 import (
 	"bytes"
+	"context"
 	"strings"
 	"testing"
 
@@ -12,11 +13,11 @@ import (
 
 // renderToString renders a templ.Component to a string for testing.
 func renderToString(t *testing.T, component templ.Component) string {
-	t.Helper() // Added to mark as a test helper
+	t.Helper()
 
 	var buf bytes.Buffer
 
-	err := component.Render(t.Context(), &buf)
+	err := component.Render(context.Background(), &buf)
 	if err != nil {
 		t.Fatalf("Failed to render template: %v", err)
 	}
@@ -26,7 +27,7 @@ func renderToString(t *testing.T, component templ.Component) string {
 
 // parseHTML parses the HTML string into a goquery document for testing.
 func parseHTML(t *testing.T, html string) *goquery.Document {
-	t.Helper() // Added to mark as a test helper
+	t.Helper()
 
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {
@@ -47,11 +48,9 @@ func TestHomeContent(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Render the HomeContent template
 			html := renderToString(t, HomeContent())
 			doc := parseHTML(t, html)
 
-			// Test specific elements and attributes
 			assert.Equal(
 				t,
 				"EUI-64 Calculator",
@@ -103,6 +102,12 @@ func TestHomeContent(t *testing.T) {
 			)
 			assert.Equal(
 				t,
+				"mac-copy",
+				doc.Find("input#mac").AttrOr("aria-describedby", ""),
+				"Incorrect MAC aria-describedby",
+			)
+			assert.Equal(
+				t,
 				"Start of IPv6 Address",
 				doc.Find("label[for='ip-start']").Text(),
 				"Incorrect IP label text",
@@ -112,6 +117,12 @@ func TestHomeContent(t *testing.T) {
 				"xxxx:xxxx:xxxx:xxxx",
 				doc.Find("input#ip-start").AttrOr("placeholder", ""),
 				"Incorrect IP input placeholder",
+			)
+			assert.Equal(
+				t,
+				"ip-start-copy",
+				doc.Find("input#ip-start").AttrOr("aria-describedby", ""),
+				"Incorrect IP aria-describedby",
 			)
 			assert.Equal(
 				t,
@@ -138,6 +149,80 @@ func TestHomeContent(t *testing.T) {
 				"Result container div not found or not hidden",
 			)
 
+			// Test copy buttons for input fields
+			macCopyBtn := doc.Find("#copy-mac")
+			assert.Equal(t, 1, macCopyBtn.Length(), "MAC copy button not found")
+			assert.Equal(
+				t,
+				"button",
+				macCopyBtn.AttrOr("type", ""),
+				"MAC copy button should have type='button'",
+			)
+			assert.Equal(
+				t,
+				"Copy MAC Address",
+				macCopyBtn.AttrOr("aria-label", ""),
+				"Incorrect MAC copy button aria-label",
+			)
+			assert.Equal(t, 1, macCopyBtn.Find(".copy-icon").Length(), "MAC copy icon not found")
+			assert.Equal(
+				t,
+				1,
+				macCopyBtn.Find(".copy-tooltip").Length(),
+				"MAC copy tooltip not found",
+			)
+
+			ipStartCopyBtn := doc.Find("#copy-ip-start")
+			assert.Equal(t, 1, ipStartCopyBtn.Length(), "IPv6 Prefix copy button not found")
+			assert.Equal(
+				t,
+				"button",
+				ipStartCopyBtn.AttrOr("type", ""),
+				"IPv6 Prefix copy button should have type='button'",
+			)
+			assert.Equal(
+				t,
+				"Copy IPv6 Prefix",
+				ipStartCopyBtn.AttrOr("aria-label", ""),
+				"Incorrect IPv6 Prefix copy button aria-label",
+			)
+			assert.Equal(
+				t,
+				1,
+				ipStartCopyBtn.Find(".copy-icon").Length(),
+				"IPv6 Prefix copy icon not found",
+			)
+			assert.Equal(
+				t,
+				1,
+				ipStartCopyBtn.Find(".copy-tooltip").Length(),
+				"IPv6 Prefix copy tooltip not found",
+			)
+
+			// Verify copy button event listeners
+			assert.Equal(
+				t,
+				1,
+				doc.Find("script").FilterFunction(func(_ int, s *goquery.Selection) bool {
+					return strings.Contains(
+						s.Text(),
+						`document.getElementById("copy-mac").addEventListener("click"`,
+					)
+				}).Length(),
+				"MAC copy button event listener not found",
+			)
+			assert.Equal(
+				t,
+				1,
+				doc.Find("script").FilterFunction(func(_ int, s *goquery.Selection) bool {
+					return strings.Contains(
+						s.Text(),
+						`document.getElementById("copy-ip-start").addEventListener("click"`,
+					)
+				}).Length(),
+				"IPv6 Prefix copy button event listener not found",
+			)
+
 			// Check that unwanted content is not present
 			assert.Equal(
 				t,
@@ -160,17 +245,15 @@ func TestHome(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Render the Home template (which includes Layout and HomeContent)
 			html := renderToString(t, Home())
 			doc := parseHTML(t, html)
 
-			// Test specific elements and attributes in the full HTML structure
 			assert.Equal(
 				t,
 				"en",
 				doc.Find("html").AttrOr("lang", ""),
 				"Incorrect html lang attribute",
-			) // Fixed expected value
+			)
 			assert.Equal(t, "EUI-64 Calculator", doc.Find("title").Text(), "Incorrect title")
 			assert.Equal(t, 1, doc.Find("meta[charset='UTF-8']").Length(), "Meta charset not found")
 			assert.Equal(
@@ -205,10 +288,9 @@ func TestHome(t *testing.T) {
 			)
 			assert.Equal(
 				t,
-				1,
-				doc.Find("link[href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap']").
-					Length(),
-				"Google Fonts link not found",
+				0,
+				doc.Find("link[href*='fonts.googleapis.com']").Length(),
+				"Google Fonts link should not be present",
 			)
 			assert.Equal(
 				t,
@@ -252,8 +334,17 @@ func TestHome(t *testing.T) {
 				}).Length(),
 				"HTMX afterSwap script not found",
 			)
-
-			// Check that unwanted content is not present
+			assert.Equal(
+				t,
+				1,
+				doc.Find("script").FilterFunction(func(_ int, s *goquery.Selection) bool {
+					return strings.Contains(
+						s.Text(),
+						"function copyToClipboard(elementId, buttonId)",
+					)
+				}).Length(),
+				"copyToClipboard script not found",
+			)
 			assert.Equal(
 				t,
 				0,
@@ -279,17 +370,15 @@ func TestLayout(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Render the Layout template with the given title and content
 			html := renderToString(t, Layout(tt.title, tt.content))
 			doc := parseHTML(t, html)
 
-			// Test specific elements and attributes in the full HTML structure
 			assert.Equal(
 				t,
 				"en",
 				doc.Find("html").AttrOr("lang", ""),
 				"Incorrect html lang attribute",
-			) // Fixed expected value
+			)
 			assert.Equal(t, tt.title, doc.Find("title").Text(), "Incorrect title")
 			assert.Equal(t, 1, doc.Find("meta[charset='UTF-8']").Length(), "Meta charset not found")
 			assert.Equal(
@@ -324,10 +413,9 @@ func TestLayout(t *testing.T) {
 			)
 			assert.Equal(
 				t,
-				1,
-				doc.Find("link[href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap']").
-					Length(),
-				"Google Fonts link not found",
+				0,
+				doc.Find("link[href*='fonts.googleapis.com']").Length(),
+				"Google Fonts link should not be present",
 			)
 			assert.Equal(
 				t,
@@ -371,8 +459,17 @@ func TestLayout(t *testing.T) {
 				}).Length(),
 				"HTMX afterSwap script not found",
 			)
-
-			// Check that unwanted content is not present
+			assert.Equal(
+				t,
+				1,
+				doc.Find("script").FilterFunction(func(_ int, s *goquery.Selection) bool {
+					return strings.Contains(
+						s.Text(),
+						"function copyToClipboard(elementId, buttonId)",
+					)
+				}).Length(),
+				"copyToClipboard script not found",
+			)
 			assert.Equal(
 				t,
 				0,
@@ -397,18 +494,24 @@ func TestResult(t *testing.T) {
 				Error:       "",
 			},
 			assertDoc: func(t *testing.T, doc *goquery.Document) {
-				t.Helper() // Added to mark as a test helper
+				t.Helper()
 				assert.Equal(
 					t,
 					"End of IPv6 Address",
-					doc.Find("label[for='ip']").Text(),
+					doc.Find("label[for='interface-id']").Text(),
 					"Incorrect interface ID label text",
 				)
 				assert.Equal(
 					t,
 					"0214:22ff:fe01:2345",
-					doc.Find("input[readonly]").First().AttrOr("value", ""),
+					doc.Find("input#interface-id").AttrOr("value", ""),
 					"Incorrect interface ID value",
+				)
+				assert.Equal(
+					t,
+					"interface-id-copy",
+					doc.Find("input#interface-id").AttrOr("aria-describedby", ""),
+					"Incorrect interface ID aria-describedby",
 				)
 				assert.Equal(
 					t,
@@ -419,14 +522,87 @@ func TestResult(t *testing.T) {
 				assert.Equal(
 					t,
 					"2001:0db8:85a3:0000:0214:22ff:fe01:2345",
-					doc.Find("input[readonly]").Last().AttrOr("value", ""),
+					doc.Find("input#ip-full").AttrOr("value", ""),
 					"Incorrect full IP value",
+				)
+				assert.Equal(
+					t,
+					"ip-full-copy",
+					doc.Find("input#ip-full").AttrOr("aria-describedby", ""),
+					"Incorrect full IP aria-describedby",
 				)
 				assert.Equal(
 					t,
 					0,
 					doc.Find("p.error-message").Length(),
 					"Error message should not be present",
+				)
+
+				// Test copy buttons for result fields
+				interfaceCopyBtn := doc.Find("#copy-interface")
+				assert.Equal(t, 1, interfaceCopyBtn.Length(), "Interface ID copy button not found")
+				assert.Equal(
+					t,
+					"Copy Interface ID",
+					interfaceCopyBtn.AttrOr("aria-label", ""),
+					"Incorrect Interface ID copy button aria-label",
+				)
+				assert.Equal(
+					t,
+					1,
+					interfaceCopyBtn.Find(".copy-icon").Length(),
+					"Interface ID copy icon not found",
+				)
+				assert.Equal(
+					t,
+					1,
+					interfaceCopyBtn.Find(".copy-tooltip").Length(),
+					"Interface ID copy tooltip not found",
+				)
+
+				fullIPCopyBtn := doc.Find("#copy-ip-full")
+				assert.Equal(t, 1, fullIPCopyBtn.Length(), "IPv6 Address copy button not found")
+				assert.Equal(
+					t,
+					"Copy IPv6 Address",
+					fullIPCopyBtn.AttrOr("aria-label", ""),
+					"Incorrect IPv6 Address copy button aria-label",
+				)
+				assert.Equal(
+					t,
+					1,
+					fullIPCopyBtn.Find(".copy-icon").Length(),
+					"IPv6 Address copy icon not found",
+				)
+				assert.Equal(
+					t,
+					1,
+					fullIPCopyBtn.Find(".copy-tooltip").Length(),
+					"IPv6 Address copy tooltip not found",
+				)
+
+				// Verify copy button event listeners
+				assert.Equal(
+					t,
+					1,
+					doc.Find("script").FilterFunction(func(_ int, s *goquery.Selection) bool {
+						return strings.Contains(
+							s.Text(),
+							`document.getElementById("copy-interface").addEventListener("click"`,
+						)
+					}).Length(),
+					"Interface ID copy button event listener not found",
+				)
+				assert.Equal(
+					t,
+					1,
+					doc.Find("script").FilterFunction(func(_ int, s *goquery.Selection) bool {
+						return strings.Contains(
+							s.Text(),
+							`document.getElementById("copy-ip-full").addEventListener("click"`,
+						)
+					}).Length(),
+					"IPv6 Address copy button event listener not found",
 				)
 			},
 		},
@@ -438,7 +614,7 @@ func TestResult(t *testing.T) {
 				Error:       "Invalid MAC address",
 			},
 			assertDoc: func(t *testing.T, doc *goquery.Document) {
-				t.Helper() // Added to mark as a test helper
+				t.Helper()
 				assert.Equal(
 					t,
 					"Invalid MAC address",
@@ -448,13 +624,25 @@ func TestResult(t *testing.T) {
 				assert.Equal(
 					t,
 					0,
-					doc.Find("label[for='ip']").Length(),
+					doc.Find("label[for='interface-id']").Length(),
 					"Success fields should not be present",
 				)
 				assert.Equal(
 					t,
 					0,
-					doc.Find("input[readonly]").Length(),
+					doc.Find("input#interface-id").Length(),
+					"Success fields should not be present",
+				)
+				assert.Equal(
+					t,
+					0,
+					doc.Find("label[for='ip-full']").Length(),
+					"Success fields should not be present",
+				)
+				assert.Equal(
+					t,
+					0,
+					doc.Find("input#ip-full").Length(),
 					"Success fields should not be present",
 				)
 			},
@@ -463,11 +651,8 @@ func TestResult(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Render the Result template with the given data
 			html := renderToString(t, Result(tt.data))
 			doc := parseHTML(t, html)
-
-			// Run the assertions specific to this test case
 			tt.assertDoc(t, doc)
 		})
 	}

@@ -12,7 +12,6 @@ templ Layout(title string, content templ.Component) {
 			<title>{ title }</title>
 			<link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
 			<link rel="stylesheet" href="/static/styles.css"/>
-			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 			<script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 		</head>
 		<body>
@@ -20,15 +19,27 @@ templ Layout(title string, content templ.Component) {
 				@content
 			</div>
 			<script>
-			document.body.addEventListener('htmx:afterSwap', function(event) {
-				const formResults = document.querySelector('.form-results');
-				const resultContainer = document.querySelector('.result-container');
-				if (formResults && resultContainer && resultContainer.innerHTML.trim() !== '') {
-					formResults.classList.remove('hidden');
-					resultContainer.classList.remove('hidden');
+				function copyToClipboard(elementId, buttonId) {
+					const input = document.getElementById(elementId);
+					const button = document.getElementById(buttonId);
+					navigator.clipboard.writeText(input.value).then(() => {
+						button.classList.add('copied');
+						setTimeout(() => {
+							button.classList.remove('copied');
+						}, 2000); // Remove "Copied!" after 2 seconds
+					}).catch(err => {
+						console.error('Failed to copy: ', err);
+					});
 				}
-			});
-		</script>
+				document.body.addEventListener('htmx:afterSwap', function(event) {
+					const formResults = document.querySelector('.form-results');
+					const resultContainer = document.querySelector('.result-container');
+					if (formResults && resultContainer && resultContainer.innerHTML.trim() !== '') {
+						formResults.classList.remove('hidden');
+						resultContainer.classList.remove('hidden');
+					}
+				});
+			</script>
 		</body>
 	</html>
 }
