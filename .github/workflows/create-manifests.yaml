@@ -74,9 +74,7 @@ jobs:
             ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:riscv64-latest
 
       - name: Install Cosign
-        run: |
-          curl -sSfL https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64 -o /usr/local/bin/cosign
-          chmod +x /usr/local/bin/cosign
+        uses: sigstore/cosign-installer@v3.9.2
 
       - name: Sign Docker Manifests with Cosign (Keyless)
         run: |
