@@ -59,7 +59,7 @@ jobs:
         run: go generate ./...
 
       - name: Install Cosign
-        uses: sigstore/cosign-installer@v3.9.2
+        uses: sigstore/cosign-installer@d58896d6a1865668819e1d91763c7751a165e159 # v3.9.2
 
       - name: Set up QEMU # Enable multi-platform emulation.
         uses: docker/setup-qemu-action@05340d1c670183e7caabdb33ae9f1c80fae3b0c2
