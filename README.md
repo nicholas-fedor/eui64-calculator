@@ -27,6 +27,8 @@ This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.co
 
 This project provides a simple tool for calculating an EUI-64 IPv6 address using a MAC addresses and IPv6 Prefix.
 
+### 🎉 A static version of this project is now available at <https://eui64-calculator.nickfedor.com> 🎉 
+
 ### Features
 
 - **EUI-64 Calculation**: Convert a 48-bit MAC address into a 64-bit EUI-64 format.
