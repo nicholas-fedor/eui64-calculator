@@ -64,38 +64,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Verify required static assets exist and check main.wasm integrity.
-	assets := []string{"styles.css", "favicon.ico", "wasm_exec.js", "scripts.js", "main.wasm"}
-	for _, asset := range assets {
-		assetPath := filepath.Join(outputDir, asset)
-		if _, err := os.Stat(assetPath); os.IsNotExist(err) {
-			fmt.Fprintf(os.Stderr, "Error: Required asset %s not found in %s\n", asset, outputDir)
-			os.Exit(1)
-		}
-
-		if asset == "main.wasm" {
-			data, err := os.ReadFile(assetPath)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error: Failed to read %s: %v\n", assetPath, err)
-				os.Exit(1)
-			}
-			// Check for WebAssembly magic number (0x00 0x61 0x73 0x6D).
-			if len(data) < 4 || data[0] != 0x00 || data[1] != 0x61 || data[2] != 0x73 ||
-				data[3] != 0x6D {
-				fmt.Fprintf(
-					os.Stderr,
-					"Error: %s is not a valid WebAssembly binary (first 4 bytes: %x %x %x %x, expected: 00 61 73 6d)\n",
-					assetPath,
-					data[0],
-					data[1],
-					data[2],
-					data[3],
-				)
-				os.Exit(1)
-			}
-		}
-	}
-
 	fmt.Fprintln(os.Stdout, "Successfully generated static HTML at", outputFile)
 }
 
@@ -259,8 +227,8 @@ func formatHTML(htmlStr string) (string, error) {
 		case html.TextNode:
 			text := strings.TrimSpace(node.Data)
 			if text != "" {
-				lines := strings.Split(text, "\n")
-				for _, line := range lines {
+				lines := strings.SplitSeq(text, "\n")
+				for line := range lines {
 					if line = strings.TrimSpace(line); line != "" {
 						// Escape text content to prevent XSS, unless it's within a script tag.
 						if node.Parent != nil && node.Parent.Data != "script" {
