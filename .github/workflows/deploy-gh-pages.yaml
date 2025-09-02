@@ -1,0 +1,75 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+  workflow_call: {}
+
+permissions:
+  contents: write
+  packages: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@1d76b952eb9246b03e20e15a9ef98c6d4af389ef
+        with:
+          go-version: 1.25.x
+
+      - name: Cache Go modules
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: "${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}"
+          restore-keys: "${{ runner.os }}-go-"
+
+      - name: Install templ
+        run: go install github.com/a-h/templ/cmd/templ@v0.3.924
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Generate templates
+        run: go generate ./...
+
+      - name: Build static-gen
+        run: go build -o static-gen ./build/gh-pages/static-gen/main.go
+
+      - name: Generate index.html
+        run: ./static-gen
+
+      - name: Build WASM
+        run: GOOS=js GOARCH=wasm go build -o dist/static/main.wasm ./build/gh-pages/wasm/main.go
+
+      - name: Copy and minify static assets
+        run: |
+          mkdir -p dist/static
+          cp dist/static/index.html dist/static/
+          cp dist/static/main.wasm dist/static/
+          cp "$GOROOT/misc/wasm/wasm_exec.js" dist/static/
+          cp cmd/server/static/styles.css dist/static/
+          cp cmd/server/static/favicon.ico dist/static/
+          cp build/gh-pages/static/scripts.js dist/static/
+          # Minify scripts.js and styles.css
+          npx uglify-js dist/static/scripts.js -o dist/static/scripts.js
+          npx cssnano < dist/static/styles.css > dist/static/styles.min.css
+          mv dist/static/styles.min.css dist/static/styles.css
+          # Add .nojekyll to disable Jekyll
+          touch dist/static/.nojekyll
+
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist/static
