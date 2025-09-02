@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preload" href="./styles.css" as="style"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>
+      EUI-64 Calculator
+    </title>
+    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="./styles.css"/>
+  </head>
+  <body>
+    <div class="app-container">
+      <h1 class="app-title">
+        EUI-64 Calculator
+      </h1>
+      <p class="app-description">
+        Enter a MAC address and IPv6 prefix to calculate the EUI-64 address.
+      </p>
+      <div class="form-fields">
+        <form>
+          <div class="form-field-container">
+            <label class="form-label" for="mac">
+              MAC Address
+            </label>
+            <div class="input-copy-container">
+              <input type="text" class="form-field" placeholder="xx-xx-xx-xx-xx-xx or xx:xx:xx:xx:xx:xx" id="mac" name="mac" maxlength="17" pattern="[0-9a-fA-F]{2}((-|:)[0-9a-fA-F]{2}){5}" title="MAC address must be in format xx-xx-xx-xx-xx-xx or xx:xx:xx:xx:xx:xx (e.g., 00-14-22-01-23-45 or 00:14:22:01:23:45)" aria-describedby="mac-copy" required=""/>
+              <button type="button" class="copy-button" id="copy-mac" aria-label="Copy MAC Address">
+                <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2">
+                  </rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1">
+                  </path>
+                </svg>
+                <span class="copy-tooltip">
+                </span>
+              </button>
+              <script>
+                document.getElementById("copy-mac").addEventListener("click", () => {
+							copyToClipboard("mac", "copy-mac");
+						});
+              </script>
+            </div>
+          </div>
+          <div class="form-field-container">
+            <label class="form-label" for="ip-start">
+              Start of IPv6 Address
+            </label>
+            <div class="input-copy-container">
+              <input type="text" class="form-field" placeholder="xxxx:xxxx:xxxx:xxxx" id="ip-start" name="ip-start" maxlength="19" pattern="^([0-9a-fA-F]{0,4}:){0,3}[0-9a-fA-F]{0,4}$" title="IPv6 prefix must be up to 4 hextets (e.g., 2001:db8::)" aria-describedby="ip-start-copy" required=""/>
+              <button type="button" class="copy-button" id="copy-ip-start" aria-label="Copy IPv6 Prefix">
+                <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2">
+                  </rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1">
+                  </path>
+                </svg>
+                <span class="copy-tooltip">
+                </span>
+              </button>
+              <script>
+                document.getElementById("copy-ip-start").addEventListener("click", () => {
+							copyToClipboard("ip-start", "copy-ip-start");
+						});
+              </script>
+            </div>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="form-submit">
+              Calculate
+            </button>
+            <button type="reset" class="form-clear">
+              Clear
+            </button>
+          </div>
+        </form>
+        <div class="form-results hidden">
+          <div class="result-container hidden">
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./wasm_exec.js">
+    </script>
+    <script src="./scripts.js">
+    </script>
+  </body>
+</html>
