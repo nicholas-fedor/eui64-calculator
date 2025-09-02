@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   workflow_dispatch: {}
+  workflow_call: {}
 
 permissions:
   contents: write
@@ -30,8 +31,8 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: ${{ runner.os }}-go-
+          key: "${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}"
+          restore-keys: "${{ runner.os }}-go-"
 
       - name: Install templ
         run: go install github.com/a-h/templ/cmd/templ@v0.3.924
@@ -51,12 +52,12 @@ jobs:
       - name: Build WASM
         run: GOOS=js GOARCH=wasm go build -o dist/static/main.wasm ./build/gh-pages/wasm/main.go
 
-      - name: Copy and minify static assets to root
+      - name: Copy and minify static assets
         run: |
           mkdir -p dist/static
           cp dist/static/index.html dist/static/
           cp dist/static/main.wasm dist/static/
-          cp $GOROOT/misc/wasm/wasm_exec.js dist/static/
+          cp "$GOROOT/misc/wasm/wasm_exec.js" dist/static/
           cp cmd/server/static/styles.css dist/static/
           cp cmd/server/static/favicon.ico dist/static/
           cp build/gh-pages/static/scripts.js dist/static/
