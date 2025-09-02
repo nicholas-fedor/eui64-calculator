@@ -49,6 +49,16 @@ jobs:
       docker_namespace: nickfedor
       ghcr_namespace: nicholas-fedor
 
+  deploy-gh-pages:
+    name: Deploy to GitHub Pages
+    needs:
+      - test
+      - lint
+    permissions:
+      contents: write
+    secrets: inherit
+    uses: ./.github/workflows/deploy-gh-pages.yaml
+
   Update-Go-Docs:
     name: Update Go docs
     needs:
