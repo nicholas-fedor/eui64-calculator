@@ -46,27 +46,28 @@ jobs:
       - name: Build static-gen
         run: go build -o static-gen ./build/gh-pages/static-gen/main.go
 
+      - name: Copy static assets
+        run: |
+          mkdir -p dist/static
+          cp "$GOROOT/misc/wasm/wasm_exec.js" dist/static/
+          cp cmd/server/static/styles.css dist/static/
+          cp cmd/server/static/favicon.ico dist/static/
+          cp build/gh-pages/static/scripts.js dist/static/
+
       - name: Generate index.html
         run: ./static-gen
 
       - name: Build WASM
         run: GOOS=js GOARCH=wasm go build -o dist/static/main.wasm ./build/gh-pages/wasm/main.go
 
-      - name: Copy and minify static assets
+      - name: Minify static assets
         run: |
-          mkdir -p dist/static
-          cp dist/static/index.html dist/static/
-          cp dist/static/main.wasm dist/static/
-          cp "$GOROOT/misc/wasm/wasm_exec.js" dist/static/
-          cp cmd/server/static/styles.css dist/static/
-          cp cmd/server/static/favicon.ico dist/static/
-          cp build/gh-pages/static/scripts.js dist/static/
-          # Minify scripts.js and styles.css
           npx uglify-js dist/static/scripts.js -o dist/static/scripts.js
           npx cssnano < dist/static/styles.css > dist/static/styles.min.css
           mv dist/static/styles.min.css dist/static/styles.css
-          # Add .nojekyll to disable Jekyll
-          touch dist/static/.nojekyll
+
+      - name: Add nojekyll dotfile
+        run: touch dist/static/.nojekyll
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
