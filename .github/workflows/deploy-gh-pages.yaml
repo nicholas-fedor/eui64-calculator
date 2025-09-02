@@ -37,6 +37,9 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
 
+      - name: Install Node.js dependencies
+        run: npm install uglify-js cssnano
+
       - name: Install templ
         run: go install github.com/a-h/templ/cmd/templ@v0.3.924
 
