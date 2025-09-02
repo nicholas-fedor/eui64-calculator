@@ -34,14 +34,6 @@ jobs:
           key: "${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}"
           restore-keys: "${{ runner.os }}-go-"
 
-      - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version: "latest"
-
-      - name: Install Node.js dependencies
-        run: npm install uglify-js cssnano
-
       - name: Install templ
         run: go install github.com/a-h/templ/cmd/templ@v0.3.924
 
@@ -87,12 +79,6 @@ jobs:
 
       - name: Generate index.html
         run: ./static-gen
-
-      - name: Minify static assets
-        run: |
-          npx uglify-js dist/static/scripts.js -o dist/static/scripts.js
-          npx cssnano < dist/static/styles.css > dist/static/styles.min.css
-          mv dist/static/styles.min.css dist/static/styles.css
 
       - name: Add nojekyll dotfile
         run: touch dist/static/.nojekyll
