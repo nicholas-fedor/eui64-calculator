@@ -46,19 +46,39 @@ jobs:
       - name: Build static-gen
         run: go build -o static-gen ./build/gh-pages/static-gen/main.go
 
+      - name: Create dist/static directory if it doesn't exist
+        run: mkdir -p ./dist/static
+
+      - name: Copy wasm_exec.js from GOROOT/lib/wasm or download it
+        run: |
+          echo "Copying wasm_exec.js..."
+          WASM_EXEC_SRC="$(go env GOROOT)/lib/wasm/wasm_exec.js"
+          WASM_EXEC_DEST="./dist/static/wasm_exec.js"
+          WASM_EXEC_URL="https://raw.githubusercontent.com/golang/go/master/lib/wasm/wasm_exec.js"
+
+          if [ -f "$WASM_EXEC_SRC" ]; then
+              cp "$WASM_EXEC_SRC" "$WASM_EXEC_DEST"
+              echo "Copied wasm_exec.js to ./dist/static/"
+          else
+              echo "wasm_exec.js not found at $WASM_EXEC_SRC. Downloading from $WASM_EXEC_URL..."
+              if ! curl -L -o "$WASM_EXEC_DEST" "$WASM_EXEC_URL"; then
+                  echo "Error: Failed to download wasm_exec.js from $WASM_EXEC_URL" >&2
+                  exit 1
+              fi
+              echo "Downloaded wasm_exec.js to ./dist/static/"
+          fi
+
       - name: Copy static assets
         run: |
-          mkdir -p dist/static
-          cp "$GOROOT/misc/wasm/wasm_exec.js" dist/static/
           cp cmd/server/static/styles.css dist/static/
           cp cmd/server/static/favicon.ico dist/static/
           cp build/gh-pages/static/scripts.js dist/static/
 
-      - name: Generate index.html
-        run: ./static-gen
-
       - name: Build WASM
         run: GOOS=js GOARCH=wasm go build -o dist/static/main.wasm ./build/gh-pages/wasm/main.go
+        
+      - name: Generate index.html
+        run: ./static-gen
 
       - name: Minify static assets
         run: |
