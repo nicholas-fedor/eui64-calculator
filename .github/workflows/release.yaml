@@ -41,6 +41,7 @@ jobs:
     permissions:
       contents: read # For code checkout
       packages: write # For pushing manifests
+      id-token: write
     secrets: inherit
     uses: ./.github/workflows/create-manifests.yaml
     with:
