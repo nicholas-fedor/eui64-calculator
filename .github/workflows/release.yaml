@@ -57,6 +57,8 @@ jobs:
       - lint
     permissions:
       contents: write
+      packages: read
+      id-token: write
     secrets: inherit
     uses: ./.github/workflows/deploy-gh-pages.yaml
 
