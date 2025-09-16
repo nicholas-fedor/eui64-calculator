@@ -393,14 +393,6 @@ body {
   opacity: 1;
 }
 
-.copy-tooltip::before {
-  content: "Copy";
-}
-
-.copy-button.copied .copy-tooltip::before {
-  content: "Copied!";
-}
-
 /* Dark Mode for Copy Button */
 @media (prefers-color-scheme: dark) {
   .copy-button {
