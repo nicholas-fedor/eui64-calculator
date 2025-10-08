@@ -7,6 +7,8 @@ A EUI-64 address calculator implemented in Go, HTMX, and Templ.
 
 This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EUI64-Calculator)
 
+### 🎉 Now avaiable at <https://eui64-calculator.nickfedor.com> via GitHub Pages 🎉
+
 ![EUI-64 Calculator Screenshot](./.github/assets/eui64-calculator_screenshot.png)
 <br/><br/>
 <!-- markdownlint-restore -->
@@ -26,8 +28,6 @@ This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.co
 ## Overview
 
 This project provides a simple tool for calculating an EUI-64 IPv6 address using a MAC addresses and IPv6 Prefix.
-
-### 🎉 A static version of this project is now available at <https://eui64-calculator.nickfedor.com> 🎉
 
 ### Features
 
