@@ -50,7 +50,7 @@ jobs:
         uses: nicholas-fedor/govulncheck-action@fa0b698303af7cd2313516fd21e926e7be628c95
         with:
           go-package: cmd/... internal/...
-          go-version-input: ${{ env.GO_VERSION }}
+          go-version-file: "go.mod"
           output-format: sarif
           output-file: ${{ env.OUTPUT_FILE }}
 
