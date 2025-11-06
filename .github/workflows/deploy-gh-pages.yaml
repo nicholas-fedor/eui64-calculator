@@ -23,8 +23,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@faf52423ec0d44c58f68e83b614bfcd99dded66f
         with:
-          check-latest: true
-          go-version: 1.25.x
+          go-version-file: "go.mod"
 
       - name: Cache Go modules
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
