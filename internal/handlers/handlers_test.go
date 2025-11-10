@@ -19,6 +19,7 @@ import (
 func setupRouter(t *testing.T) *gin.Engine {
 	t.Helper()
 	gin.SetMode(gin.TestMode)
+
 	r := gin.New()
 	handler := NewHandler(&eui64.DefaultCalculator{})
 	r.GET("/", handler.Home)

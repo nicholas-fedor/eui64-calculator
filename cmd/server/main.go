@@ -82,7 +82,9 @@ func LoadConfig() Config {
 // and defines routes for the home page, EUI-64 calculation, and embedded file serving. Returns the router and any error.
 func SetupRouter(config Config) (*gin.Engine, error) {
 	gin.SetMode(gin.ReleaseMode)
+
 	router := gin.New()
+
 	gin.ForceConsoleColor() // Forces colored console output for logs, even in non-terminal environments.
 	router.Use(gin.Logger(), gin.Recovery())
 
