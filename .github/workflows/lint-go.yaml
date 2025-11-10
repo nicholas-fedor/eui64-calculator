@@ -29,7 +29,7 @@ jobs:
         run: go generate ./...
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@7fe1b22e0c4632d6260fedfafd4b6025ac7418c3
+        uses: golangci/golangci-lint-action@199a9c288941bc07b12277163ba729dcdc8d652f
         with:
           args: --timeout=5m --config=build/golangci-lint/golangci.yaml
 
