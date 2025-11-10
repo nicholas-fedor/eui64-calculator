@@ -29,11 +29,21 @@ const filePerms = 0o644
 // by removing server-specific dependencies, adds WebAssembly scripts, formats the
 // HTML for readability, and writes the output to dist/static/index.html.
 func main() {
+	if err := run(); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+}
+
+// run performs the main logic of generating static HTML for the EUI-64 calculator.
+// It renders the home page template, adapts it for static use by removing server-specific
+// dependencies, adds WebAssembly scripts, formats the HTML for readability, and writes
+// the output to dist/static/index.html. Returns an error if any step fails.
+func run() error {
 	// Create a buffer to hold the rendered HTML.
 	var buf bytes.Buffer
 	if err := ui.Home().Render(context.Background(), &buf); err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to render home template: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("failed to render home template: %w", err)
 	}
 
 	// Modify HTML for static site: remove HTMX, adjust paths, add WASM/JS scripts.
@@ -46,25 +56,26 @@ func main() {
 	// Format HTML for readability with newlines and indentation.
 	formattedHTML, err := formatHTML(html)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to format HTML: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("failed to format HTML: %w", err)
 	}
 
 	// Ensure output directory exists.
 	outputDir := filepath.Join("dist", "static")
 	if err := os.MkdirAll(outputDir, dirPerms); err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to create directory %s: %v\n", outputDir, err)
-		os.Exit(1)
+		return fmt.Errorf("failed to create directory %s: %w", outputDir, err)
 	}
 
 	// Write formatted HTML to file.
 	outputFile := filepath.Join(outputDir, "index.html")
 	if err := os.WriteFile(outputFile, []byte(formattedHTML), filePerms); err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to write %s: %v\n", outputFile, err)
-		os.Exit(1)
+		return fmt.Errorf("failed to write %s: %w", outputFile, err)
 	}
 
-	fmt.Fprintln(os.Stdout, "Successfully generated static HTML at", outputFile)
+	if _, err := fmt.Fprintln(os.Stdout, "Successfully generated static HTML at", outputFile); err != nil {
+		return fmt.Errorf("failed to write success message to stdout: %w", err)
+	}
+
+	return nil
 }
 
 // removeHTMXScript removes the HTMX script tag from the HTML, matching any version
