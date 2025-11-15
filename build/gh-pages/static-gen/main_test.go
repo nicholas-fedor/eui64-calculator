@@ -47,10 +47,30 @@ func Test_main(t *testing.T) {
 
 			// Verify key transformations are present
 			assert.Contains(t, htmlContent, "EUI-64 Calculator", "Should contain page title")
-			assert.Contains(t, htmlContent, `<script src="./wasm_exec.js">`, "Should include WebAssembly runtime script")
-			assert.Contains(t, htmlContent, `<script src="./scripts.js">`, "Should include application script")
-			assert.Contains(t, htmlContent, `pattern="[0-9a-fA-F]{2}((-|:)[0-9a-fA-F]{2}){5}"`, "Should have fixed MAC address pattern")
-			assert.NotContains(t, htmlContent, `src="https://unpkg.com/htmx.org`, "Should not contain HTMX CDN script")
+			assert.Contains(
+				t,
+				htmlContent,
+				`<script src="./wasm_exec.js">`,
+				"Should include WebAssembly runtime script",
+			)
+			assert.Contains(
+				t,
+				htmlContent,
+				`<script src="./scripts.js">`,
+				"Should include application script",
+			)
+			assert.Contains(
+				t,
+				htmlContent,
+				`pattern="[0-9a-fA-F]{2}((-|:)[0-9a-fA-F]{2}){5}"`,
+				"Should have fixed MAC address pattern",
+			)
+			assert.NotContains(
+				t,
+				htmlContent,
+				`src="https://unpkg.com/htmx.org`,
+				"Should not contain HTMX CDN script",
+			)
 
 			// Verify HTML is properly formatted (contains newlines and indentation)
 			assert.Contains(t, htmlContent, "\n", "HTML should be formatted with newlines")
