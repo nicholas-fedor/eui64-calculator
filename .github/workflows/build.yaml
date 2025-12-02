@@ -31,7 +31,7 @@ jobs:
       id-token: write # For OIDC auth to container registry
     steps:
       - name: Checkout
-        uses: actions/checkout@033fa0dc0b82693d8986f1016a0ec2c5e7d9cbb1
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
         with:
           fetch-depth: 0 # Full history for GoReleaser versioning.
 
