@@ -71,7 +71,11 @@ func run() error {
 		return fmt.Errorf("failed to write %s: %w", outputFile, err)
 	}
 
-	if _, err := fmt.Fprintln(os.Stdout, "Successfully generated static HTML at", outputFile); err != nil {
+	if _, err := fmt.Fprintln(
+		os.Stdout,
+		"Successfully generated static HTML at",
+		outputFile,
+	); err != nil {
 		return fmt.Errorf("failed to write success message to stdout: %w", err)
 	}
 
