@@ -209,7 +209,7 @@ func formatHTML(htmlStr string) (string, error) {
 
 			for _, attr := range node.Attr {
 				// Escape attribute values to prevent XSS.
-				buf.WriteString(fmt.Sprintf(" %s=\"%s\"", attr.Key, html.EscapeString(attr.Val)))
+				fmt.Fprintf(&buf, " %s=\"%s\"", attr.Key, html.EscapeString(attr.Val))
 			}
 
 			if voidElements[node.Data] {
