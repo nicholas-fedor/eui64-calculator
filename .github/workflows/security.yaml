@@ -15,12 +15,6 @@ on:
   schedule:
     - cron: "0 0 * * *" # Runs daily at midnight UTC
 
-permissions:
-  contents: read
-  actions: read
-  pull-requests: read
-  security-events: write
-
 env:
   OUTPUT_FILE: results.sarif
 
@@ -28,9 +22,14 @@ jobs:
   gosec:
     name: Golang Security Checker
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Checkout Source
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
       - name: Run Gosec Security Scanner
         uses: securego/gosec@bb17e422fc34bf4c0a2e5cab9d07dc45a68c040c # v2.24.7
         with:
@@ -44,12 +43,14 @@ jobs:
   govulncheck:
     name: govulncheck
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - id: govulncheck
         uses: nicholas-fedor/govulncheck-action@1ffd170e2658416d3eeaaa3fa6238bd60bd467a5
         with:
           go-package: cmd/... internal/...
-          go-version-input: ""
           go-version-file: "go.mod"
           output-format: sarif
           output-file: ${{ env.OUTPUT_FILE }}
