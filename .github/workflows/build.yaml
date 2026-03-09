@@ -62,7 +62,7 @@ jobs:
         uses: sigstore/cosign-installer@ba7bc0a3fef59531c69a25acd34668d6d3fe6f22 # v4.1.0
 
       - name: Set up QEMU # Enable multi-platform emulation.
-        uses: docker/setup-qemu-action@72cd56508471caa31aa98bca67440b2dc2f355c0
+        uses: docker/setup-qemu-action@a4bc6cde7eccda2bdcfac02ca3348c91290880bd
         with:
           platforms: linux/amd64,linux/386,linux/arm/v6,linux/arm64/v8,linux/riscv64
 
