@@ -42,11 +42,13 @@ jobs:
         uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
         with:
           fetch-depth: 0 # Full history for GoReleaser versioning.
+          persist-credentials: false
 
       - name: Set up Go
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c
         with:
           go-version-file: "go.mod"
+          cache: false
 
       - name: Cache Go modules
         uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
@@ -56,6 +58,7 @@ jobs:
             ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ runner.os }}-go-
+          lookup-only: true
 
       - name: Install templ
         run: go install github.com/a-h/templ/cmd/templ@latest
@@ -72,6 +75,7 @@ jobs:
       - name: Set up QEMU # Enable multi-platform emulation.
         uses: docker/setup-qemu-action@6632d370eaa94c36e362c994b934b79877123e91
         with:
+          image: tonistiigi/binfmt@sha256:d3b963f787999e6c0219a48dba02978769286ff61a5f4d26245cb6a6e5567ea3
           platforms: linux/amd64,linux/386,linux/arm/v6,linux/arm64/v8,linux/riscv64
 
       - name: Set up Docker Buildx # Configure multi-platform builds.
@@ -122,12 +126,16 @@ jobs:
       - name: Sign Docker Images with Cosign (Keyless)
         run: |
           for arch in amd64 i386 armhf arm64v8 riscv64; do
-            cosign sign --yes ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:${arch}-${{ github.ref_name }}
-            cosign sign --yes ${{ inputs.docker_namespace }}/${{ inputs.project_name }}:${arch}-latest
-            cosign sign --yes ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:${arch}-${{ github.ref_name }}
-            cosign sign --yes ghcr.io/${{ inputs.ghcr_namespace }}/${{ inputs.project_name }}:${arch}-latest
+            cosign sign --yes ${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-${GITHUB_REF_NAME}
+            cosign sign --yes ${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-latest
+            cosign sign --yes ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-${GITHUB_REF_NAME}
+            cosign sign --yes ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-latest
           done
         shell: bash
+        env:
+          INPUTS_DOCKER_NAMESPACE: ${{ inputs.docker_namespace }}
+          INPUTS_PROJECT_NAME: ${{ inputs.project_name }}
+          INPUTS_GHCR_NAMESPACE: ${{ inputs.ghcr_namespace }}
 
       - name: Upload binary SBOMs # Upload SBOMs for prod builds.
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
