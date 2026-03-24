@@ -15,6 +15,10 @@ on:
         description: "GitHub Container Registry namespace for image names (e.g., 'nicholas-fedor')"
         required: true
         type: string
+      environment:
+        description: "GitHub environment for secrets access"
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -23,6 +27,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     env:
       DOCKER_CLI_EXPERIMENTAL: "enabled"
       CGO_ENABLED: 0

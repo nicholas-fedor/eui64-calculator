@@ -2,6 +2,11 @@ name: Run tests and upload coverage
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        description: "GitHub environment for secrets access"
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -10,6 +15,7 @@ jobs:
   test:
     name: Run tests and collect coverage
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0

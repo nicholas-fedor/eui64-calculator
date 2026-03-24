@@ -19,6 +19,10 @@ on:
         description: "GitHub Container Registry namespace for image names (e.g., 'nicholas-fedor')"
         required: true
         type: string
+      environment:
+        description: "GitHub environment for secrets access"
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -28,6 +32,7 @@ permissions:
 jobs:
   manifest:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
@@ -55,24 +60,26 @@ jobs:
 
       - name: Create Docker manifests
         run: |
-          docker buildx imagetools create -t "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${INPUTS_VERSION}" \
-            "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:amd64-${INPUTS_VERSION}" \
-            "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:i386-${INPUTS_VERSION}" \
-            "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:armhf-${INPUTS_VERSION}" \
-            "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:arm64v8-${INPUTS_VERSION}" \
-            "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:riscv64-${INPUTS_VERSION}"
+          if [ -n "${INPUTS_VERSION}" ]; then
+            docker buildx imagetools create -t "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${INPUTS_VERSION}" \
+              "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:amd64-${INPUTS_VERSION}" \
+              "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:i386-${INPUTS_VERSION}" \
+              "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:armhf-${INPUTS_VERSION}" \
+              "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:arm64v8-${INPUTS_VERSION}" \
+              "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:riscv64-${INPUTS_VERSION}"
+            docker buildx imagetools create -t "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${INPUTS_VERSION}" \
+              "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:amd64-${INPUTS_VERSION}" \
+              "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:i386-${INPUTS_VERSION}" \
+              "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:armhf-${INPUTS_VERSION}" \
+              "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:arm64v8-${INPUTS_VERSION}" \
+              "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:riscv64-${INPUTS_VERSION}"
+          fi
           docker buildx imagetools create -t "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:latest" \
             "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:amd64-latest" \
             "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:i386-latest" \
             "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:armhf-latest" \
             "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:arm64v8-latest" \
             "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:riscv64-latest"
-          docker buildx imagetools create -t "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${INPUTS_VERSION}" \
-            "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:amd64-${INPUTS_VERSION}" \
-            "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:i386-${INPUTS_VERSION}" \
-            "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:armhf-${INPUTS_VERSION}" \
-            "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:arm64v8-${INPUTS_VERSION}" \
-            "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:riscv64-${INPUTS_VERSION}"
           docker buildx imagetools create -t "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:latest" \
             "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:amd64-latest" \
             "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:i386-latest" \
@@ -90,9 +97,11 @@ jobs:
 
       - name: Sign Docker Manifests with Cosign (Keyless)
         run: |
-          cosign sign --yes "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${INPUTS_VERSION}"
+          if [ -n "${INPUTS_VERSION}" ]; then
+            cosign sign --yes "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${INPUTS_VERSION}"
+            cosign sign --yes "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${INPUTS_VERSION}"
+          fi
           cosign sign --yes "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:latest"
-          cosign sign --yes "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${INPUTS_VERSION}"
           cosign sign --yes "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:latest"
         shell: bash
         env:
