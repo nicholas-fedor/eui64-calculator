@@ -20,6 +20,8 @@ jobs:
     permissions:
       contents: read
     uses: ./.github/workflows/test.yaml
+    with:
+      environment: CI
 
   build:
     name: Build the Release
@@ -37,6 +39,7 @@ jobs:
       project_name: eui64-calculator
       docker_namespace: nickfedor
       ghcr_namespace: nicholas-fedor
+      environment: CI
 
   manifest:
     name: Create image manifests
@@ -52,6 +55,7 @@ jobs:
       project_name: eui64-calculator
       docker_namespace: nickfedor
       ghcr_namespace: nicholas-fedor
+      environment: CI
 
   deploy-gh-pages:
     name: Deploy to GitHub Pages
