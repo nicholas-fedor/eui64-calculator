@@ -126,10 +126,10 @@ jobs:
       - name: Sign Docker Images with Cosign (Keyless)
         run: |
           for arch in amd64 i386 armhf arm64v8 riscv64; do
-            cosign sign --yes ${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-${GITHUB_REF_NAME}
-            cosign sign --yes ${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-latest
-            cosign sign --yes ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-${GITHUB_REF_NAME}
-            cosign sign --yes ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-latest
+            cosign sign --yes "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-${GITHUB_REF_NAME}"
+            cosign sign --yes "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-latest"
+            cosign sign --yes "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-${GITHUB_REF_NAME}"
+            cosign sign --yes "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-latest"
           done
         shell: bash
         env:
