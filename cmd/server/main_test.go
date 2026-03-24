@@ -1,7 +1,7 @@
 package main
 
 import (
-	// Added for context support.
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -90,14 +90,15 @@ func TestRouterSetup(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			var req *http.Request
 			if tt.method == "POST" {
-				req = httptest.NewRequest(
+				req = httptest.NewRequestWithContext(
+					context.Background(),
 					tt.method,
 					tt.path,
 					strings.NewReader(tt.formData.Encode()),
 				)
 				req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 			} else {
-				req = httptest.NewRequest(tt.method, tt.path, nil)
+				req = httptest.NewRequestWithContext(context.Background(), tt.method, tt.path, nil)
 			}
 
 			resp := httptest.NewRecorder()
@@ -169,7 +170,12 @@ func TestTrustedProxies(t *testing.T) {
 				c.String(http.StatusOK, gotClientIP)
 			})
 
-			req := httptest.NewRequest(http.MethodGet, "/test-ip", nil)
+			req := httptest.NewRequestWithContext(
+				context.Background(),
+				http.MethodGet,
+				"/test-ip",
+				nil,
+			)
 			req.RemoteAddr = tt.remoteAddr
 
 			if tt.xForwardedFor != "" {
