@@ -17,7 +17,7 @@ on:
         type: string
       environment:
         description: "GitHub environment for secrets access"
-        required: false
+        required: true
         type: string
 
 permissions:
