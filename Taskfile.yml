@@ -1,0 +1,198 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+######################################################################################################
+#                                                                                                    #
+#                                 EUI-64 Calculator Taskfile                                         #
+#                                                                                                    #
+######################################################################################################
+
+vars:
+  BINARY_NAME: eui64-calculator
+  MODULE: github.com/nicholas-fedor/eui64-calculator
+  ENTRYPOINT: ./cmd/server/main.go
+  DIST_DIR: dist
+  COVER_DIR: coverage
+  CGO_ENABLED: "0"
+  GOFLAGS: -trimpath
+  GOLANGCI_LINT_CONFIG: build/golangci-lint/golangci-lint.yaml
+  GORELEASER_CONFIG: build/goreleaser/goreleaser.yaml
+  DOCKER_IMAGE: "{{.BINARY_NAME}}"
+  DOCKER_TAG:
+    sh: echo "${DOCKER_TAG:-latest}"
+
+  # Build metadata injected via ldflags.
+  VERSION:
+    sh: git describe --tags --always --dirty 2>/dev/null || echo "dev"
+  COMMIT:
+    sh: git rev-parse --short HEAD 2>/dev/null || echo "unknown"
+  DATE:
+    sh: date -u +"%Y-%m-%dT%H:%M:%SZ"
+
+  LDFLAGS: -s -w -X main.version={{.VERSION}} -X main.commit={{.COMMIT}} -X main.date={{.DATE}}
+
+  TEST_FLAGS: -v -count=1
+
+######################################################################################################
+# Task Definitions
+######################################################################################################
+
+tasks:
+  # Default task runs the full CI check.
+  default:
+    desc: Run all validation checks (lint, vet, test)
+    cmds:
+      - task: check
+
+  ####################################################################################################
+  # Help
+  ####################################################################################################
+
+  help:
+    desc: Display available tasks
+    cmds:
+      - task --list
+
+  ####################################################################################################
+  # Code Generation
+  ####################################################################################################
+
+  generate:
+    desc: Run go generate to produce templ and other generated code
+    cmds:
+      - go generate ./...
+
+  ####################################################################################################
+  # Linting and Validation
+  ####################################################################################################
+
+  lint:
+    desc: Run golangci-lint with project configuration
+    cmds:
+      - golangci-lint run --config {{.GOLANGCI_LINT_CONFIG}} ./...
+
+  vet:
+    desc: Run go vet for additional static analysis
+    cmds:
+      - go vet ./...
+
+  check:
+    desc: Run lint, vet, and test (full CI check)
+    deps:
+      - lint
+      - vet
+    cmds:
+      - task: test
+
+  ####################################################################################################
+  # Formatting
+  ####################################################################################################
+
+  fmt:
+    desc: Format code and organize imports with golangci-lint
+    cmds:
+      - golangci-lint fmt --config {{.GOLANGCI_LINT_CONFIG}} ./...
+
+  ####################################################################################################
+  # Testing
+  ####################################################################################################
+
+  test:
+    desc: Run all tests
+    deps:
+      - generate
+    cmds:
+      - go test {{.TEST_FLAGS}} ./...
+
+  test-race:
+    desc: Run all tests with the race detector enabled
+    deps:
+      - generate
+    cmds:
+      - go test {{.TEST_FLAGS}} -race ./...
+
+  test-coverage:
+    desc: Run all tests with coverage reporting
+    deps:
+      - generate
+    cmds:
+      - mkdir -p {{.COVER_DIR}}
+      - go test {{.TEST_FLAGS}} -race -coverprofile={{.COVER_DIR}}/coverage.out -covermode=atomic ./...
+      - go tool cover -html={{.COVER_DIR}}/coverage.out -o {{.COVER_DIR}}/coverage.html
+
+  cover:
+    desc: Alias for test-coverage
+    cmds:
+      - task: test-coverage
+
+  bench:
+    desc: Run all benchmark tests
+    deps:
+      - generate
+    cmds:
+      - go test -bench=. -benchmem ./...
+
+  ####################################################################################################
+  # Build and Run
+  ####################################################################################################
+
+  run:
+    desc: Run the server locally
+    deps:
+      - generate
+    env:
+      CGO_ENABLED: "{{.CGO_ENABLED}}"
+    cmds:
+      - go run {{.GOFLAGS}} -ldflags "{{.LDFLAGS}}" {{.ENTRYPOINT}}
+
+  ####################################################################################################
+  # Module Management
+  ####################################################################################################
+
+  mod-tidy:
+    desc: Tidy and verify go.mod dependencies
+    cmds:
+      - go mod tidy
+      - go mod verify
+
+  ####################################################################################################
+  # Docker
+  ####################################################################################################
+
+  docker-build:
+    desc: Build the Docker image
+    deps:
+      - generate
+    env:
+      CGO_ENABLED: "{{.CGO_ENABLED}}"
+      GOOS: linux
+      GOARCH: amd64
+    cmds:
+      - go build {{.GOFLAGS}} -ldflags "{{.LDFLAGS}}" -o {{.DIST_DIR}}/{{.BINARY_NAME}} {{.ENTRYPOINT}}
+      - docker build -t {{.DOCKER_IMAGE}}:{{.DOCKER_TAG}} -f build/docker/Dockerfile {{.DIST_DIR}}
+
+  docker-run:
+    desc: Build and run the Docker container
+    deps:
+      - docker-build
+    cmds:
+      - docker run --rm -p 8080:8080 {{.DOCKER_IMAGE}}:{{.DOCKER_TAG}}
+
+  ####################################################################################################
+  # Release
+  ####################################################################################################
+
+  release:
+    desc: Create a release build with GoReleaser
+    cmds:
+      - goreleaser release --config {{.GORELEASER_CONFIG}}
+
+  ####################################################################################################
+  # Cleanup
+  ####################################################################################################
+
+  clean:
+    desc: Remove build artifacts and generated files
+    cmds:
+      - rm -rf {{.DIST_DIR}} {{.COVER_DIR}}
+      - go clean -testcache

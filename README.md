@@ -5,9 +5,9 @@
 
 A EUI-64 address calculator implemented in Go, HTMX, and Templ.
 
-This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EUI64-Calculator)
+Inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EUI64-Calculator)
 
-### 🎉 Now avaiable at <https://eui64-calculator.nickfedor.com> via GitHub Pages 🎉
+### Also available at <https://eui64-calculator.nickfedor.com>
 
 ![EUI-64 Calculator Screenshot](./.github/assets/eui64-calculator_screenshot.png)
 <br/><br/>
@@ -29,14 +29,7 @@ This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.co
 
 This project provides a simple tool for calculating an EUI-64 IPv6 address using a MAC addresses and IPv6 Prefix.
 
-### Features
-
-- **EUI-64 Calculation**: Convert a 48-bit MAC address into a 64-bit EUI-64 format.
-- **IPv6 Address Generation**: Combine the EUI-64 with a user-provided IPv6 prefix.
-- **Web Interface**: User-friendly interface for input and result display using HTMX for dynamic content loading.
-- **Docker Support**: Containerized deployment for easy setup and scalability.
-
-### Usage
+## Usage
 
 1. Enter a MAC Address in the format `xx-xx-xx-xx-xx-xx`.
 2. Enter an IPv6 Prefix.
@@ -54,13 +47,13 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 
 #### Docker Compose
 
-- Running the [Basic Template](/docker/docker-compose.yaml):
+- Running the [Basic Template](/examples/docker-compose.yaml):
 
     ```console
     docker compose -f ./Docker/compose.yaml up -d
     ```
 
-- Traefik Reverse Proxy [example](/docker/Examples/Traefik/README.md)
+- Traefik Reverse Proxy [example](/examples/Traefik/README.md)
 
 ### Running Locally
 

@@ -2,36 +2,38 @@ package main
 
 import (
 	"context"
+	"io"
 	"net/http"
-	"net/http/httptest"
 	"net/url"
 	"strings"
 	"testing"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-// setupRouter creates a Gin router for testing with the application’s configuration.
-// It loads the server configuration and sets up the router, failing the test if either step encounters an error.
-func setupRouter(t *testing.T) *gin.Engine {
+// setupRouter creates a Fiber app for testing with the application's configuration.
+// It loads the server configuration and sets up the app, failing the test if either step encounters an error.
+func setupRouter(t *testing.T) *fiber.App {
 	t.Helper()
 
 	config := LoadConfig()
 
-	r, err := SetupRouter(config)
+	app, err := SetupRouter(config)
 	if err != nil {
 		t.Fatalf("Failed to setup router: %v", err)
 	}
 
-	return r
+	return app
 }
 
-// TestRouterSetup tests the router’s handling of various HTTP requests.
-// It verifies that the router correctly serves the home page, handles valid and invalid EUI-64 calculation requests,
+// TestRouterSetup tests the app's handling of various HTTP requests.
+// It verifies that the app correctly serves the home page, handles valid and invalid EUI-64 calculation requests,
 // serves static files, and returns a 404 for unknown paths.
 func TestRouterSetup(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name       string
 		method     string
@@ -84,13 +86,15 @@ func TestRouterSetup(t *testing.T) {
 		},
 	}
 
-	router := setupRouter(t)
+	app := setupRouter(t)
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			var req *http.Request
 			if tt.method == "POST" {
-				req = httptest.NewRequestWithContext(
+				req, _ = http.NewRequestWithContext(
 					context.Background(),
 					tt.method,
 					tt.path,
@@ -98,93 +102,22 @@ func TestRouterSetup(t *testing.T) {
 				)
 				req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 			} else {
-				req = httptest.NewRequestWithContext(context.Background(), tt.method, tt.path, nil)
+				req, _ = http.NewRequestWithContext(context.Background(), tt.method, tt.path, http.NoBody)
 			}
 
-			resp := httptest.NewRecorder()
-			router.ServeHTTP(resp, req)
-
-			assert.Equal(t, tt.wantStatus, resp.Code, "Status code")
-
-			if tt.wantBody != "" {
-				assert.Contains(t, resp.Body.String(), tt.wantBody, "Body content")
-			}
-		})
-	}
-}
-
-// TestTrustedProxies tests the router’s handling of trusted proxies.
-// It verifies that the client IP is correctly determined based on the X-Forwarded-For header
-// when trusted proxies are configured, covering various proxy scenarios.
-func TestTrustedProxies(t *testing.T) {
-	tests := []struct {
-		name           string
-		trustedProxies []string
-		remoteAddr     string
-		xForwardedFor  string
-		wantClientIP   string
-	}{
-		{
-			name:           "No proxies",
-			trustedProxies: nil,
-			remoteAddr:     "192.168.1.1:12345",
-			xForwardedFor:  "",
-			wantClientIP:   "192.168.1.1",
-		},
-		{
-			name:           "Single trusted proxy",
-			trustedProxies: []string{"192.168.1.2"},
-			remoteAddr:     "192.168.1.2:54321",
-			xForwardedFor:  "192.168.1.1",
-			wantClientIP:   "192.168.1.1",
-		},
-		{
-			name:           "Multiple trusted proxies",
-			trustedProxies: []string{"192.168.1.3", "192.168.1.2"},
-			remoteAddr:     "192.168.1.3:54321",
-			xForwardedFor:  "192.168.1.1, 192.168.1.2",
-			wantClientIP:   "192.168.1.1",
-		},
-		{
-			name:           "Untrusted proxy",
-			trustedProxies: []string{"192.168.1.2"},
-			remoteAddr:     "192.168.1.3:54321",
-			xForwardedFor:  "192.168.1.1",
-			wantClientIP:   "192.168.1.3",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			config := Config{
-				Port:           ":8080",
-				TrustedProxies: tt.trustedProxies,
-			}
-
-			router, err := SetupRouter(config)
+			resp, err := app.Test(req)
 			require.NoError(t, err)
 
-			// Set up a test route to capture the client IP.
-			router.GET("/test-ip", func(c *gin.Context) {
-				gotClientIP := c.ClientIP()
-				c.String(http.StatusOK, gotClientIP)
-			})
+			defer resp.Body.Close()
 
-			req := httptest.NewRequestWithContext(
-				context.Background(),
-				http.MethodGet,
-				"/test-ip",
-				nil,
-			)
-			req.RemoteAddr = tt.remoteAddr
+			body, err := io.ReadAll(resp.Body)
+			require.NoError(t, err)
 
-			if tt.xForwardedFor != "" {
-				req.Header.Set("X-Forwarded-For", tt.xForwardedFor)
+			assert.Equal(t, tt.wantStatus, resp.StatusCode, "Status code")
+
+			if tt.wantBody != "" {
+				assert.Contains(t, string(body), tt.wantBody, "Body content")
 			}
-
-			resp := httptest.NewRecorder()
-			router.ServeHTTP(resp, req)
-			assert.Equal(t, tt.wantClientIP, strings.TrimSpace(resp.Body.String()), "Client IP")
 		})
 	}
 }
