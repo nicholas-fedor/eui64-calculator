@@ -126,6 +126,7 @@ mod-tidy: ## Tidy and verify go.mod dependencies
 ######################################################################################################
 
 docker-build: ## Build the Docker image
+	@mkdir -p $(DIST_DIR)
 	CGO_ENABLED=$(CGO_ENABLED) GOOS=linux GOARCH=amd64 \
 		go build $(GOFLAGS) -ldflags "$(LDFLAGS)" -o $(DIST_DIR)/$(BINARY_NAME) $(ENTRYPOINT)
 	docker build -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f build/docker/Dockerfile $(DIST_DIR)
