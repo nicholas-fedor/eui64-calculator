@@ -11,6 +11,14 @@ import (
 	"strings"
 )
 
+// Calculator defines the interface for computing EUI-64 identifiers and IPv6 addresses.
+type Calculator interface {
+	CalculateEUI64(mac, prefix string) (string, string, error)
+}
+
+// DefaultCalculator implements the Calculator interface using the standard EUI-64 algorithm.
+type DefaultCalculator struct{}
+
 // Constants defining sizes and markers for EUI-64 and IPv6 calculations.
 const (
 	ipv6Hextets      = 8    // ipv6Hextets is the number of hextets in a full IPv6 address.
@@ -37,14 +45,6 @@ var (
 	ErrPrefixExceedsHextets = fmt.Errorf("IPv6 prefix exceeds %d hextets", prefixMaxHextets)
 	ErrInvalidEmptyHextet   = errors.New("invalid empty hextet in IPv6 prefix")
 )
-
-// Calculator defines the interface for computing EUI-64 identifiers and IPv6 addresses.
-type Calculator interface {
-	CalculateEUI64(mac, prefix string) (string, string, error)
-}
-
-// DefaultCalculator implements the Calculator interface using the standard EUI-64 algorithm.
-type DefaultCalculator struct{}
 
 // CalculateEUI64 computes the EUI-64 interface ID and full IPv6 address from a MAC address and prefix.
 // It delegates to the standalone CalculateEUI64 function.

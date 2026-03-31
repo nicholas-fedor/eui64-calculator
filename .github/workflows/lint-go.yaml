@@ -27,7 +27,7 @@ jobs:
           go-version-file: "go.mod"
 
       - name: Install templ
-        run: go install github.com/a-h/templ/cmd/templ@v0.3.924
+        run: go install github.com/a-h/templ/cmd/templ@5ddd784440b232930161d76c7ca85d922fdcf183 # v0.3.1001
 
       - name: Install dependencies
         run: go mod download
@@ -38,7 +38,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@2d7e7b678591ee3321638e5c5621ca689628daa4
         with:
-          args: --timeout=5m --config=build/golangci-lint/golangci.yaml
+          args: --timeout=5m --config=build/golangci-lint/golangci-lint.yaml
 
       - name: Format Go code
         run: |

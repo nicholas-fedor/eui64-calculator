@@ -1,14 +1,16 @@
-// Package handlers provides HTTP request handlers for the EUI-64 calculator application using the Gin framework.
-// It defines the Handler struct with dependency injection for the EUI-64 calculator,
-// and includes handlers for rendering the home page, processing calculation requests with validation,
+// Package handlers provides HTTP request handlers for the EUI-64 calculator
+// application using the Fiber framework. It defines the Handler struct with
+// dependency injection for the EUI-64 calculator, and includes handlers for
+// rendering the home page, processing calculation requests with validation,
 // and rendering results or errors.
 package handlers
 
 import (
+	"bytes"
 	"log/slog"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v3"
 
 	"github.com/nicholas-fedor/eui64-calculator/internal/ui"
 	"github.com/nicholas-fedor/eui64-calculator/internal/validators"
@@ -16,7 +18,8 @@ import (
 
 // Calculator defines the interface for EUI-64 calculation logic used by handlers.
 type Calculator interface {
-	// CalculateEUI64 computes the EUI-64 interface ID and full IPv6 address from a MAC address and prefix.
+	// CalculateEUI64 computes the EUI-64 interface ID and full IPv6 address
+	// from a MAC address and prefix.
 	CalculateEUI64(mac, prefix string) (string, string, error)
 }
 
@@ -31,46 +34,41 @@ func NewHandler(calc Calculator) *Handler {
 	return &Handler{calc: calc}
 }
 
-// Home handles GET requests to the root path, rendering the home page.
-// It serves the initial form for entering MAC and IPv6 prefix values, aborting with a 500 status on render failure.
-func (h *Handler) Home(c *gin.Context) {
-	if err := ui.Home().Render(c.Request.Context(), c.Writer); err != nil {
-		slog.ErrorContext(c.Request.Context(), "Failed to render home page", "error", err)
-		c.AbortWithStatus(http.StatusInternalServerError)
-	}
-}
-
 // Calculate handles POST requests to compute an EUI-64 address from form data.
-// It validates the MAC address and IPv6 prefix from the request, computes the EUI-64 interface ID and full IPv6 address,
-// and renders the result. Errors during validation or calculation are logged and displayed to the user.
-func (h *Handler) Calculate(c *gin.Context) {
-	mac := c.PostForm("mac")
-	prefix := c.PostForm("ip-start")
+// It validates the MAC address and IPv6 prefix from the request, computes
+// the EUI-64 interface ID and full IPv6 address, and renders the result.
+// Errors during validation or calculation are logged and displayed to the user.
+func (h *Handler) Calculate(c fiber.Ctx) error {
+	mac := c.FormValue("mac")
+	prefix := c.FormValue("ip-start")
 	data := ui.ResultData{}
 
 	if err := validators.ValidateMAC(mac); err != nil {
 		data.Error = "Please enter a valid MAC address (e.g., 00-14-22-01-23-45)"
 
-		slog.WarnContext(c.Request.Context(), "MAC validation failed", "mac", mac, "error", err)
-		h.renderResult(c, data)
+		slog.WarnContext(
+			c.Context(),
+			"MAC validation failed",
+			"mac", mac,
+			"error", err,
+		)
 
-		return
+		return h.renderResult(c, data)
 	}
 
 	if err := validators.ValidateIPv6Prefix(prefix); err != nil {
 		data.Error = "Please enter a valid IPv6 prefix (e.g., 2001:db8::)"
 
 		slog.WarnContext(
-			c.Request.Context(),
+			c.Context(),
 			"Prefix validation failed",
 			"prefix",
 			prefix,
 			"error",
 			err,
 		)
-		h.renderResult(c, data)
 
-		return
+		return h.renderResult(c, data)
 	}
 
 	interfaceID, fullIP, err := h.calc.CalculateEUI64(mac, prefix)
@@ -81,7 +79,7 @@ func (h *Handler) Calculate(c *gin.Context) {
 		data.Error = "Failed to calculate EUI-64 address"
 
 		slog.ErrorContext(
-			c.Request.Context(),
+			c.Context(),
 			"EUI-64 calculation failed",
 			"mac",
 			mac,
@@ -92,15 +90,59 @@ func (h *Handler) Calculate(c *gin.Context) {
 		)
 	}
 
-	h.renderResult(c, data)
+	return h.renderResult(c, data)
+}
+
+// Home handles GET requests to the root path, rendering the home page.
+// It serves the initial form for entering MAC and IPv6 prefix values,
+// aborting with a 500 status on render failure.
+//
+//nolint:wrapcheck // Returning Fiber response directly
+func (h *Handler) Home(c fiber.Ctx) error {
+	var buf bytes.Buffer
+
+	err := ui.Home().Render(
+		c.Context(),
+		&buf,
+	)
+	if err != nil {
+		slog.ErrorContext(
+			c.Context(),
+			"Failed to render home page",
+			"error", err,
+		)
+
+		return c.SendStatus(http.StatusInternalServerError)
+	}
+
+	c.Set("Content-Type", "text/html; charset=utf-8")
+
+	return c.Send(buf.Bytes())
 }
 
 // renderResult renders the calculation result to the HTTP response.
-// It uses the provided ResultData to display either the computed EUI-64 address or an error message,
-// aborting with a 500 status if rendering fails.
-func (h *Handler) renderResult(c *gin.Context, data ui.ResultData) {
-	if err := ui.Result(data).Render(c.Request.Context(), c.Writer); err != nil {
-		slog.ErrorContext(c.Request.Context(), "Failed to render result", "error", err)
-		c.AbortWithStatus(http.StatusInternalServerError)
+// It uses the provided ResultData to display either the computed EUI-64 address
+// or an error message, returning a 500 status if rendering fails.
+//
+//nolint:wrapcheck // Returning Fiber response directly
+func (h *Handler) renderResult(c fiber.Ctx, data ui.ResultData) error {
+	var buf bytes.Buffer
+
+	err := ui.Result(data).Render(
+		c.Context(),
+		&buf,
+	)
+	if err != nil {
+		slog.ErrorContext(
+			c.Context(),
+			"Failed to render result",
+			"error", err,
+		)
+
+		return c.SendStatus(http.StatusInternalServerError)
 	}
+
+	c.Set("Content-Type", "text/html; charset=utf-8")
+
+	return c.Send(buf.Bytes())
 }

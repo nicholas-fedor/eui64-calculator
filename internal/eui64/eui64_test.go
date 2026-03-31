@@ -12,6 +12,8 @@ import (
 // It ensures that the function correctly computes the EUI-64 interface ID and full IPv6 address
 // for various MAC addresses and IPv6 prefix combinations, including cases with no prefix and zero compression.
 func TestCalculateEUI64Valid(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name            string
 		mac             string
@@ -58,6 +60,8 @@ func TestCalculateEUI64Valid(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			interfaceID, fullIP, err := CalculateEUI64(tt.mac, tt.prefix)
 			require.NoError(t, err)
 			assert.Equal(t, tt.wantInterfaceID, interfaceID)
@@ -70,6 +74,8 @@ func TestCalculateEUI64Valid(t *testing.T) {
 // It verifies that the function returns appropriate errors for malformed MAC addresses and IPv6 prefixes,
 // ensuring empty results when validation fails.
 func TestCalculateEUI64Invalid(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name    string
 		mac     string
@@ -110,6 +116,8 @@ func TestCalculateEUI64Invalid(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			interfaceID, fullIP, err := CalculateEUI64(tt.mac, tt.prefix)
 			require.Error(t, err)
 			assert.Contains(t, err.Error(), tt.wantErr)
@@ -123,6 +131,8 @@ func TestCalculateEUI64Invalid(t *testing.T) {
 // It ensures correct string formatting, including zero compression, for full addresses,
 // addresses with zero runs, and edge cases like all zeros or leading/trailing zeros.
 func TestIp6ToString(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 		ip6  []uint16
@@ -157,6 +167,7 @@ func TestIp6ToString(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			assert.Equal(t, tt.want, ip6ToString(tt.ip6))
 		})
 	}

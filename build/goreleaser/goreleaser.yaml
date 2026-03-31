@@ -2,7 +2,7 @@
 #                                                                                                    #
 #                               EUI64-calculator GoReleaser Configuration                            #
 #                                                                                                    #
-# eui64-calculator: https://github.com/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}/                                      #
+# eui64-calculator: https://github.com/nicholas-fedor/eui64-calculator/                              #
 # GoReleaser: https://goreleaser.com/                                                                #
 #                                                                                                    #
 ######################################################################################################

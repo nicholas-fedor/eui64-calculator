@@ -38,6 +38,8 @@ func parseHTML(t *testing.T, html string) *goquery.Document {
 }
 
 func TestHomeContent(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 	}{
@@ -48,6 +50,7 @@ func TestHomeContent(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			html := renderToString(t, HomeContent())
 			doc := parseHTML(t, html)
 
@@ -235,6 +238,8 @@ func TestHomeContent(t *testing.T) {
 }
 
 func TestHome(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 	}{
@@ -245,6 +250,7 @@ func TestHome(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			html := renderToString(t, Home())
 			doc := parseHTML(t, html)
 
@@ -356,6 +362,8 @@ func TestHome(t *testing.T) {
 }
 
 func TestLayout(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name    string
 		title   string
@@ -370,6 +378,7 @@ func TestLayout(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			html := renderToString(t, Layout(tt.title, tt.content))
 			doc := parseHTML(t, html)
 
@@ -481,6 +490,7 @@ func TestLayout(t *testing.T) {
 }
 
 func TestResult(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name      string
 		data      ResultData
@@ -651,6 +661,7 @@ func TestResult(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			html := renderToString(t, Result(tt.data))
 			doc := parseHTML(t, html)
 			tt.assertDoc(t, doc)

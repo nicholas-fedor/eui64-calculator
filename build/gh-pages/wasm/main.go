@@ -64,7 +64,7 @@ func calculateEUI64Func(this js.Value, args []js.Value) any {
 	if err != nil {
 		return err.Error()
 	}
-	return js.ValueOf(map[string]interface{}{
+	return js.ValueOf(map[string]any{
 		"interfaceID": interfaceID,
 		"fullIP":      fullIP,
 	})

@@ -1,6 +1,3 @@
-// Package main generates static HTML for the EUI-64 calculator's GitHub Pages
-// site. It renders UI templates, adapts them for client-side WebAssembly usage,
-// formats the HTML for readability, and writes the result to a file for deployment.
 package main
 
 import (
@@ -16,6 +13,8 @@ import (
 // It verifies that run completes successfully, creates the output file, and generates
 // valid HTML content with expected modifications for static hosting.
 func Test_main(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 	}{
@@ -26,6 +25,7 @@ func Test_main(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			// Clean up any existing output directory before test
 			if err := os.RemoveAll("dist"); err != nil && !os.IsNotExist(err) {
 				t.Fatalf("Failed to clean up dist directory: %v", err)
@@ -82,6 +82,8 @@ func Test_main(t *testing.T) {
 // TestRemoveHTMXScript tests the removeHTMXScript function with various HTML inputs.
 // It verifies that HTMX script tags are correctly removed, handling different versions and attributes.
 func TestRemoveHTMXScript(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 		html string
@@ -116,6 +118,8 @@ func TestRemoveHTMXScript(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			got := removeHTMXScript(tt.html)
 			assert.Equal(t, tt.want, got)
 		})
@@ -125,6 +129,8 @@ func TestRemoveHTMXScript(t *testing.T) {
 // TestReplaceServerPaths tests the replaceServerPaths function with various HTML inputs.
 // It verifies that server-specific paths and attributes are correctly adapted for static hosting.
 func TestReplaceServerPaths(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 		html string
@@ -164,6 +170,8 @@ func TestReplaceServerPaths(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			got := replaceServerPaths(tt.html)
 			assert.Equal(t, tt.want, got)
 		})
@@ -173,6 +181,8 @@ func TestReplaceServerPaths(t *testing.T) {
 // TestReplaceLayoutScript tests the replaceLayoutScript function with various HTML inputs.
 // It verifies that the inline JavaScript is correctly replaced with WebAssembly script includes.
 func TestReplaceLayoutScript(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 		html string
@@ -210,6 +220,8 @@ document.body.addEventListener('htmx:afterSwap', function() {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			got := replaceLayoutScript(tt.html)
 			assert.Equal(t, tt.want, got)
 		})
@@ -219,6 +231,8 @@ document.body.addEventListener('htmx:afterSwap', function() {
 // TestFixInputPatterns tests the fixInputPatterns function with various HTML inputs.
 // It verifies that MAC address input patterns are correctly fixed for browser compatibility.
 func TestFixInputPatterns(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 		html string
@@ -248,6 +262,8 @@ func TestFixInputPatterns(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			got := fixInputPatterns(tt.html)
 			assert.Equal(t, tt.want, got)
 		})
@@ -257,6 +273,8 @@ func TestFixInputPatterns(t *testing.T) {
 // TestFormatHTML tests the formatHTML function with various HTML inputs.
 // It verifies that HTML is correctly parsed and formatted with proper indentation and newlines.
 func TestFormatHTML(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name    string
 		htmlStr string
@@ -309,6 +327,8 @@ func TestFormatHTML(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			got, err := formatHTML(tt.htmlStr)
 			if tt.wantErr {
 				require.Error(t, err)

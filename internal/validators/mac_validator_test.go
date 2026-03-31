@@ -12,6 +12,8 @@ import (
 // It ensures the function accepts valid 48-bit MAC addresses and rejects empty, overly long, or malformed inputs,
 // verifying error messages for each validation step.
 func TestValidateMAC(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name    string
 		mac     string
@@ -49,6 +51,8 @@ func TestValidateMAC(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			err := ValidateMAC(tt.mac)
 			if tt.wantErr != "" {
 				require.Error(t, err)

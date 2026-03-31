@@ -5,9 +5,9 @@
 
 A EUI-64 address calculator implemented in Go, HTMX, and Templ.
 
-This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EUI64-Calculator)
+Inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EUI64-Calculator)
 
-### 🎉 Now avaiable at <https://eui64-calculator.nickfedor.com> via GitHub Pages 🎉
+### Also available at <https://eui64-calculator.nickfedor.com>
 
 ![EUI-64 Calculator Screenshot](./.github/assets/eui64-calculator_screenshot.png)
 <br/><br/>
@@ -18,7 +18,7 @@ This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.co
   [![GoDoc](https://godoc.org/github.com/nicholas-fedor/eui64-calculator?status.svg)](https://godoc.org/github.com/nicholas-fedor/eui64-calculator)
   [![Go Report Card](https://goreportcard.com/badge/github.com/nicholas-fedor/eui64-calculator)](https://goreportcard.com/report/github.com/nicholas-fedor/eui64-calculator)
   [![latest version](https://img.shields.io/github/tag/nicholas-fedor/eui64-calculator.svg)](https://github.com/nicholas-fedor/eui64-calculator/releases)
-  [![GPLv3 License](https://img.shields.io/github/license/nicholas-fedor/eui64-calculator.svg)](https://www.gnu.org/licenses/gpl-3.0)
+  [![AGPLv3 License](https://img.shields.io/github/license/nicholas-fedor/eui64-calculator.svg)](https://www.gnu.org/licenses/agpl-3.0)
   [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1c48cfb7646d4009aa8c6f71287670b8)](https://www.codacy.com/gh/nicholas-fedor/eui64-calculator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nicholas-fedor/eui64-calculator&amp;utm_campaign=Badge_Grade)
   [![All Contributors](https://img.shields.io/github/all-contributors/nicholas-fedor/eui64-calculator)](#contributors)
   [![Pulls from DockerHub](https://img.shields.io/docker/pulls/nickfedor/eui64-calculator.svg)](https://hub.docker.com/r/nickfedor/eui64-calculator)
@@ -27,16 +27,9 @@ This project was inspired by [ThePrincelle's EUI64-Calculator](https://github.co
 
 ## Overview
 
-This project provides a simple tool for calculating an EUI-64 IPv6 address using a MAC addresses and IPv6 Prefix.
+This project is a simple web app for calculating EUI-64 IPv6 addresses.
 
-### Features
-
-- **EUI-64 Calculation**: Convert a 48-bit MAC address into a 64-bit EUI-64 format.
-- **IPv6 Address Generation**: Combine the EUI-64 with a user-provided IPv6 prefix.
-- **Web Interface**: User-friendly interface for input and result display using HTMX for dynamic content loading.
-- **Docker Support**: Containerized deployment for easy setup and scalability.
-
-### Usage
+## Usage
 
 1. Enter a MAC Address in the format `xx-xx-xx-xx-xx-xx`.
 2. Enter an IPv6 Prefix.
@@ -54,20 +47,22 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 
 #### Docker Compose
 
-- Running the [Basic Template](/docker/docker-compose.yaml):
+- Running the [Basic Template](/examples/docker-compose.yaml):
 
     ```console
-    docker compose -f ./Docker/compose.yaml up -d
+    docker compose -f ./examples/docker-compose.yaml up -d
     ```
 
-- Traefik Reverse Proxy [example](/docker/Examples/Traefik/README.md)
+- Traefik Reverse Proxy [example](/examples/Traefik/README.md)
 
 ### Running Locally
 
 #### Prerequisites
 
-- Go: <https://go.dev/doc/install>
-- Templ: `go install github.com/a-h/templ/cmd/templ@latest`
+- Go 1.26+: <https://go.dev/doc/install>
+- Templ: <https://github.com/a-h/templ>
+- Make (optional, for Makefile targets)
+- [Task](https://taskfile.dev/installation/) (optional, for Taskfile targets)
 
 #### Installation
 
@@ -83,56 +78,93 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
     cd eui64-calculator
     ```
 
-3. Install Dependencies:
+3. Install dependencies and generate templ files:
 
     ```console
-    go mod download
+    make generate
     ```
 
-4. Generate Templates:
+4. Run the server:
 
     ```console
-    templ generate
+    make run
     ```
 
-5. Run the Server:
-
-    ```console
-    go run ./cmd/server/main.go
-    ```
-
-6. The application will be accessible at <http://localhost:8080/>
+5. The application will be accessible at <http://localhost:8080/>
 
 ## Development
 
-### Project Structure
+### Build Automation
+
+This project provides both a `Makefile` and a `Taskfile.yml` for build automation. Both offer the same set of targets.
+
+#### Available Targets
+
+| Target                    | Description                                        |
+|---------------------------|----------------------------------------------------|
+| `all` / `check`           | Full CI check (lint, vet, test)                    |
+| `generate`                | Run `go generate` for templ code generation        |
+| `lint`                    | Run golangci-lint with project configuration       |
+| `vet`                     | Run `go vet` for static analysis                   |
+| `fmt`                     | Format code and organize imports via golangci-lint |
+| `test`                    | Run all tests                                      |
+| `test-race`               | Run tests with the race detector enabled           |
+| `test-coverage` / `cover` | Run tests with HTML coverage report                |
+| `bench`                   | Run all benchmark tests                            |
+| `run`                     | Run the server locally with version injection      |
+| `mod-tidy`                | Tidy and verify go.mod dependencies                |
+| `docker-build`            | Build binary and Docker image                      |
+| `docker-run`              | Build and run the Docker container                 |
+| `release`                 | Create a release build with GoReleaser             |
+| `clean`                   | Remove build artifacts and generated files         |
+
+**Make:**
 
 ```console
+make <target>
+```
+
+**Task:**
+
+```console
+task <target>
+```
+
+### Project Structure
+
+```text
 .
 ├── .github
-│   ├── workflows
-│   │   ├── create-manifests.yaml
-│   │   ├── lint-go.yaml
-│   │   ├── build.yaml
-│   │   ├── clean-cache.yaml
-│   │   ├── pull-request.yaml
-│   │   ├── release.yaml
-│   │   ├── security.yaml
-│   │   └── test.yaml
+│   ├── assets
+│   │   ├── eui64-calculator_screenshot.png
+│   │   └── eui64-calculator_social-preview_1280x640.png
 │   ├── ISSUE_TEMPLATE
 │   │   ├── bug_report.yaml
 │   │   ├── config.yaml
 │   │   └── feature_request.yaml
-│   ├── assets
-│   │   ├── eui64-calculator_screenshot.png
-│   │   └── eui64-calculator_social-preview_1280x640.png
-│   └── renovate.json
+│   ├── renovate.json
+│   └── workflows
+│       ├── build.yaml
+│       ├── clean-cache.yaml
+│       ├── create-manifests.yaml
+│       ├── deploy-gh-pages.yaml
+│       ├── lint-gh.yaml
+│       ├── lint-go.yaml
+│       ├── pull-request.yaml
+│       ├── release.yaml
+│       ├── security.yaml
+│       ├── test.yaml
+│       └── update-go-docs.yaml
 ├── build
 │   ├── docker
-│   │   ├── Dockerfile
-│   │   └── .dockerignore
+│   │   ├── .dockerignore
+│   │   └── Dockerfile
+│   ├── gh-pages
+│   │   ├── static-gen/
+│   │   ├── static/
+│   │   └── wasm/
 │   ├── golangci-lint
-│   │   └── golangci.yaml
+│   │   └── golangci-lint.yaml
 │   └── goreleaser
 │       └── goreleaser.yaml
 ├── cmd
@@ -143,32 +175,28 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 │       ├── main.go
 │       └── main_test.go
 ├── internal
-│   ├── ui
-│   │   ├── doc.go
-│   │   ├── generate.go
-│   │   ├── home.templ
-│   │   ├── layout.templ
-│   │   ├── result.templ
-│   │   └── ui_test.go
 │   ├── eui64
 │   │   ├── eui64.go
 │   │   └── eui64_test.go
 │   ├── handlers
 │   │   ├── handlers.go
 │   │   └── handlers_test.go
+│   ├── ui
+│   │   ├── doc.go
+│   │   ├── generate.go
+│   │   ├── home.templ
+│   │   ├── home_templ.go
+│   │   ├── layout.templ
+│   │   ├── layout_templ.go
+│   │   ├── result.templ
+│   │   ├── result_templ.go
+│   │   └── ui_test.go
 │   └── validators
+│       ├── doc.go
 │       ├── ipv6_prefix_validator.go
 │       ├── ipv6_prefix_validator_test.go
 │       ├── mac_validator.go
 │       └── mac_validator_test.go
-├── .all-contributorsrc
-├── .circleci
-│   └── config.yml
-├── .codacy.yml
-├── .gitattributes
-├── .gitignore
-├── LICENSE
-├── README.md
 ├── examples
 │   ├── Traefik
 │   │   ├── .env
@@ -176,74 +204,96 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 │   │   ├── docker-compose.yaml
 │   │   └── traefik.yaml
 │   └── docker-compose.yaml
+├── .circleci
+│   └── config.yml
+├── .codacy.yml
+├── .gitattributes
+├── .gitignore
+├── .vscode
+│   └── settings.json
 ├── go.mod
-└── go.sum
+├── go.sum
+├── LICENSE
+├── Makefile
+├── README.md
+└── Taskfile.yml
 ```
 
 ### Dependencies
 
-- Golang: <https://go.dev/doc>
-- gin-gonic/gin: <https://github.com/gin-gonic/gin>
-- Templ: <https://github.com/a-h/templ>
-- HTMX: <https://htmx.org/docs>
+- [Fiber](https://github.com/gofiber/fiber): HTTP web framework
+- [Templ](https://github.com/a-h/templ): Type-safe HTML templating
+- [HTMX](https://htmx.org/docs): Frontend interactivity
 
 ### IDE Support
 
-If you're using VSCode, I've included an `extensions.json` file with recommended extensions.
+If you're using VS Code, an `extensions.json` file with recommended extensions is included in the `.vscode` directory.
 
-### Managing Templ files
+### Managing Templ Files
 
-- Installing the Templ CLI
+Templ files (`.templ`) are compiled to Go via `go generate`. To regenerate after editing `.templ` files:
 
-    ```console
-    go install github.com/a-h/templ/cmd/templ@latest
-    ```
+```console
+make generate
+```
 
-- Rebuilding `.templ.go` files after updates to `.templ` files (run from the project's root directory)
-
-    Linux:
-
-    ```console
-    rm ./ui/*_templ.go && templ generate
-    ```
-
-    Windows:
-
-    ```console
-    del ui\*_templ.go && templ generate
-    ```
+This runs `go generate ./...`, which invokes the `templ` CLI for all packages containing `//go:generate` directives.
 
 ### Testing
 
-- Unit Tests:
+- Run all tests:
 
     ```console
-    go test ./...
+    make test
     ```
 
-- Docker Test Stage:
+- Run tests with the race detector:
 
-    The Dockerfile includes a test stage to ensure all tests pass before building the production image.
+    ```console
+    make test-race
+    ```
+
+- Generate a coverage report:
+
+    ```console
+    make test-coverage
+    ```
+
+    The HTML report is written to `coverage/coverage.html`.
+
+### Linting
+
+The project uses [golangci-lint](https://golangci-lint.run/) with a comprehensive configuration at `build/golangci-lint/golangci-lint.yaml`.
+
+```console
+make lint
+```
+
+To format code according to the project's style rules:
+
+```console
+make fmt
+```
 
 ### Docker
 
-- Rebuilding the Docker image:
+- Build the Docker image:
 
     ```console
-    docker build -f docker/Dockerfile-dev -t eui64-calculator-dev .
+    make docker-build
     ```
 
-- Running the image locally:
+- Run the container locally:
 
     ```console
-    docker run -it -p 8080:8080 eui64-calculator-dev
+    make docker-run
     ```
 
 ### Notes
 
-- The Dockerfile uses `gcr.io/distroless/static-debian12` as the final runtime image for the application. This results in a minimal container image without a shell or other features typical of other container images.
-
-- I opted to hardcode Gin's release mode to avoid redundant environment variables. This can be easily commented out in the `cmd/server/main.go` file.
+- The Dockerfile uses `FROM scratch` as the base image, resulting in a minimal container without a shell or other OS-level utilities.
+- The server defaults to port `8080`. Override with the `PORT` environment variable.
+- Trusted reverse proxies can be configured via the `TRUSTED_PROXIES` environment variable (comma-separated list of IP addresses).
 
 ## Contributors
 
@@ -278,4 +328,4 @@ If you feel like contributing, please:
 
 ## License
 
-This project is licensed under the GNU GPLv3 license - see the [LICENSE](#license) file for details.
+This project is licensed under the [GNU Affero General Public License](LICENSE.md).

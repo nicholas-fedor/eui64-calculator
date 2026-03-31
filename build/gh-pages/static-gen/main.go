@@ -47,14 +47,14 @@ func run() error {
 	}
 
 	// Modify HTML for static site: remove HTMX, adjust paths, add WASM/JS scripts.
-	html := buf.String()
-	html = removeHTMXScript(html)
-	html = replaceServerPaths(html)
-	html = replaceLayoutScript(html)
-	html = fixInputPatterns(html)
+	htmlContent := buf.String()
+	htmlContent = removeHTMXScript(htmlContent)
+	htmlContent = replaceServerPaths(htmlContent)
+	htmlContent = replaceLayoutScript(htmlContent)
+	htmlContent = fixInputPatterns(htmlContent)
 
 	// Format HTML for readability with newlines and indentation.
-	formattedHTML, err := formatHTML(html)
+	formattedHTML, err := formatHTML(htmlContent)
 	if err != nil {
 		return fmt.Errorf("failed to format HTML: %w", err)
 	}
@@ -84,33 +84,33 @@ func run() error {
 
 // removeHTMXScript removes the HTMX script tag from the HTML, matching any version
 // or integrity attribute to handle CDN updates.
-func removeHTMXScript(html string) string {
+func removeHTMXScript(htmlContent string) string {
 	re := regexp.MustCompile(`<script\s+src="https://unpkg\.com/htmx\.org@[^"]+"[^>]*></script>`)
 
-	return re.ReplaceAllString(html, "")
+	return re.ReplaceAllString(htmlContent, "")
 }
 
 // replaceServerPaths updates server-specific paths and attributes to relative paths
 // and static-compatible attributes for GitHub Pages deployment, unescaping inline
 // script content to ensure valid JavaScript syntax.
-func replaceServerPaths(html string) string {
+func replaceServerPaths(htmlContent string) string {
 	const minMatchCount = 2 // Minimum number of regex matches (full match + one submatch).
 	// Remove all hx-* attributes from <form> tag.
 	re := regexp.MustCompile(`(<form[^>]*?)(?:\s+hx-[^=\s]+="[^"]*")*(\s*[^>]*>)`)
-	html = re.ReplaceAllString(html, "$1$2")
+	htmlContent = re.ReplaceAllString(htmlContent, "$1$2")
 
 	// Adjust static asset paths for GitHub Pages.
-	html = regexp.MustCompile(`/static/styles\.css`).ReplaceAllString(html, "./styles.css")
-	html = regexp.MustCompile(`/static/favicon\.ico`).ReplaceAllString(html, "./favicon.ico")
+	htmlContent = regexp.MustCompile(`/static/styles\.css`).ReplaceAllString(htmlContent, "./styles.css")
+	htmlContent = regexp.MustCompile(`/static/favicon\.ico`).ReplaceAllString(htmlContent, "./favicon.ico")
 
 	// Add preload hint for styles.css to prevent FOUC.
-	html = regexp.MustCompile(`<head>`).
-		ReplaceAllString(html, `<head><link rel="preload" href="./styles.css" as="style">`)
+	htmlContent = regexp.MustCompile(`<head>`).
+		ReplaceAllString(htmlContent, `<head><link rel="preload" href="./styles.css" as="style">`)
 
 	// Unescape HTML entities in <script> tags to prevent issues with JavaScript execution.
 	reScript := regexp.MustCompile(`<script\b[^>]*>(.*?)</script>`)
 
-	return reScript.ReplaceAllStringFunc(html, func(script string) string {
+	return reScript.ReplaceAllStringFunc(htmlContent, func(script string) string {
 		// Extract the script content (between <script> and </script>).
 		reContent := regexp.MustCompile(`<script\b[^>]*>(.*?)</script>`)
 
@@ -132,34 +132,34 @@ func replaceServerPaths(html string) string {
 
 // replaceLayoutScript replaces the layout's inline JavaScript with includes for
 // WebAssembly runtime and application scripts, enabling client-side functionality.
-func replaceLayoutScript(html string) string {
+func replaceLayoutScript(htmlContent string) string {
 	// Match the entire inline script, including copyToClipboard and htmx:afterSwap, with dotall mode.
 	formAttrRegex := regexp.MustCompile(
 		`(?s)<script>\s*function copyToClipboard\(elementId, buttonId\)\s*{.*?document\.body\.addEventListener\('htmx:afterSwap'.*?</script>`,
 	)
-	if !formAttrRegex.MatchString(html) {
+	if !formAttrRegex.MatchString(htmlContent) {
 		fmt.Fprintf(
 			os.Stderr,
 			"Warning: Inline copyToClipboard script not found in HTML; WebAssembly scripts may not be included\n",
 		)
 	}
 
-	return formAttrRegex.ReplaceAllString(html, `<script src="./wasm_exec.js"></script>
+	return formAttrRegex.ReplaceAllString(htmlContent, `<script src="./wasm_exec.js"></script>
             <script src="./scripts.js"></script>`)
 }
 
 // fixInputPatterns fixes regex patterns in <input> elements to be compatible with
 // modern browsers using the 'v' flag for pattern validation, avoiding character
 // class ranges for the separator to prevent "invalid character in class" errors.
-func fixInputPatterns(html string) string {
+func fixInputPatterns(htmlContent string) string {
 	// Match MAC address pattern: [0-9a-fA-F]{2}([-:][0-9a-fA-F]{2}){5}
 	macPatternRegex := regexp.MustCompile(
 		`pattern\s*=\s*"\[0\-9a\-fA\-F\]\{2\}\(\[\-:\]\[0\-9a\-fA\-F\]\{2\}\)\{5\}"`,
 	)
-	if macPatternRegex.MatchString(html) {
+	if macPatternRegex.MatchString(htmlContent) {
 		fmt.Fprintf(os.Stderr, "Info: MAC address pattern matched in HTML; applying regex fix\n")
 
-		return macPatternRegex.ReplaceAllStringFunc(html, func(match string) string {
+		return macPatternRegex.ReplaceAllStringFunc(htmlContent, func(match string) string {
 			fmt.Fprintf(os.Stderr, "Debug: Matched MAC address pattern: %s\n", match)
 
 			return `pattern="[0-9a-fA-F]{2}((-|:)[0-9a-fA-F]{2}){5}"`
@@ -171,7 +171,7 @@ func fixInputPatterns(html string) string {
 		"Warning: MAC address pattern not found in HTML; regex fix not applied\n",
 	)
 
-	return html
+	return htmlContent
 }
 
 // formatHTML parses the input HTML and returns a formatted version with newlines

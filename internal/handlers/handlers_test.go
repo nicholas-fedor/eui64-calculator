@@ -1,36 +1,37 @@
 package handlers
 
 import (
-	// Added for context support.
+	"io"
 	"net/http"
-	"net/http/httptest"
 	"net/url"
 	"strings"
 	"testing"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v3"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/nicholas-fedor/eui64-calculator/internal/eui64"
 )
 
-// setupRouter creates a Gin router for testing handler functions.
-// It configures the router in test mode with the default EUI-64 calculator, setting up routes for home and calculate endpoints.
-func setupRouter(t *testing.T) *gin.Engine {
+// setupRouter creates a Fiber app for testing handler functions.
+// It configures the app with the default EUI-64 calculator, setting up routes for home and calculate endpoints.
+func setupRouter(t *testing.T) *fiber.App {
 	t.Helper()
-	gin.SetMode(gin.TestMode)
 
-	r := gin.New()
+	app := fiber.New()
 	handler := NewHandler(&eui64.DefaultCalculator{})
-	r.GET("/", handler.Home)
-	r.POST("/calculate", handler.Calculate)
+	app.Get("/", handler.Home)
+	app.Post("/calculate", handler.Calculate)
 
-	return r
+	return app
 }
 
-// TestHomeHandler tests the Home handler’s response to GET requests.
+// TestHomeHandler tests the Home handler's response to GET requests.
 // It verifies that the handler renders the home page with a 200 status and includes expected content.
 func TestHomeHandler(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name       string
 		wantStatus int
@@ -45,13 +46,20 @@ func TestHomeHandler(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			router := setupRouter(t)
-			ctx := t.Context() // Use a basic context for tests
-			req, _ := http.NewRequestWithContext(ctx, http.MethodGet, "/", nil)
-			resp := httptest.NewRecorder()
-			router.ServeHTTP(resp, req)
-			assert.Equal(t, tt.wantStatus, resp.Code)
-			assert.Contains(t, resp.Body.String(), tt.wantBody)
+			t.Parallel()
+			app := setupRouter(t)
+
+			req, _ := http.NewRequestWithContext(t.Context(), http.MethodGet, "/", http.NoBody)
+			resp, err := app.Test(req)
+			require.NoError(t, err)
+
+			defer resp.Body.Close()
+
+			body, err := io.ReadAll(resp.Body)
+			require.NoError(t, err)
+
+			assert.Equal(t, tt.wantStatus, resp.StatusCode)
+			assert.Contains(t, string(body), tt.wantBody)
 		})
 	}
 }
@@ -60,6 +68,8 @@ func TestHomeHandler(t *testing.T) {
 // It ensures the handler processes valid MAC addresses and IPv6 prefixes, returning a 200 status
 // and the correct EUI-64 interface ID or full IPv6 address in the response.
 func TestCalculateHandlerValid(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name       string
 		formData   url.Values
@@ -88,20 +98,27 @@ func TestCalculateHandlerValid(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			router := setupRouter(t)
-			ctx := t.Context() // Use a basic context for tests
+			t.Parallel()
+			app := setupRouter(t)
+
 			req, _ := http.NewRequestWithContext(
-				ctx,
+				t.Context(),
 				http.MethodPost,
 				"/calculate",
 				strings.NewReader(tt.formData.Encode()),
 			)
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
-			resp := httptest.NewRecorder()
-			router.ServeHTTP(resp, req)
-			assert.Equal(t, tt.wantStatus, resp.Code)
-			assert.Contains(t, resp.Body.String(), tt.wantBody)
+			resp, err := app.Test(req)
+			require.NoError(t, err)
+
+			defer resp.Body.Close()
+
+			body, err := io.ReadAll(resp.Body)
+			require.NoError(t, err)
+
+			assert.Equal(t, tt.wantStatus, resp.StatusCode)
+			assert.Contains(t, string(body), tt.wantBody)
 		})
 	}
 }
@@ -110,6 +127,8 @@ func TestCalculateHandlerValid(t *testing.T) {
 // It verifies that the handler returns a 200 status with appropriate error messages
 // for malformed MAC addresses and IPv6 prefixes, ensuring proper validation feedback.
 func TestCalculateHandlerInvalid(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name       string
 		formData   url.Values
@@ -165,20 +184,27 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			router := setupRouter(t)
-			ctx := t.Context() // Use a basic context for tests
+			t.Parallel()
+			app := setupRouter(t)
+
 			req, _ := http.NewRequestWithContext(
-				ctx,
+				t.Context(),
 				http.MethodPost,
 				"/calculate",
 				strings.NewReader(tt.formData.Encode()),
 			)
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
-			resp := httptest.NewRecorder()
-			router.ServeHTTP(resp, req)
-			assert.Equal(t, tt.wantStatus, resp.Code)
-			assert.Contains(t, resp.Body.String(), tt.wantBody)
+			resp, err := app.Test(req)
+			require.NoError(t, err)
+
+			defer resp.Body.Close()
+
+			body, err := io.ReadAll(resp.Body)
+			require.NoError(t, err)
+
+			assert.Equal(t, tt.wantStatus, resp.StatusCode)
+			assert.Contains(t, string(body), tt.wantBody)
 		})
 	}
 }

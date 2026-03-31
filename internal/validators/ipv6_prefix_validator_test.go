@@ -12,6 +12,8 @@ import (
 // It verifies that the function accepts valid IPv6 prefixes (up to 4 hextets) with proper formatting
 // and rejects invalid inputs, checking for specific error messages in validation order.
 func TestValidateIPv6Prefix(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name    string
 		prefix  string
@@ -55,6 +57,8 @@ func TestValidateIPv6Prefix(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			err := ValidateIPv6Prefix(tt.prefix)
 			if tt.wantErr != "" {
 				require.Error(t, err)
