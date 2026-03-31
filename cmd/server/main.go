@@ -106,6 +106,8 @@ func SetupRouter(config Config) (*fiber.App, error) {
 			Private:    false,
 			UnixSocket: false,
 		}
+		fiberCfg.ProxyHeader = fiber.HeaderXForwardedFor
+		fiberCfg.EnableIPValidation = true
 	}
 
 	app := fiber.New(fiberCfg)

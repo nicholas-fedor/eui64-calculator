@@ -122,6 +122,86 @@ func TestRouterSetup(t *testing.T) {
 	}
 }
 
+// setupProxyRouter creates a Fiber app configured for testing proxy IP behavior.
+// It trusts "0.0.0.0" because app.Test() uses that as the hardcoded RemoteAddr.
+func setupProxyRouter(t *testing.T) *fiber.App {
+	t.Helper()
+
+	app := fiber.New(fiber.Config{
+		TrustProxy:         true,
+		ProxyHeader:        fiber.HeaderXForwardedFor,
+		EnableIPValidation: true,
+		TrustProxyConfig: fiber.TrustProxyConfig{
+			Proxies: []string{"0.0.0.0"},
+		},
+	})
+
+	app.Get("/test-ip", func(c fiber.Ctx) error {
+		return c.SendString(c.IP())
+	})
+
+	return app
+}
+
+// TestTrustedProxies verifies that c.IP() correctly extracts the client IP
+// from the X-Forwarded-For header when trusted proxies are configured.
+func TestTrustedProxies(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name          string
+		xForwardedFor string
+		wantIP        string
+	}{
+		{
+			name:          "Single IP in X-Forwarded-For",
+			xForwardedFor: "203.0.113.195",
+			wantIP:        "203.0.113.195",
+		},
+		{
+			name:          "Multiple IPs in X-Forwarded-For returns first",
+			xForwardedFor: "203.0.113.195, 70.41.3.18, 150.172.238.178",
+			wantIP:        "203.0.113.195",
+		},
+		{
+			name:          "No X-Forwarded-For header returns remote IP",
+			xForwardedFor: "",
+			wantIP:        "0.0.0.0",
+		},
+	}
+
+	app := setupProxyRouter(t)
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			req, err := http.NewRequestWithContext(
+				context.Background(),
+				http.MethodGet,
+				"/test-ip",
+				http.NoBody,
+			)
+			require.NoError(t, err)
+
+			if tt.xForwardedFor != "" {
+				req.Header.Set(fiber.HeaderXForwardedFor, tt.xForwardedFor)
+			}
+
+			resp, err := app.Test(req)
+			require.NoError(t, err)
+
+			defer resp.Body.Close()
+
+			body, err := io.ReadAll(resp.Body)
+			require.NoError(t, err)
+
+			assert.Equal(t, http.StatusOK, resp.StatusCode, "Status code")
+			assert.Equal(t, tt.wantIP, string(body), "Client IP")
+		})
+	}
+}
+
 // TestLoadConfig to cover Lines 37 and 56.
 func TestLoadConfig(t *testing.T) {
 	tests := []struct {
