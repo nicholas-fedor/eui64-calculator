@@ -134,7 +134,7 @@ tasks:
     deps:
       - generate
     cmds:
-      - go test -bench=. -benchmem ./...
+      - go test -run=^$ -bench=. -benchmem ./...
 
   ####################################################################################################
   # Build and Run

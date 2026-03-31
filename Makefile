@@ -70,10 +70,10 @@ generate: ## Run go generate to produce templ and other generated code
 # Linting and Validation
 ######################################################################################################
 
-lint: ## Run golangci-lint with project configuration
+lint: generate ## Run golangci-lint with project configuration
 	golangci-lint run --config $(GOLANGCI_LINT_CONFIG) ./...
 
-vet: ## Run go vet for additional static analysis
+vet: generate ## Run go vet for additional static analysis
 	go vet ./...
 
 check: lint vet test ## Run lint, vet, and test (full CI check)
@@ -104,7 +104,7 @@ test-coverage: generate ## Run all tests with coverage reporting
 cover: test-coverage ## Alias for test-coverage
 
 bench: generate ## Run all benchmark tests
-	go test -bench=. -benchmem ./...
+	go test -run=^$ -bench=. -benchmem ./...
 
 ######################################################################################################
 # Build

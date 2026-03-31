@@ -213,8 +213,6 @@ linters:
         - (*strings.Builder).WriteString
         - (*bytes.Buffer).Write
         - (*bytes.Buffer).WriteString
-        - fmt.Fprintf
-        - fmt.Fprint
       # Display function signature instead of selector.
       # Default: false
       verbose: true

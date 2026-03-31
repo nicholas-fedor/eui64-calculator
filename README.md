@@ -60,6 +60,7 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 #### Prerequisites
 
 - Go 1.26+: <https://go.dev/doc/install>
+- Templ: <https://github.com/a-h/templ>
 - Make (optional, for Makefile targets)
 - [Task](https://taskfile.dev/installation/) (optional, for Taskfile targets)
 
