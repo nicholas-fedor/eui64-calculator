@@ -172,6 +172,7 @@ tasks:
       GOOS: linux
       GOARCH: amd64
     cmds:
+      - mkdir -p {{.DIST_DIR}}
       - go build {{.GOFLAGS}} -ldflags "{{.LDFLAGS}}" -o {{.DIST_DIR}}/{{.BINARY_NAME}} {{.ENTRYPOINT}}
       - docker build -t {{.DOCKER_IMAGE}}:{{.DOCKER_TAG}} -f build/docker/Dockerfile {{.DIST_DIR}}
 
