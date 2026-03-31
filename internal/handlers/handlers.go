@@ -6,7 +6,7 @@
 package handlers
 
 import (
-	"fmt"
+	"bytes"
 	"log/slog"
 	"net/http"
 
@@ -96,12 +96,14 @@ func (h *Handler) Calculate(c fiber.Ctx) error {
 // Home handles GET requests to the root path, rendering the home page.
 // It serves the initial form for entering MAC and IPv6 prefix values,
 // aborting with a 500 status on render failure.
+//
+//nolint:wrapcheck // Returning Fiber response directly
 func (h *Handler) Home(c fiber.Ctx) error {
-	c.Set("Content-Type", "text/html; charset=utf-8")
+	var buf bytes.Buffer
 
 	err := ui.Home().Render(
 		c.Context(),
-		c.Response().BodyWriter(),
+		&buf,
 	)
 	if err != nil {
 		slog.ErrorContext(
@@ -110,21 +112,25 @@ func (h *Handler) Home(c fiber.Ctx) error {
 			"error", err,
 		)
 
-		return fmt.Errorf("send internal server error: %w", c.SendStatus(http.StatusInternalServerError))
+		return c.SendStatus(http.StatusInternalServerError)
 	}
 
-	return nil
+	c.Set("Content-Type", "text/html; charset=utf-8")
+
+	return c.Send(buf.Bytes())
 }
 
 // renderResult renders the calculation result to the HTTP response.
 // It uses the provided ResultData to display either the computed EUI-64 address
 // or an error message, returning a 500 status if rendering fails.
+//
+//nolint:wrapcheck // Returning Fiber response directly
 func (h *Handler) renderResult(c fiber.Ctx, data ui.ResultData) error {
-	c.Set("Content-Type", "text/html; charset=utf-8")
+	var buf bytes.Buffer
 
 	err := ui.Result(data).Render(
 		c.Context(),
-		c.Response().BodyWriter(),
+		&buf,
 	)
 	if err != nil {
 		slog.ErrorContext(
@@ -133,8 +139,10 @@ func (h *Handler) renderResult(c fiber.Ctx, data ui.ResultData) error {
 			"error", err,
 		)
 
-		return fmt.Errorf("send internal server error: %w", c.SendStatus(http.StatusInternalServerError))
+		return c.SendStatus(http.StatusInternalServerError)
 	}
 
-	return nil
+	c.Set("Content-Type", "text/html; charset=utf-8")
+
+	return c.Send(buf.Bytes())
 }
