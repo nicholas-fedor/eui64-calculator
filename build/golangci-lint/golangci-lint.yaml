@@ -240,8 +240,6 @@ linters:
       # but not `http\.Cookie`.
       # Default: []
       exclude:
-        # Exclude test files - pattern matches type names from test files
-        - '.*_test\.\w+$'
         # Exclude cobra.Command - typically used with partial initialization
         - '.+/cobra\.Command$'
         # Exclude standard library types that don't require full initialization
