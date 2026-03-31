@@ -68,11 +68,15 @@ tasks:
 
   lint:
     desc: Run golangci-lint with project configuration
+    deps:
+      - generate
     cmds:
       - golangci-lint run --config {{.GOLANGCI_LINT_CONFIG}} ./...
 
   vet:
     desc: Run go vet for additional static analysis
+    deps:
+      - generate
     cmds:
       - go vet ./...
 
