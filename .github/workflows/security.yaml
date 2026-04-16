@@ -61,7 +61,7 @@ jobs:
           egress-policy: audit
 
       - id: govulncheck
-        uses: nicholas-fedor/govulncheck-action@b438bbbcb5a07abf8d322c367da4a3d45f99e183
+        uses: nicholas-fedor/govulncheck-action@f340a1aa3ff2aff848e47d1ba39b01692f4897da
         with:
           go-package: cmd/... internal/...
           go-version-file: "go.mod"
