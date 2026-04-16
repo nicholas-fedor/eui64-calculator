@@ -49,7 +49,7 @@ func TestHomeHandler(t *testing.T) {
 			t.Parallel()
 			app := setupRouter(t)
 
-			req, _ := http.NewRequestWithContext(t.Context(), http.MethodGet, "/", http.NoBody)
+			req, _ := http.NewRequestWithContext(t.Context(), http.MethodGet, "http://localhost/", http.NoBody)
 			resp, err := app.Test(req)
 			require.NoError(t, err)
 
@@ -104,7 +104,7 @@ func TestCalculateHandlerValid(t *testing.T) {
 			req, _ := http.NewRequestWithContext(
 				t.Context(),
 				http.MethodPost,
-				"/calculate",
+				"http://localhost/calculate",
 				strings.NewReader(tt.formData.Encode()),
 			)
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -190,7 +190,7 @@ func TestCalculateHandlerInvalid(t *testing.T) {
 			req, _ := http.NewRequestWithContext(
 				t.Context(),
 				http.MethodPost,
-				"/calculate",
+				"http://localhost/calculate",
 				strings.NewReader(tt.formData.Encode()),
 			)
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")

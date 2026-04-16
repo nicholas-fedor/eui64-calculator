@@ -97,12 +97,12 @@ func TestRouterSetup(t *testing.T) {
 				req, _ = http.NewRequestWithContext(
 					context.Background(),
 					tt.method,
-					tt.path,
+					"http://localhost"+tt.path,
 					strings.NewReader(tt.formData.Encode()),
 				)
 				req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 			} else {
-				req, _ = http.NewRequestWithContext(context.Background(), tt.method, tt.path, http.NoBody)
+				req, _ = http.NewRequestWithContext(context.Background(), tt.method, "http://localhost"+tt.path, http.NoBody)
 			}
 
 			resp, err := app.Test(req)
@@ -179,7 +179,7 @@ func TestTrustedProxies(t *testing.T) {
 			req, err := http.NewRequestWithContext(
 				context.Background(),
 				http.MethodGet,
-				"/test-ip",
+				"http://localhost/test-ip",
 				http.NoBody,
 			)
 			require.NoError(t, err)
