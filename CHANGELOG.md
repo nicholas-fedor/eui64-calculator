@@ -8,11 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Chores
+### Added
 
-- Include generated files within the repo to avoid build issues by @nicholas-fedor in [#716](https://github.com/nicholas-fedor/eui64-calculator/pull/716)
+- Add sbom attestation subject-checksums path by @nicholas-fedor in [#718](https://github.com/nicholas-fedor/eui64-calculator/pull/718)
 
-## [0.2.9] - 2026-04-26
+## [0.2.10] - 2026-04-26
 
 ### Changed
 
@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Include generated files within the repo to avoid build issues by @nicholas-fedor in [#716](https://github.com/nicholas-fedor/eui64-calculator/pull/716)
 - Add codeowners file by @nicholas-fedor in [#710](https://github.com/nicholas-fedor/eui64-calculator/pull/710)
 - Pin dependencies by @renovate[bot] in [#701](https://github.com/nicholas-fedor/eui64-calculator/pull/701)
 - Update orhun/git-cliff-action digest to f50e115 by @renovate[bot] in [#703](https://github.com/nicholas-fedor/eui64-calculator/pull/703)
@@ -67,7 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New Contributors
 
-- @github-actions[bot] made their first contribution in [#715](https://github.com/nicholas-fedor/eui64-calculator/pull/715)
+- @github-actions[bot] made their first contribution in [#717](https://github.com/nicholas-fedor/eui64-calculator/pull/717)
 
 ## [0.2.8] - 2026-03-31
 
@@ -1080,8 +1081,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Compare Releases
 
-- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.9...HEAD)
-- [0.2.9](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.8...v0.2.9)
+- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.10...HEAD)
+- [0.2.10](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.8...v0.2.10)
 - [0.2.8](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.7...v0.2.8)
 - [0.2.7](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.6...v0.2.7)
 - [0.2.6](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.5...v0.2.6)
