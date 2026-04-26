@@ -316,7 +316,6 @@ docker_signs:
       - "sign"
       - "${artifact}@${digest}"
       - "--yes"
-    artifacts: all
     output: true
 
 ################################################################################
