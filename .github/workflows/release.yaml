@@ -5,17 +5,23 @@ on:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
-permissions:
-  contents: read
+permissions: {}  # No global permissions; jobs declare only what they need
 
 jobs:
   # Run Go tests and upload coverage
   test:
+    permissions:
+      contents: read
     uses: ./.github/workflows/test.yaml
 
   # Build binaries, images, SBOMs, and attestations
   build:
     needs: [test] # Requires tests to pass
+    permissions:
+      contents: write # For code checkout and publishing releases
+      packages: write # For pushing images to registries
+      attestations: write # For generating provenance and SBOMs
+      id-token: write # For OIDC auth to container registry
     uses: ./.github/workflows/build.yaml
     with:
       project_name: eui64-calculator
@@ -27,6 +33,10 @@ jobs:
     name: Deploy to GitHub Pages
     needs:
       - test
+    permissions:
+      contents: write
+      packages: read
+      id-token: write
     uses: ./.github/workflows/deploy-gh-pages.yaml
 
   Update-Go-Docs:
@@ -34,4 +44,6 @@ jobs:
     needs:
       - test
       - build
+    permissions:
+      contents: read
     uses: ./.github/workflows/update-go-docs.yaml
