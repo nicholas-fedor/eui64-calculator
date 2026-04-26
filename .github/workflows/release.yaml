@@ -9,49 +9,22 @@ permissions:
   contents: read
 
 jobs:
-  lint:
-    name: Lint the project
-    permissions:
-      contents: read
-    uses: ./.github/workflows/lint-go.yaml
-
+  # Run Go tests and upload coverage
   test:
-    name: Run unit tests
-    permissions:
-      contents: read
     uses: ./.github/workflows/test.yaml
-    with:
-      environment: CI
-
-  build:
-    name: Build the Release
-    needs:
-      - test
-      - lint
-    permissions:
-      contents: write
-      packages: write
-      attestations: write
-      id-token: write
-    secrets: inherit
-    uses: ./.github/workflows/build.yaml
-    with:
-      project_name: eui64-calculator
-      docker_namespace: nickfedor
-      ghcr_namespace: nicholas-fedor
-      environment: CI
-
-  manifest:
-    name: Create image manifests
-    needs: build
     permissions:
       contents: read # For code checkout
-      packages: write # For pushing manifests
-      id-token: write
-    secrets: inherit
-    uses: ./.github/workflows/create-manifests.yaml
+
+  # Build binaries, images, SBOMs, and attestations
+  build:
+    needs: [test] # Requires tests to pass
+    uses: ./.github/workflows/build.yaml
+    permissions:
+      contents: write # For code checkout and publishing releases
+      packages: write # For pushing images to registries
+      attestations: write # For generating provenance and SBOMs
+      id-token: write # For OIDC auth to Docker Hub and GHCR
     with:
-      version: ${{ github.ref_name }} # Tag name (e.g., v1.2.3)
       project_name: eui64-calculator
       docker_namespace: nickfedor
       ghcr_namespace: nicholas-fedor
@@ -61,21 +34,17 @@ jobs:
     name: Deploy to GitHub Pages
     needs:
       - test
-      - lint
     permissions:
       contents: write
       packages: read
       id-token: write
-    secrets: inherit
     uses: ./.github/workflows/deploy-gh-pages.yaml
 
   Update-Go-Docs:
     name: Update Go docs
     needs:
-      - lint
       - test
       - build
-      - manifest
     permissions:
       contents: read
     uses: ./.github/workflows/update-go-docs.yaml

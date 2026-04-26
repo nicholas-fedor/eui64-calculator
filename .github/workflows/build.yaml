@@ -66,16 +66,13 @@ jobs:
           lookup-only: true
 
       - name: Install templ
-        run: go install github.com/a-h/templ/cmd/templ@latest
+        run: go install github.com/a-h/templ/cmd/templ@5ddd784440b232930161d76c7ca85d922fdcf183 # v0.3.1001
 
       - name: Install dependencies
         run: go mod download
 
       - name: Generate templates
         run: go generate ./...
-
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@cad07c2e89fa2edd6e2d7bab4c1aa38e53f76003 # v4.1.1
 
       - name: Set up QEMU # Enable multi-platform emulation.
         uses: docker/setup-qemu-action@f4e8deed0c3c26542279f4042c0e1d059cbf012d
@@ -86,74 +83,63 @@ jobs:
       - name: Set up Docker Buildx # Configure multi-platform builds.
         uses: docker/setup-buildx-action@21162887f0d6e25b4e8eafb0cf44cf9bf7f6acd3
         with:
-          driver: docker-container
           platforms: linux/amd64,linux/386,linux/arm/v6,linux/arm64/v8,linux/riscv64
-          use: true
 
-      - name: Enable containerd snapshotter # Enable containerd for multi-platform builds
-        run: |
-          sudo bash -c 'echo "{\"features\": {\"containerd-snapshotter\": true}}" > /etc/docker/daemon.json'
-          sudo systemctl restart docker
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@cad07c2e89fa2edd6e2d7bab4c1aa38e53f76003 # v4.1.1
 
       - name: Install Syft for SBOM generation # Install Syft for GoReleaser SBOM generation
         run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
 
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@1c06494168d0ed3f75efd4e4e0c8412310a0b87a
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@ba754150c9dbbaa912ae0ac3cfba43f84195cef2
+      - name: Login to Docker Hub # Authenticate to Docker Hub
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to GHCR
-        uses: docker/login-action@ba754150c9dbbaa912ae0ac3cfba43f84195cef2
+      - name: Login to GHCR # Authenticate to GHCR
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@01cbe076be10ba0af7b0b9319ac490a93d3d2fcd
+        uses: goreleaser/goreleaser-action@e24998b8b67b290c2fa8b7c14fcfa7de2c5c9b8c # v7
         with:
           distribution: goreleaser
           version: "~> v2"
-          args: release --clean --config build/goreleaser/goreleaser.yaml
+          args: >-
+            release
+            --config build/goreleaser/goreleaser.yaml
+            --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_NAMESPACE: ${{ inputs.docker_namespace }}
           GHCR_NAMESPACE: ${{ inputs.ghcr_namespace }}
 
-      - name: Sign Docker Images with Cosign (Keyless)
-        run: |
-          for arch in amd64 i386 armhf arm64v8 riscv64; do
-            cosign sign --yes "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-${GITHUB_REF_NAME}"
-            cosign sign --yes "${INPUTS_DOCKER_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-latest"
-            cosign sign --yes "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-${GITHUB_REF_NAME}"
-            cosign sign --yes "ghcr.io/${INPUTS_GHCR_NAMESPACE}/${INPUTS_PROJECT_NAME}:${arch}-latest"
-          done
-        shell: bash
-        env:
-          INPUTS_DOCKER_NAMESPACE: ${{ inputs.docker_namespace }}
-          INPUTS_PROJECT_NAME: ${{ inputs.project_name }}
-          INPUTS_GHCR_NAMESPACE: ${{ inputs.ghcr_namespace }}
-
-      - name: Upload binary SBOMs # Upload SBOMs for prod builds.
+      - name: Upload binary SBOMs
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
         with:
           name: binary-sboms
           path: ./dist/*.sbom.json
           if-no-files-found: warn
 
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4
+      - name: Generate SBOM attestation
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
+        with:
+          sbom-path: ./dist/*.sbom.json
+
+      - name: Generate artifact attestation for checksums
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
         with:
           subject-checksums: ./dist/checksums.txt
 
-      - name: Clean up dist directory # Remove dist directory to avoid leftover artifacts.
+      - name: Generate artifact attestation for digests
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
+        with:
+          subject-checksums: ./dist/digests.txt
+
+      - name: Clean up dist directory
         if: always()
         run: rm -rf dist

@@ -1,0 +1,61 @@
+name: Update Changelog
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - CHANGELOG.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # For committing changelog
+      pull-requests: write # For creating PR
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Generate Changelog
+        uses: orhun/git-cliff-action@c93ef52f3d0ddcdcc9bd5447d98d458a11cd4f72 # v4
+        with:
+          config: cliff.toml
+          args: --verbose
+        env:
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request for Changelog
+        id: create_pr
+        uses: peter-evans/create-pull-request@d32e88dac789dcc7906e7d26f69f24116fa9c97d
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: docs/update-changelog
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          sign-commits: true
+          title: "docs(changelog): update changelog for ${{ github.ref_name }}"
+          commit-message: "docs(changelog): update changelog for ${{ github.ref_name }}"
+          body: "Automated changelog update for ${{ github.ref_name }}"
+          delete-branch: true
+
+      - name: Enable auto-merge
+        if: "${{ steps.create_pr.outputs.pull-request-number }}"
+        run: gh pr merge --auto --squash "${STEPS_CREATE_PR_OUTPUTS_PULL_REQUEST_NUMBER}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STEPS_CREATE_PR_OUTPUTS_PULL_REQUEST_NUMBER: ${{ steps.create_pr.outputs.pull-request-number }}

@@ -1,8 +1,42 @@
-# Exclude unnecessary files
-*.log
-*.md
+# Ignore Git files and directories
 .git
+.gitignore
+.gitattributes
+
+# Ignore CI/CD and configuration files
+.circleci/
+.codacy.yml
+.editorconfig
+.all-contributorsrc
+.codecov.yaml
+.github/
+build/mockery/*
+build/golangci-lint/*
+
+# Ignore documentation and examples
+*.md
+docs/
+examples/
+
+# Ignore test directories and data
 test/
+internal/*/mocks/
+
+# Ignore scripts and tools
+scripts/
+tools/
+
+# Ignore large images and assets
+*.png
+*.ico
+
+# Ignore GoReleaser build artifacts
+dist/
+
+# Ignore build directory except for docker-related files
+build/*
+!build/docker/
+
 # Ensure necessary files are included
 !go.mod
 !go.sum
