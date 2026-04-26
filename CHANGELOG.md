@@ -8,14 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
+### Chores
 
-- Enable docker secrets passthrough from build to release by @nicholas-fedor in [#714](https://github.com/nicholas-fedor/eui64-calculator/pull/714)
+- Include generated files within the repo to avoid build issues by @nicholas-fedor in [#716](https://github.com/nicholas-fedor/eui64-calculator/pull/716)
 
 ## [0.2.9] - 2026-04-26
 
 ### Changed
 
+- Enable docker secrets passthrough from build to release by @nicholas-fedor in [#714](https://github.com/nicholas-fedor/eui64-calculator/pull/714)
 - Revert previous changes to permissions by @nicholas-fedor in [#712](https://github.com/nicholas-fedor/eui64-calculator/pull/712)
 - Update workflow permissions by @nicholas-fedor in [#708](https://github.com/nicholas-fedor/eui64-calculator/pull/708)
 - Move permissions to job level by @nicholas-fedor in [#706](https://github.com/nicholas-fedor/eui64-calculator/pull/706)
@@ -66,7 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New Contributors
 
-- @github-actions[bot] made their first contribution in [#713](https://github.com/nicholas-fedor/eui64-calculator/pull/713)
+- @github-actions[bot] made their first contribution in [#715](https://github.com/nicholas-fedor/eui64-calculator/pull/715)
 
 ## [0.2.8] - 2026-03-31
 
