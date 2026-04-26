@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update orhun/git-cliff-action digest to f50e115 by @renovate[bot] in [#703](https://github.com/nicholas-fedor/eui64-calculator/pull/703)
 - Update module github.com/gofiber/fiber/v3 to v3.2.0 by @renovate[bot] in [#699](https://github.com/nicholas-fedor/eui64-calculator/pull/699)
 - Update step-security/harden-runner action to v2.19.0 by @renovate[bot] in [#698](https://github.com/nicholas-fedor/eui64-calculator/pull/698)
 - Update module github.com/gofiber/utils/v2 to v2.0.4 by @renovate[bot] in [#697](https://github.com/nicholas-fedor/eui64-calculator/pull/697)
@@ -51,6 +52,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fix missing Host header in HTTP requests by @nicholas-fedor in [#694](https://github.com/nicholas-fedor/eui64-calculator/pull/694)
+
+### New Contributors
+
+- @github-actions[bot] made their first contribution in [#702](https://github.com/nicholas-fedor/eui64-calculator/pull/702)
 
 ## [0.2.8] - 2026-03-31
 
