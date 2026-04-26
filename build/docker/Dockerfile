@@ -1,9 +1,7 @@
-# ╔═════════════════════════════════════════════════════╗
-# ║ IMAGE                                               ║
-# ╚═════════════════════════════════════════════════════╝
 FROM scratch
-WORKDIR /app
-COPY eui64-calculator .
-USER 65534:65534
+ARG BUILDPLATFORM
+ARG TARGETPLATFORM
+COPY --chmod=0755 ${TARGETPLATFORM}/eui64-calculator /eui64-calculator
 EXPOSE 8080
-ENTRYPOINT ["./eui64-calculator"]
+USER 65534:65534
+ENTRYPOINT ["/eui64-calculator"]

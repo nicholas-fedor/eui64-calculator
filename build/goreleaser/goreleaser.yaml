@@ -1,139 +1,81 @@
-######################################################################################################
-#                                                                                                    #
-#                               EUI64-calculator GoReleaser Configuration                            #
-#                                                                                                    #
-# eui64-calculator: https://github.com/nicholas-fedor/eui64-calculator/                              #
-# GoReleaser: https://goreleaser.com/                                                                #
-#                                                                                                    #
-######################################################################################################
+################################################################################
+#                                                                              #
+#                  GoReleaser OSS Stable Release Configuration                 #
+#                                                                              #
+# Project: EUI64-Calculator                                                    #
+# Project Repository: https://github.com/nicholas-fedor/eui64-calculator/      #
+#                                                                              #
+# GoReleaser URL: https://goreleaser.com/                                      #
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json      #
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj                                             #
+#                                                                              #
+################################################################################
 
-# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+################################################################################
+# Configuration Version
 version: 2
+################################################################################
 
+################################################################################
+# Project Configuration
 # https://goreleaser.com/customization/project/
-project_name: eui64-calculator
+################################################################################
+project_name: "eui64-calculator"
 
-######################################################################################################
+################################################################################
+# Verifiable Builds (Supply Chain Security)
+# https://goreleaser.com/customization/builds/verifiable_builds/
+################################################################################
+gomod:
+  proxy: true
+  env:
+    - GOPROXY=https://proxy.golang.org,direct
+    - GOSUMDB=sum.golang.org
+
+################################################################################
 # Go Binary Build Configuration
 # https://goreleaser.com/customization/builds/go/
-######################################################################################################
+################################################################################
 builds:
-  - # Path to main.go file or main package.
-    main: ./cmd/server/main.go
-
-    # Binary name.
-    binary: eui64-calculator
-
-    # Custom flags.
+  - id: "eui64-calculator-binary"
+    main: ./cmd/server/
+    binary: "eui64-calculator"
     flags:
-      # trims path
       - -trimpath
-
-    # Custom ldflags.
-    # For more info refer to: https://pkg.go.dev/cmd/go#hdr-Compile_packages_and_dependencies
-    # and https://pkg.go.dev/cmd/link
     ldflags:
       - -s -w
       - -X main.version={{ .Version }}
-      - -X main.commit={{ .ShortCommit }}
+      - -X main.commit={{ .Commit }}
       - -X main.date={{ .CommitDate }}
-
-    # Custom environment variables to be set during the builds.
-    # Invalid environment variables will be ignored.
-    # For more info refer to: https://pkg.go.dev/cmd/go#hdr-Environment_variables
     env:
       - CGO_ENABLED=0
-
-    # GOOS list to build for.
-    # For more info refer to: https://pkg.go.dev/cmd/go#hdr-Environment_variables
     goos:
       - linux
       - windows
       - darwin
-
-    # GOARCH to build for.
-    # For more info refer to: https://pkg.go.dev/cmd/go#hdr-Environment_variables
     goarch:
       - amd64
       - "386"
       - arm
       - arm64
       - riscv64
-
-    # GOARM to build for when GOARCH is arm.
-    # For more info refer to: https://pkg.go.dev/cmd/go#hdr-Environment_variables
-    # and https://go.dev/wiki/MinimumRequirements#microarchitecture-support
-    # Default: [ 6 ].
-
-    # GOAMD64 to build when GOARCH is amd64.
-    # For more info refer to: https://pkg.go.dev/cmd/go#hdr-Environment_variables
-    # and https://go.dev/wiki/MinimumRequirements#microarchitecture-support
-    # Default: [ 'v1' ].
-
-    # GO386 to build when GOARCH is 386.
-    # For more info refer to: https://pkg.go.dev/cmd/go#hdr-Environment_variables
-    # and https://go.dev/wiki/MinimumRequirements#microarchitecture-support
-    # Default: [ 'sse2' ].
-    # Since: v2.4.
-
-    # GORISCV64 to build when GOARCH is RISCV64.
-    # For more info refer to: https://pkg.go.dev/cmd/go#hdr-Environment_variables
-    # and https://go.dev/wiki/MinimumRequirements#microarchitecture-support
-    # Default: [ 'rva20u64' ].
-    # Since: v2.4.
-
-    # List of combinations of GOOS + GOARCH + GOARM to ignore.
     ignore:
-      - goos: darwin
-        goarch: "386"
+      - goos: windows
+        goarch: riscv64
       - goos: windows
         goarch: arm
-      - goos: windows
-        goarch: arm64
-      - goos: windows
-        goarch: riscv64
       - goos: darwin
-        goarch: riscv64
-
-    # Set the modified timestamp on the output binary, typically
-    # you would do this to ensure a build was reproducible.
-    # Pass an empty string to skip modifying the output.
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
     mod_timestamp: "{{ .CommitTimestamp }}"
-######################################################################################################
 
-######################################################################################################
+################################################################################
 # Binary Archive Configuration
-# https://goreleaser.com/customization/archive/
-######################################################################################################
+# https://goreleaser.com/customization/package/archives/
+################################################################################
 archives:
-  - # Archive formats.
-    #
-    # If format is `binary`, no archives are created and the binaries are instead
-    # uploaded directly.
-    #
-    # Valid options are:
-    # - `tar.gz`
-    # - `tgz`
-    # - `tar.xz`
-    # - `txz`
-    # - `tar.zst`
-    # - `tzst` # Since: v2.1.
-    # - `tar`
-    # - `gz`
-    # - `zip`
-    # - `binary`
-    #
-    # Default: ['tar.gz'].
-    formats: ["tar.gz"]
-
-    # Archive name.
-    #
-    # Default:
-    # - if format is `binary`:
-    #   - `{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}{{ with .Mips }}_{{ . }}{{ end }}{{ if not (eq .Amd64 "v1") }}{{ .Amd64 }}{{ end }}`
-    # - if format is anything else:
-    #   - `{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}{{ with .Mips }}_{{ . }}{{ end }}{{ if not (eq .Amd64 "v1") }}{{ .Amd64 }}{{ end }}`
-    # Templates: allowed.
+  - formats: ["tar.gz"]
     name_template: >-
       {{- .ProjectName }}_
       {{- if eq .Os "darwin" }}macOS
@@ -145,319 +87,241 @@ archives:
       {{- else if eq .Arch "riscv64" }}riscv64
       {{- else }}{{ .Arch }}{{ end }}_
       {{- .Version -}}
-
-    # Can be used to change the archive formats for specific GOOSs.
-    # Most common use case is to archive as zip on Windows.
     format_overrides:
       - goos: windows
         formats: ["zip"]
-
-    # Additional files/globs to add to the archive.
-    #
-    # Default: [ 'LICENSE*', 'README*', 'CHANGELOG', 'license*', 'readme*', 'changelog'].
-    # Templates: allowed.
     files:
       - LICENSE.md
-######################################################################################################
+    builds_info:
+      mtime: "{{ .CommitTimestamp }}"
 
-######################################################################################################
-# Creates SBOMs of all archives using syft
-# https://goreleaser.com/customization/sbom
-######################################################################################################
-sboms:
-  # Which artifacts to catalog.
-  - artifacts: archive
-######################################################################################################
+################################################################################
+# Source Archive Configuration
+################################################################################
+source:
+  enabled: true
+  name_template: "eui64-calculator.src"
 
-######################################################################################################
-# Docker Image Build Configuration
-# https://goreleaser.com/customization/docker/
-######################################################################################################
-dockers:
-  - ##################################################################################################
-    # eui64-calculator:amd64
-    ##################################################################################################
-    # GOOS of the built binaries/packages that should be used.
-    goos: linux
-
-    # GOARCH of the built binaries/packages that should be used.
-    goarch: amd64
-
-    # GOAMD64 of the built binaries/packages that should be used.
-    # Default: 'v1'.
-
-    # Templates of the Docker image names.
-    # Templates: allowed.
-    image_templates:
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:amd64-{{ .Tag }}"
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:amd64-latest"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:amd64-{{ .Tag }}"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:amd64-latest"
-
-    # Path to the Dockerfile (from the project root).
-    # Default: 'Dockerfile'.
-    # Templates: allowed.
-    dockerfile: build/docker/Dockerfile
-
-    # Set the "backend" for the Docker pipe.
-    # Valid options are: docker, buildx, podman.
-    # Podman is a GoReleaser Pro feature and is only available on Linux.
-    # Default: 'docker'.
-    use: buildx
-
-    # Docker build flags.
-    # Templates: allowed.
-    build_flag_templates:
-      # Sets Docker Buildx output to pushe to a registry (type=registry).
-      - --output=type=registry
-      # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
-      - --attest=type=provenance,mode=max
-      # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
-      - --attest=type=sbom
-      # Specifies the target platform for the Docker image as Linux on AMD64 architecture.
-      - "--platform=linux/amd64"
-      # Specifies the name of the image
-      - "--label=org.opencontainers.image.name={{ .ProjectName }}"
-      # Records the image creation timestamp
-      - "--label=org.opencontainers.image.created={{ .Date }}"
-      # Indicates the version of the software in the image
-      - "--label=org.opencontainers.image.version={{ .Version }}"
-      # Tracks the exact Git commit SHA used to build the image
-      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
-      # Points to the source repository URL
-      - "--label=org.opencontainers.image.source={{ .GitURL }}"
-  - ##################################################################################################
-    # eui64-calculator:i386
-    ##################################################################################################
-    # GOOS of the built binaries/packages that should be used.
-    goos: linux
-
-    # GOARCH of the built binaries/packages that should be used.
-    goarch: "386"
-
-    # Templates of the Docker image names.
-    # Templates: allowed.
-    image_templates:
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:i386-{{ .Tag }}"
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:i386-latest"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:i386-{{ .Tag }}"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:i386-latest"
-
-    # Path to the Dockerfile (from the project root).
-    # Templates: allowed.
-    # Default: 'Dockerfile'.
-    dockerfile: build/docker/Dockerfile
-
-    # Set the "backend" for the Docker pipe.
-    # Valid options are: docker, buildx, podman.
-    # Podman is a GoReleaser Pro feature and is only available on Linux.
-    # Default: 'docker'.
-    use: buildx
-
-    # Docker build flags.
-    # Templates: allowed.
-    build_flag_templates:
-      # Sets Docker Buildx output to pushe to a registry (type=registry).
-      - --output=type=registry
-      # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
-      - --attest=type=provenance,mode=max
-      # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
-      - --attest=type=sbom
-      # Specifies the target platform for the Docker image as Linux on 386 architecture.
-      - "--platform=linux/386"
-      # Specifies the name of the image
-      - "--label=org.opencontainers.image.name={{ .ProjectName }}"
-      # Records the image creation timestamp
-      - "--label=org.opencontainers.image.created={{ .Date }}"
-      # Indicates the version of the software in the image
-      - "--label=org.opencontainers.image.version={{ .Version }}"
-      # Tracks the exact Git commit SHA used to build the image
-      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
-      # Points to the source repository URL
-      - "--label=org.opencontainers.image.source={{ .GitURL }}"
-  - ##################################################################################################
-    # eui64-calculator:armhf
-    ##################################################################################################
-    # GOOS of the built binaries/packages that should be used.
-    goos: linux
-
-    # GOARCH of the built binaries/packages that should be used.
-    goarch: arm
-
-    # GOARM of the built binaries/packages that should be used.
-    # Default: '6'.
-    goarm: "6"
-
-    # Templates of the Docker image names.
-    # Templates: allowed.
-    image_templates:
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:armhf-{{ .Tag }}"
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:armhf-latest"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:armhf-{{ .Tag }}"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:armhf-latest"
-
-    # Path to the Dockerfile (from the project root).
-    # Templates: allowed.
-    # Default: 'Dockerfile'.
-    dockerfile: build/docker/Dockerfile
-
-    # Set the "backend" for the Docker pipe.
-    # Valid options are: docker, buildx, podman.
-    # Podman is a GoReleaser Pro feature and is only available on Linux.
-    # Default: 'docker'.
-    use: buildx
-
-    # Docker build flags.
-    # Templates: allowed.
-    build_flag_templates:
-      # Sets Docker Buildx output to pushe to a registry (type=registry).
-      - --output=type=registry
-      # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
-      - --attest=type=provenance,mode=max
-      # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
-      - --attest=type=sbom
-      # Specifies the target platform for the Docker image as Linux on ARMv6 architecture.
-      - "--platform=linux/arm/v6"
-      # Specifies the name of the image
-      - "--label=org.opencontainers.image.name={{ .ProjectName }}"
-      # Records the image creation timestamp
-      - "--label=org.opencontainers.image.created={{ .Date }}"
-      # Indicates the version of the software in the image
-      - "--label=org.opencontainers.image.version={{ .Version }}"
-      # Tracks the exact Git commit SHA used to build the image
-      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
-      # Points to the source repository URL
-      - "--label=org.opencontainers.image.source={{ .GitURL }}"
-  - ##################################################################################################
-    # eui64-calculator:arm64v8
-    ##################################################################################################
-    # GOOS of the built binaries/packages that should be used.
-    goos: linux
-
-    # GOARCH of the built binaries/packages that should be used.
-    goarch: arm64
-
-    # GOARM of the built binaries/packages that should be used.
-    # Default: '6'.
-
-    # Templates of the Docker image names.
-    # Templates: allowed.
-    image_templates:
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:arm64v8-{{ .Tag }}"
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:arm64v8-latest"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:arm64v8-{{ .Tag }}"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:arm64v8-latest"
-
-    # Path to the Dockerfile (from the project root).
-    # Templates: allowed.
-    # Default: 'Dockerfile'.
-    dockerfile: build/docker/Dockerfile
-
-    # Set the "backend" for the Docker pipe.
-    # Valid options are: docker, buildx, podman.
-    # Podman is a GoReleaser Pro feature and is only available on Linux.
-    # Default: 'docker'.
-    use: buildx
-
-    # Docker build flags.
-    # Templates: allowed.
-    build_flag_templates:
-      # Sets Docker Buildx output to pushe to a registry (type=registry).
-      - --output=type=registry
-      # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
-      - --attest=type=provenance,mode=max
-      # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
-      - --attest=type=sbom
-      # Specifies the target platform for the Docker image as Linux on ARM64 architecture.
-      - "--platform=linux/arm64"
-      # Specifies the name of the image
-      - "--label=org.opencontainers.image.name={{ .ProjectName }}"
-      # Records the image creation timestamp
-      - "--label=org.opencontainers.image.created={{ .Date }}"
-      # Indicates the version of the software in the image
-      - "--label=org.opencontainers.image.version={{ .Version }}"
-      # Tracks the exact Git commit SHA used to build the image
-      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
-      # Points to the source repository URL
-      - "--label=org.opencontainers.image.source={{ .GitURL }}"
-  - ##################################################################################################
-    # eui64-calculator:riscv64
-    ##################################################################################################
-    # GOOS of the built binaries/packages that should be used.
-    # Default: 'linux'.
-    goos: linux
-
-    # GOARCH of the built binaries/packages that should be used.
-    goarch: riscv64
-
-    # Templates of the Docker image names.
-    # Templates: allowed.
-    image_templates:
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:riscv64-{{ .Tag }}"
-      - "{{ .Env.DOCKER_NAMESPACE }}/{{ .ProjectName }}:riscv64-latest"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:riscv64-{{ .Tag }}"
-      - "ghcr.io/{{ .Env.GHCR_NAMESPACE }}/{{ .ProjectName }}:riscv64-latest"
-
-    # Path to the Dockerfile (from the project root).
-    # Templates: allowed.
-    # Default: 'Dockerfile'
-    dockerfile: build/docker/Dockerfile
-
-    # Set the "backend" for the Docker pipe.
-    # Valid options are: docker, buildx, podman.
-    # Podman is a GoReleaser Pro feature and is only available on Linux.
-    # Default: 'docker'.
-    use: buildx
-
-    # Docker build flags.
-    # Templates: allowed.
-    build_flag_templates:
-      # Sets Docker Buildx output to pushe to a registry (type=registry).
-      - --output=type=registry
-      # Enables maximum provenance attestation for the Docker Buildx build, generating detailed build metadata for supply chain security.
-      - --attest=type=provenance,mode=max
-      # Generates a Software Bill of Materials (SBOM) attestation for the Docker Buildx build, documenting the software components in the image.
-      - --attest=type=sbom
-      # Specifies the target platform for the Docker image as Linux on RISCv64 architecture.
-      - "--platform=linux/riscv64"
-      # Specifies the name of the image
-      - "--label=org.opencontainers.image.name={{ .ProjectName }}"
-      # Records the image creation timestamp
-      - "--label=org.opencontainers.image.created={{ .Date }}"
-      # Indicates the version of the software in the image
-      - "--label=org.opencontainers.image.version={{ .Version }}"
-      # Tracks the exact Git commit SHA used to build the image
-      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
-      # Points to the source repository URL
-      - "--label=org.opencontainers.image.source={{ .GitURL }}"
-######################################################################################################
-
-######################################################################################################
-# Artifact Signing Configuration
-# https://goreleaser.com/customization/sign/
-######################################################################################################
-signs:
-  - id: default
-    artifacts: all
-    args:
-      - "--batch"
-      - "--local-user"
-      - "nick@nickfedor.com"
-      - "--yes"
-      - "--pinentry-mode"
-      - "loopback"
-      - "--passphrase"
-      - "${GPG_PASSPHRASE}"
-      - "--output"
-      - "${signature}"
-      - "--detach-sign"
-      - "${artifact}"
-######################################################################################################
-
-######################################################################################################
-# Attestation Configuration
-# https://goreleaser.com/customization/checksum
-######################################################################################################
+################################################################################
+# Checksums Configuration
+# https://goreleaser.com/customization/package/checksum/
+################################################################################
 checksum:
-  name_template: checksums.txt
-######################################################################################################
+  name_template: "checksums.txt"
+
+################################################################################
+# Docker Digests Configuration
+# https://goreleaser.com/customization/package/docker_digests/
+################################################################################
+docker_digest:
+  name_template: "digests.txt"
+
+################################################################################
+# Docker Image Build Configuration (Modern dockers_v2)
+# https://goreleaser.com/customization/package/dockers_v2/
+#
+# Original semantics preservation:
+#   - Multi-platform manifest (all 5 platforms) with non-prefixed tags
+#   - 5 single-platform images with platform-prefixed tags
+#   This requires 6 dockers_v2 entries total.
+################################################################################
+dockers_v2:
+  ##############################################################################
+  # Multi-platform manifest (all platforms) - non-prefixed tags only
+  ##############################################################################
+  - id: "eui64-calculator-manifest"
+    ids: ["eui64-calculator-binary"]
+    images:
+      - "nickfedor/eui64-calculator"
+      - "ghcr.io/nicholas-fedor/eui64-calculator"
+    tags:
+      - "{{ .Major }}"
+      - "{{ .Major }}.{{ .Minor }}"
+      - "{{ .Version }}"
+      - "latest"
+    dockerfile: build/docker/Dockerfile
+    platforms:
+      - linux/amd64
+      - linux/386
+      - linux/arm/v6
+      - linux/arm64
+      - linux/riscv64
+    labels:
+      org.opencontainers.image.name: "eui64-calculator"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.source: "{{ .GitURL }}"
+      org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
+      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
+      org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
+
+  ##################################################################################################
+  # Platform-specific images - platform-prefixed tags only
+  ##################################################################################################
+  - id: "eui64-calculator-amd64"
+    ids: ["eui64-calculator-binary"]
+    images:
+      - "nickfedor/eui64-calculator"
+      - "ghcr.io/nicholas-fedor/eui64-calculator"
+    tags:
+      - "amd64-{{ .Major }}"
+      - "amd64-{{ .Major }}.{{ .Minor }}"
+      - "amd64-{{ .Version }}"
+      - "amd64-latest"
+    dockerfile: build/docker/Dockerfile
+    platforms:
+      - linux/amd64
+    labels:
+      org.opencontainers.image.name: "eui64-calculator"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.source: "{{ .GitURL }}"
+      org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
+      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
+      org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
+
+  - id: "eui64-calculator-i386"
+    ids: ["eui64-calculator-binary"]
+    images:
+      - "nickfedor/eui64-calculator"
+      - "ghcr.io/nicholas-fedor/eui64-calculator"
+    tags:
+      - "i386-{{ .Major }}"
+      - "i386-{{ .Major }}.{{ .Minor }}"
+      - "i386-{{ .Version }}"
+      - "i386-latest"
+    dockerfile: build/docker/Dockerfile
+    platforms:
+      - linux/386
+    labels:
+      org.opencontainers.image.name: "eui64-calculator"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.source: "{{ .GitURL }}"
+      org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
+      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
+      org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
+
+  - id: "eui64-calculator-armhf"
+    ids: ["eui64-calculator-binary"]
+    images:
+      - "nickfedor/eui64-calculator"
+      - "ghcr.io/nicholas-fedor/eui64-calculator"
+    tags:
+      - "armhf-{{ .Major }}"
+      - "armhf-{{ .Major }}.{{ .Minor }}"
+      - "armhf-{{ .Version }}"
+      - "armhf-latest"
+    dockerfile: build/docker/Dockerfile
+    platforms:
+      - linux/arm/v6
+    labels:
+      org.opencontainers.image.name: "eui64-calculator"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.source: "{{ .GitURL }}"
+      org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
+      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
+      org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
+
+  - id: "eui64-calculator-arm64v8"
+    ids: ["eui64-calculator-binary"]
+    images:
+      - "nickfedor/eui64-calculator"
+      - "ghcr.io/nicholas-fedor/eui64-calculator"
+    tags:
+      - "arm64v8-{{ .Major }}"
+      - "arm64v8-{{ .Major }}.{{ .Minor }}"
+      - "arm64v8-{{ .Version }}"
+      - "arm64v8-latest"
+    dockerfile: build/docker/Dockerfile
+    platforms:
+      - linux/arm64
+    labels:
+      org.opencontainers.image.name: "eui64-calculator"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.source: "{{ .GitURL }}"
+      org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
+      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
+      org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
+
+  - id: "eui64-calculator-riscv64"
+    ids: ["eui64-calculator-binary"]
+    images:
+      - "nickfedor/eui64-calculator"
+      - "ghcr.io/nicholas-fedor/eui64-calculator"
+    tags:
+      - "riscv64-{{ .Major }}"
+      - "riscv64-{{ .Major }}.{{ .Minor }}"
+      - "riscv64-{{ .Version }}"
+      - "riscv64-latest"
+    dockerfile: build/docker/Dockerfile
+    platforms:
+      - linux/riscv64
+    labels:
+      org.opencontainers.image.name: "eui64-calculator"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.version: "{{ .Version }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.source: "{{ .GitURL }}"
+      org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
+      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
+      org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
+
+################################################################################
+# Software Bill of Materials (SBOM) Configuration
+# https://goreleaser.com/customization/sbom/
+################################################################################
+sboms:
+  - id: binaries
+    artifacts: archive
+  - id: source
+    artifacts: source
+
+################################################################################
+# Signing Configuration (Cosign - Keyless OIDC)
+# https://goreleaser.com/customization/sign/
+################################################################################
+signs:
+  - id: cosign-checksums
+    cmd: cosign
+    args:
+      - "sign-blob"
+      - "--bundle=${signature}"
+      - "${artifact}"
+      - "--yes"
+    artifacts: checksum
+    output: true
+
+################################################################################
+# Docker Image Signing (Cosign)
+# https://goreleaser.com/customization/sign/docker_sign/
+################################################################################
+docker_signs:
+  - id: cosign-images
+    cmd: cosign
+    args:
+      - "sign"
+      - "${artifact}@${digest}"
+      - "--yes"
+    artifacts: all
+    output: true
+
+################################################################################
+# Changelog Configuration
+# https://goreleaser.com/customization/changelog/
+################################################################################
+changelog:
+  disable: true
