@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Add codeowners file by @nicholas-fedor in [#710](https://github.com/nicholas-fedor/eui64-calculator/pull/710)
 - Pin dependencies by @renovate[bot] in [#701](https://github.com/nicholas-fedor/eui64-calculator/pull/701)
 - Update orhun/git-cliff-action digest to f50e115 by @renovate[bot] in [#703](https://github.com/nicholas-fedor/eui64-calculator/pull/703)
 - Update module github.com/gofiber/fiber/v3 to v3.2.0 by @renovate[bot] in [#699](https://github.com/nicholas-fedor/eui64-calculator/pull/699)
@@ -58,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New Contributors
 
-- @github-actions[bot] made their first contribution in [#707](https://github.com/nicholas-fedor/eui64-calculator/pull/707)
+- @github-actions[bot] made their first contribution in [#709](https://github.com/nicholas-fedor/eui64-calculator/pull/709)
 
 ## [0.2.8] - 2026-03-31
 
