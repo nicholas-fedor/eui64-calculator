@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add github-actions[bot] as CHANGELOG.md owner by @nicholas-fedor in [#720](https://github.com/nicholas-fedor/eui64-calculator/pull/720)
 
+### Fixed
+
+- Fix source sbom attestation path by @nicholas-fedor in [#722](https://github.com/nicholas-fedor/eui64-calculator/pull/722)
+
 ## [0.2.10] - 2026-04-26
 
 ### Added
