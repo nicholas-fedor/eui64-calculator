@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Revert previous changes to permissions by @nicholas-fedor in [#712](https://github.com/nicholas-fedor/eui64-calculator/pull/712)
+
+## [0.2.9] - 2026-04-26
+
+### Changed
+
 - Update workflow permissions by @nicholas-fedor in [#708](https://github.com/nicholas-fedor/eui64-calculator/pull/708)
 - Move permissions to job level by @nicholas-fedor in [#706](https://github.com/nicholas-fedor/eui64-calculator/pull/706)
 - Update ci/cd release infrastructure by @nicholas-fedor in [#700](https://github.com/nicholas-fedor/eui64-calculator/pull/700)
@@ -59,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New Contributors
 
-- @github-actions[bot] made their first contribution in [#709](https://github.com/nicholas-fedor/eui64-calculator/pull/709)
+- @github-actions[bot] made their first contribution in [#711](https://github.com/nicholas-fedor/eui64-calculator/pull/711)
 
 ## [0.2.8] - 2026-03-31
 
@@ -1072,7 +1078,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Compare Releases
 
-- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.8...HEAD)
+- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.9...HEAD)
+- [0.2.9](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.8...v0.2.9)
 - [0.2.8](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.7...v0.2.8)
 - [0.2.7](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.6...v0.2.7)
 - [0.2.6](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.5...v0.2.6)
