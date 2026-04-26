@@ -1,5 +1,4 @@
 FROM scratch
-ARG BUILDPLATFORM
 ARG TARGETPLATFORM
 COPY --chmod=0755 ${TARGETPLATFORM}/eui64-calculator /eui64-calculator
 EXPOSE 8080
