@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Move permissions to job level by @nicholas-fedor in [#706](https://github.com/nicholas-fedor/eui64-calculator/pull/706)
 - Update ci/cd release infrastructure by @nicholas-fedor in [#700](https://github.com/nicholas-fedor/eui64-calculator/pull/700)
 - Update govulncheck action by @nicholas-fedor in [#693](https://github.com/nicholas-fedor/eui64-calculator/pull/693)
 - Update govulncheck action to latest by @nicholas-fedor in [#692](https://github.com/nicholas-fedor/eui64-calculator/pull/692)
@@ -56,7 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New Contributors
 
-- @github-actions[bot] made their first contribution in [#704](https://github.com/nicholas-fedor/eui64-calculator/pull/704)
+- @github-actions[bot] made their first contribution in [#705](https://github.com/nicholas-fedor/eui64-calculator/pull/705)
 
 ## [0.2.8] - 2026-03-31
 
