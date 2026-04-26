@@ -130,11 +130,11 @@ jobs:
           path: ./dist/*.sbom.json
           if-no-files-found: warn
 
-      - name: Generate SBOM attestation
+      - name: Generate source SBOM attestation
         uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
         with:
           subject-checksums: ./dist/checksums.txt
-          sbom-path: ./dist/*.sbom.json
+          sbom-path: ./dist/eui64-calculator.src.tar.gz.sbom.json
 
       - name: Generate artifact attestation for checksums
         uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
