@@ -19,6 +19,11 @@ on:
         description: "GitHub environment for secrets access"
         required: true
         type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
 
 permissions:
   contents: read
