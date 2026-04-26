@@ -8,11 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Chores
+
+- Add github-actions[bot] as CHANGELOG.md owner by @nicholas-fedor in [#720](https://github.com/nicholas-fedor/eui64-calculator/pull/720)
+
+## [0.2.10] - 2026-04-26
+
 ### Added
 
 - Add sbom attestation subject-checksums path by @nicholas-fedor in [#718](https://github.com/nicholas-fedor/eui64-calculator/pull/718)
-
-## [0.2.10] - 2026-04-26
 
 ### Changed
 
@@ -68,7 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New Contributors
 
-- @github-actions[bot] made their first contribution in [#717](https://github.com/nicholas-fedor/eui64-calculator/pull/717)
+- @github-actions[bot] made their first contribution in [#719](https://github.com/nicholas-fedor/eui64-calculator/pull/719)
 
 ## [0.2.8] - 2026-03-31
 
