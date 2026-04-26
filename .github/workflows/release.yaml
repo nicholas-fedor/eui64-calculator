@@ -25,7 +25,7 @@ jobs:
       attestations: write # For generating provenance and SBOMs
       id-token: write # For OIDC auth to Docker Hub and GHCR
     with:
-      project_name: todo
+      project_name: eui64-calculator
       docker_namespace: nickfedor
       ghcr_namespace: nicholas-fedor
       environment: CI
