@@ -115,7 +115,7 @@ commit_parsers = [
     { message = "^.*: support", group = "Added" },
     { message = "^.*: remove", group = "Removed" },
     { message = "^.*: delete", group = "Removed" },
-    { message = "^test", group = "Fixed" },
+    { message = "^test", group = "Tests" },
     { message = "^.*", group = "Changed" },
 ]
 # Exclude commits that are not matched by any commit parser.
