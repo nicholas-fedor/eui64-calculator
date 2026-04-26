@@ -155,7 +155,7 @@ dockers_v2:
       org.opencontainers.image.revision: "{{ .FullCommit }}"
       org.opencontainers.image.source: "{{ .GitURL }}"
       org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
-      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.LICENSE: "AGPLv3"
       org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
       org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
 
@@ -182,7 +182,7 @@ dockers_v2:
       org.opencontainers.image.revision: "{{ .FullCommit }}"
       org.opencontainers.image.source: "{{ .GitURL }}"
       org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
-      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.LICENSE: "AGPLv3"
       org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
       org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
 
@@ -206,7 +206,7 @@ dockers_v2:
       org.opencontainers.image.revision: "{{ .FullCommit }}"
       org.opencontainers.image.source: "{{ .GitURL }}"
       org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
-      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.LICENSE: "AGPLv3"
       org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
       org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
 
@@ -230,7 +230,7 @@ dockers_v2:
       org.opencontainers.image.revision: "{{ .FullCommit }}"
       org.opencontainers.image.source: "{{ .GitURL }}"
       org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
-      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.LICENSE: "AGPLv3"
       org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
       org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
 
@@ -254,7 +254,7 @@ dockers_v2:
       org.opencontainers.image.revision: "{{ .FullCommit }}"
       org.opencontainers.image.source: "{{ .GitURL }}"
       org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
-      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.LICENSE: "AGPLv3"
       org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
       org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
 
@@ -278,7 +278,7 @@ dockers_v2:
       org.opencontainers.image.revision: "{{ .FullCommit }}"
       org.opencontainers.image.source: "{{ .GitURL }}"
       org.opencontainers.image.description: "A simple web app for calculating EUI64 IPv6 addresses."
-      org.opencontainers.image.LICENSE.mds: "AGPLv3"
+      org.opencontainers.image.LICENSE: "AGPLv3"
       org.opencontainers.image.url: "https://hub.docker.com/r/nickfedor/eui64-calculator"
       org.opencontainers.image.documentation: "https://github.com/nicholas-fedor/eui64-calculator"
 
