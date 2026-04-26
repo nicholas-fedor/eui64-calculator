@@ -12,18 +12,11 @@ jobs:
   # Run Go tests and upload coverage
   test:
     uses: ./.github/workflows/test.yaml
-    permissions:
-      contents: read # For code checkout
 
   # Build binaries, images, SBOMs, and attestations
   build:
     needs: [test] # Requires tests to pass
     uses: ./.github/workflows/build.yaml
-    permissions:
-      contents: write # For code checkout and publishing releases
-      packages: write # For pushing images to registries
-      attestations: write # For generating provenance and SBOMs
-      id-token: write # For OIDC auth to Docker Hub and GHCR
     with:
       project_name: eui64-calculator
       docker_namespace: nickfedor
@@ -34,10 +27,6 @@ jobs:
     name: Deploy to GitHub Pages
     needs:
       - test
-    permissions:
-      contents: write
-      packages: read
-      id-token: write
     uses: ./.github/workflows/deploy-gh-pages.yaml
 
   Update-Go-Docs:
@@ -45,6 +34,4 @@ jobs:
     needs:
       - test
       - build
-    permissions:
-      contents: read
     uses: ./.github/workflows/update-go-docs.yaml
