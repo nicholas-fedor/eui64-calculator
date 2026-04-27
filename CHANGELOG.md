@@ -10,11 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
-- Add github-actions[bot] as CHANGELOG.md owner by @nicholas-fedor in [#720](https://github.com/nicholas-fedor/eui64-calculator/pull/720)
-
-### Fixed
-
-- Fix source sbom attestation path by @nicholas-fedor in [#722](https://github.com/nicholas-fedor/eui64-calculator/pull/722)
+- Update goreleaser/goreleaser-action digest to 1a80836 by @renovate[bot] in [#724](https://github.com/nicholas-fedor/eui64-calculator/pull/724)
 
 ## [0.2.10] - 2026-04-26
 
@@ -35,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Add github-actions[bot] as CHANGELOG.md owner by @nicholas-fedor in [#720](https://github.com/nicholas-fedor/eui64-calculator/pull/720)
 - Include generated files within the repo to avoid build issues by @nicholas-fedor in [#716](https://github.com/nicholas-fedor/eui64-calculator/pull/716)
 - Add codeowners file by @nicholas-fedor in [#710](https://github.com/nicholas-fedor/eui64-calculator/pull/710)
 - Pin dependencies by @renovate[bot] in [#701](https://github.com/nicholas-fedor/eui64-calculator/pull/701)
@@ -72,11 +69,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix source sbom attestation path by @nicholas-fedor in [#722](https://github.com/nicholas-fedor/eui64-calculator/pull/722)
 - Fix missing Host header in HTTP requests by @nicholas-fedor in [#694](https://github.com/nicholas-fedor/eui64-calculator/pull/694)
 
 ### New Contributors
 
-- @github-actions[bot] made their first contribution in [#719](https://github.com/nicholas-fedor/eui64-calculator/pull/719)
+- @github-actions[bot] made their first contribution in [#721](https://github.com/nicholas-fedor/eui64-calculator/pull/721)
 
 ## [0.2.8] - 2026-03-31
 
