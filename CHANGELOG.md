@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/mattn/go-isatty to v0.0.22 by @renovate[bot] in [#726](https://github.com/nicholas-fedor/eui64-calculator/pull/726)
 - Update goreleaser/goreleaser-action digest to 1a80836 by @renovate[bot] in [#724](https://github.com/nicholas-fedor/eui64-calculator/pull/724)
 
 ## [0.2.10] - 2026-04-26
