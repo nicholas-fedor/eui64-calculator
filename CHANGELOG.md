@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update step-security/harden-runner action to v2.19.1 by @renovate[bot] in [#734](https://github.com/nicholas-fedor/eui64-calculator/pull/734)
 - Update github/codeql-action digest to e46ed2c by @renovate[bot] in [#732](https://github.com/nicholas-fedor/eui64-calculator/pull/732)
 - Update module github.com/klauspost/compress to v1.18.6 by @renovate[bot] in [#730](https://github.com/nicholas-fedor/eui64-calculator/pull/730)
 - Update securego/gosec action to v2.26.1 by @renovate[bot] in [#728](https://github.com/nicholas-fedor/eui64-calculator/pull/728)
