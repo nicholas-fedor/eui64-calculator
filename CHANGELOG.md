@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update go module directive to v1.26.3 by @renovate[bot] in [#745](https://github.com/nicholas-fedor/eui64-calculator/pull/745)
+- Update github/codeql-action digest to 68bde55 by @renovate[bot] in [#744](https://github.com/nicholas-fedor/eui64-calculator/pull/744)
 - Update sigstore/cosign-installer action to v4.1.2 by @renovate[bot] in [#742](https://github.com/nicholas-fedor/eui64-calculator/pull/742)
 - Update module github.com/valyala/fasthttp to v1.71.0 by @renovate[bot] in [#740](https://github.com/nicholas-fedor/eui64-calculator/pull/740)
 - Lock file maintenance by @renovate[bot] in [#738](https://github.com/nicholas-fedor/eui64-calculator/pull/738)
