@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/sys to v0.44.0 by @renovate[bot] in [#749](https://github.com/nicholas-fedor/eui64-calculator/pull/749)
 - Update cimg/go:1.26.2 docker digest to 0594489 by @renovate[bot] in [#747](https://github.com/nicholas-fedor/eui64-calculator/pull/747)
 - Update go module directive to v1.26.3 by @renovate[bot] in [#745](https://github.com/nicholas-fedor/eui64-calculator/pull/745)
 - Update github/codeql-action digest to 68bde55 by @renovate[bot] in [#744](https://github.com/nicholas-fedor/eui64-calculator/pull/744)
