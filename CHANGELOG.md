@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Refactor workflow to use actionlint-action by @nicholas-fedor in [#758](https://github.com/nicholas-fedor/eui64-calculator/pull/758)
+
 ### Chores
 
 - Update module golang.org/x/net to v0.54.0 by @renovate[bot] in [#756](https://github.com/nicholas-fedor/eui64-calculator/pull/756)
