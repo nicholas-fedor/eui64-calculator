@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/utils/v2 to v2.0.5 by @renovate[bot] in [#764](https://github.com/nicholas-fedor/eui64-calculator/pull/764)
 - Lock file maintenance by @renovate[bot] in [#762](https://github.com/nicholas-fedor/eui64-calculator/pull/762)
 - Update module github.com/a-h/templ to v0.3.1020 by @renovate[bot] in [#760](https://github.com/nicholas-fedor/eui64-calculator/pull/760)
 - Update module golang.org/x/net to v0.54.0 by @renovate[bot] in [#756](https://github.com/nicholas-fedor/eui64-calculator/pull/756)
