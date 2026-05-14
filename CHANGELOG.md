@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update step-security/harden-runner action to v2.19.2 by @renovate[bot] in [#768](https://github.com/nicholas-fedor/eui64-calculator/pull/768)
 - Update commitlint monorepo to v21 by @renovate[bot] in [#765](https://github.com/nicholas-fedor/eui64-calculator/pull/765)
 - Update module github.com/gofiber/utils/v2 to v2.0.5 by @renovate[bot] in [#764](https://github.com/nicholas-fedor/eui64-calculator/pull/764)
 - Lock file maintenance by @renovate[bot] in [#762](https://github.com/nicholas-fedor/eui64-calculator/pull/762)
