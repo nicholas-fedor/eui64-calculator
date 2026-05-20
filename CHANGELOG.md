@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/utils/v2 to v2.0.6 by @renovate[bot] in [#780](https://github.com/nicholas-fedor/eui64-calculator/pull/780)
 - Update goreleaser/goreleaser-action digest to 5daf1e9 by @renovate[bot] in [#778](https://github.com/nicholas-fedor/eui64-calculator/pull/778)
 - Lock file maintenance by @renovate[bot] in [#776](https://github.com/nicholas-fedor/eui64-calculator/pull/776)
 - Update commitlint monorepo to v21.0.1 by @renovate[bot] in [#774](https://github.com/nicholas-fedor/eui64-calculator/pull/774)
