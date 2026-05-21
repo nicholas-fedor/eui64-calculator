@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update step-security/harden-runner action to v2.19.4 by @renovate[bot] in [#782](https://github.com/nicholas-fedor/eui64-calculator/pull/782)
 - Update module github.com/gofiber/utils/v2 to v2.0.6 by @renovate[bot] in [#780](https://github.com/nicholas-fedor/eui64-calculator/pull/780)
 - Update goreleaser/goreleaser-action digest to 5daf1e9 by @renovate[bot] in [#778](https://github.com/nicholas-fedor/eui64-calculator/pull/778)
 - Lock file maintenance by @renovate[bot] in [#776](https://github.com/nicholas-fedor/eui64-calculator/pull/776)
