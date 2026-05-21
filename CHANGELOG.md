@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/sys to v0.45.0 by @renovate[bot] in [#785](https://github.com/nicholas-fedor/eui64-calculator/pull/785)
+- Update cimg/go:1.26.3 docker digest to 9a5aff9 by @renovate[bot] in [#784](https://github.com/nicholas-fedor/eui64-calculator/pull/784)
 - Update step-security/harden-runner action to v2.19.4 by @renovate[bot] in [#782](https://github.com/nicholas-fedor/eui64-calculator/pull/782)
 - Update module github.com/gofiber/utils/v2 to v2.0.6 by @renovate[bot] in [#780](https://github.com/nicholas-fedor/eui64-calculator/pull/780)
 - Update goreleaser/goreleaser-action digest to 5daf1e9 by @renovate[bot] in [#778](https://github.com/nicholas-fedor/eui64-calculator/pull/778)
