@@ -5,7 +5,7 @@ go 1.26.3
 require (
 	github.com/PuerkitoBio/goquery v1.12.0
 	github.com/a-h/templ v0.3.1020
-	github.com/gofiber/fiber/v3 v3.2.0
+	github.com/gofiber/fiber/v3 v3.3.0
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/net v0.55.0
 )
