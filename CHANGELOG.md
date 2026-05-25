@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Lock file maintenance by @renovate[bot] in [#796](https://github.com/nicholas-fedor/eui64-calculator/pull/796)
 - Update github/codeql-action digest to 7211b7c by @renovate[bot] in [#794](https://github.com/nicholas-fedor/eui64-calculator/pull/794)
 - Update docker/login-action digest to 650006c by @renovate[bot] in [#793](https://github.com/nicholas-fedor/eui64-calculator/pull/793)
 - Update module github.com/gofiber/fiber/v3 to v3.3.0 by @renovate[bot] in [#791](https://github.com/nicholas-fedor/eui64-calculator/pull/791)
