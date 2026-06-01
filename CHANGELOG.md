@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/utils/v2 to v2.1.0 by @renovate[bot] in [#805](https://github.com/nicholas-fedor/eui64-calculator/pull/805)
+- Update commitlint monorepo to v21.0.2 by @renovate[bot] in [#804](https://github.com/nicholas-fedor/eui64-calculator/pull/804)
 - Update module github.com/mattn/go-colorable to v0.1.15 by @renovate[bot] in [#802](https://github.com/nicholas-fedor/eui64-calculator/pull/802)
 - Update docker/setup-qemu-action action to v4.1.0 by @renovate[bot] in [#800](https://github.com/nicholas-fedor/eui64-calculator/pull/800)
 
