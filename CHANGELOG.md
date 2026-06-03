@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update cimg/go docker tag to v1.26.4 by @renovate[bot] in [#816](https://github.com/nicholas-fedor/eui64-calculator/pull/816)
 - Update go module directive to v1.26.4 by @renovate[bot] in [#814](https://github.com/nicholas-fedor/eui64-calculator/pull/814)
 - Update actions/checkout action to v6.0.3 by @renovate[bot] in [#812](https://github.com/nicholas-fedor/eui64-calculator/pull/812)
 - Update module github.com/gofiber/schema to v1.7.2 by @renovate[bot] in [#810](https://github.com/nicholas-fedor/eui64-calculator/pull/810)
