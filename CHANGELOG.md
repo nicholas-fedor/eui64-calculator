@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update github/codeql-action digest to 8aad20d by @renovate[bot] in [#820](https://github.com/nicholas-fedor/eui64-calculator/pull/820)
 - Update module github.com/andybalholm/cascadia to v1.3.4 by @renovate[bot] in [#818](https://github.com/nicholas-fedor/eui64-calculator/pull/818)
 - Update cimg/go docker tag to v1.26.4 by @renovate[bot] in [#816](https://github.com/nicholas-fedor/eui64-calculator/pull/816)
 - Update go module directive to v1.26.4 by @renovate[bot] in [#814](https://github.com/nicholas-fedor/eui64-calculator/pull/814)
