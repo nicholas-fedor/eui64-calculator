@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update codecov/codecov-action action to v7 by @renovate[bot] in [#825](https://github.com/nicholas-fedor/eui64-calculator/pull/825)
 - Update nicholas-fedor/actionlint-action action to v1.0.4 by @renovate[bot] in [#823](https://github.com/nicholas-fedor/eui64-calculator/pull/823)
 - Update codecov/codecov-action action to v6.0.2 by @renovate[bot] in [#822](https://github.com/nicholas-fedor/eui64-calculator/pull/822)
 - Update github/codeql-action digest to 8aad20d by @renovate[bot] in [#820](https://github.com/nicholas-fedor/eui64-calculator/pull/820)
