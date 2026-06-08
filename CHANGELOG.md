@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add security policy by @nicholas-fedor in [#836](https://github.com/nicholas-fedor/eui64-calculator/pull/836)
 
+### Changed
+
+- Use syft download action by @nicholas-fedor in [#838](https://github.com/nicholas-fedor/eui64-calculator/pull/838)
+
 ### Chores
 
 - Reorganize with granular path ownership by @nicholas-fedor in [#834](https://github.com/nicholas-fedor/eui64-calculator/pull/834)
