@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Reorganize with granular path ownership by @nicholas-fedor in [#834](https://github.com/nicholas-fedor/eui64-calculator/pull/834)
 - Lock file maintenance by @renovate[bot] in [#828](https://github.com/nicholas-fedor/eui64-calculator/pull/828)
 - Update module golang.org/x/crypto to v0.53.0 by @renovate[bot] in [#830](https://github.com/nicholas-fedor/eui64-calculator/pull/830)
 - Update nicholas-fedor/actionlint-action action to v1.0.5 by @renovate[bot] in [#827](https://github.com/nicholas-fedor/eui64-calculator/pull/827)
