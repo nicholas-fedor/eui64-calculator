@@ -1,4 +1,28 @@
-* @nicholas-fedor
+# Source code
+cmd/                    @nicholas-fedor
+internal/               @nicholas-fedor
+main.go                 @nicholas-fedor
 
-# Automated changelog updates — no manual approval needed
-CHANGELOG.md    @github-actions[bot]
+# Build and task configuration
+Makefile                @nicholas-fedor
+Taskfile.yml            @nicholas-fedor
+build/                  @nicholas-fedor
+
+# CI/CD and tool configuration
+.github/                @nicholas-fedor
+.circleci/              @nicholas-fedor
+cliff.toml              @nicholas-fedor
+commitlint.config.cjs   @nicholas-fedor
+.codacy.yml             @nicholas-fedor
+
+# Project configuration
+.all-contributorsrc     @nicholas-fedor
+.gitattributes          @nicholas-fedor
+.gitignore              @nicholas-fedor
+package.json            @nicholas-fedor
+.vscode/                @nicholas-fedor
+
+# Documentation
+README.md               @nicholas-fedor
+LICENSE.md              @nicholas-fedor
+examples/               @nicholas-fedor
