@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/net to v0.56.0 by @renovate[bot] in [#845](https://github.com/nicholas-fedor/eui64-calculator/pull/845)
 - Update module github.com/gofiber/schema to v1.8.0 by @renovate[bot] in [#843](https://github.com/nicholas-fedor/eui64-calculator/pull/843)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.1 by @renovate[bot] in [#842](https://github.com/nicholas-fedor/eui64-calculator/pull/842)
 - Update nicholas-fedor/actionlint-action action to v1.0.6 by @renovate[bot] in [#840](https://github.com/nicholas-fedor/eui64-calculator/pull/840)
