@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update nicholas-fedor/actionlint-action action to v1.0.12 by @renovate[bot] in [#865](https://github.com/nicholas-fedor/eui64-calculator/pull/865)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.7 by @renovate[bot] in [#866](https://github.com/nicholas-fedor/eui64-calculator/pull/866)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.5 by @renovate[bot] in [#863](https://github.com/nicholas-fedor/eui64-calculator/pull/863)
 - Update nicholas-fedor/actionlint-action action to v1.0.10 by @renovate[bot] in [#860](https://github.com/nicholas-fedor/eui64-calculator/pull/860)
