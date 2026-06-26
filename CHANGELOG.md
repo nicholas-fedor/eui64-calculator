@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update commitlint monorepo to v21.1.0 by @renovate[bot] in [#879](https://github.com/nicholas-fedor/eui64-calculator/pull/879)
 - Lock file maintenance by @renovate[bot] in [#861](https://github.com/nicholas-fedor/eui64-calculator/pull/861)
 - Update nicholas-fedor/actionlint-action action to v1.0.14 by @renovate[bot] in [#876](https://github.com/nicholas-fedor/eui64-calculator/pull/876)
 - Update actions/setup-go action to v6.5.0 by @renovate[bot] in [#874](https://github.com/nicholas-fedor/eui64-calculator/pull/874)
