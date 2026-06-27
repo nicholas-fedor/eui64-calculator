@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update actions/cache action to v6.1.0 by @renovate[bot] in [#884](https://github.com/nicholas-fedor/eui64-calculator/pull/884)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.9 by @renovate[bot] in [#882](https://github.com/nicholas-fedor/eui64-calculator/pull/882)
 - Update actions/cache digest to 55cc834 by @renovate[bot] in [#881](https://github.com/nicholas-fedor/eui64-calculator/pull/881)
 - Update commitlint monorepo to v21.1.0 by @renovate[bot] in [#879](https://github.com/nicholas-fedor/eui64-calculator/pull/879)
