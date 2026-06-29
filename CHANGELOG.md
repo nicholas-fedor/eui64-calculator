@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/valyala/fasthttp to v1.72.0 by @renovate[bot] in [#896](https://github.com/nicholas-fedor/eui64-calculator/pull/896)
+- Update golangci/golangci-lint-action action to v9.3.0 by @renovate[bot] in [#895](https://github.com/nicholas-fedor/eui64-calculator/pull/895)
 - Update module github.com/andybalholm/brotli to v1.2.2 by @renovate[bot] in [#892](https://github.com/nicholas-fedor/eui64-calculator/pull/892)
 - Update module github.com/gofiber/utils/v2 to v2.1.1 by @renovate[bot] in [#893](https://github.com/nicholas-fedor/eui64-calculator/pull/893)
 - Update goreleaser/goreleaser-action digest to f06c13b by @renovate[bot] in [#890](https://github.com/nicholas-fedor/eui64-calculator/pull/890)
