@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/klauspost/compress to v1.19.0 by @renovate[bot] in [#901](https://github.com/nicholas-fedor/eui64-calculator/pull/901)
+- Update docker/setup-qemu-action action to v4.2.0 by @renovate[bot] in [#900](https://github.com/nicholas-fedor/eui64-calculator/pull/900)
 - Update module github.com/klauspost/compress to v1.18.7 by @renovate[bot] in [#898](https://github.com/nicholas-fedor/eui64-calculator/pull/898)
 - Update module github.com/valyala/fasthttp to v1.72.0 by @renovate[bot] in [#896](https://github.com/nicholas-fedor/eui64-calculator/pull/896)
 - Update golangci/golangci-lint-action action to v9.3.0 by @renovate[bot] in [#895](https://github.com/nicholas-fedor/eui64-calculator/pull/895)
