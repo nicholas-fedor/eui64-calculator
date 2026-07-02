@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update github/codeql-action digest to 54f647b by @renovate[bot] in [#904](https://github.com/nicholas-fedor/eui64-calculator/pull/904)
+- Update docker/login-action digest to c99871d by @renovate[bot] in [#903](https://github.com/nicholas-fedor/eui64-calculator/pull/903)
 - Update module github.com/klauspost/compress to v1.19.0 by @renovate[bot] in [#901](https://github.com/nicholas-fedor/eui64-calculator/pull/901)
 - Update docker/setup-qemu-action action to v4.2.0 by @renovate[bot] in [#900](https://github.com/nicholas-fedor/eui64-calculator/pull/900)
 - Update module github.com/klauspost/compress to v1.18.7 by @renovate[bot] in [#898](https://github.com/nicholas-fedor/eui64-calculator/pull/898)
