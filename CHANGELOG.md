@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update nicholas-fedor/go-proxy-pull-action action to v1.1.11 by @renovate[bot] in [#907](https://github.com/nicholas-fedor/eui64-calculator/pull/907)
+- Update nicholas-fedor/actionlint-action action to v1.0.16 by @renovate[bot] in [#906](https://github.com/nicholas-fedor/eui64-calculator/pull/906)
 - Update github/codeql-action digest to 54f647b by @renovate[bot] in [#904](https://github.com/nicholas-fedor/eui64-calculator/pull/904)
 - Update docker/login-action digest to c99871d by @renovate[bot] in [#903](https://github.com/nicholas-fedor/eui64-calculator/pull/903)
 - Update module github.com/klauspost/compress to v1.19.0 by @renovate[bot] in [#901](https://github.com/nicholas-fedor/eui64-calculator/pull/901)
