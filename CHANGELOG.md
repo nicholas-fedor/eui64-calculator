@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/fiber/v3 to v3.4.0 by @renovate[bot] in [#910](https://github.com/nicholas-fedor/eui64-calculator/pull/910)
+- Update docker/setup-buildx-action action to v4.2.0 by @renovate[bot] in [#909](https://github.com/nicholas-fedor/eui64-calculator/pull/909)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.11 by @renovate[bot] in [#907](https://github.com/nicholas-fedor/eui64-calculator/pull/907)
 - Update nicholas-fedor/actionlint-action action to v1.0.16 by @renovate[bot] in [#906](https://github.com/nicholas-fedor/eui64-calculator/pull/906)
 - Update github/codeql-action digest to 54f647b by @renovate[bot] in [#904](https://github.com/nicholas-fedor/eui64-calculator/pull/904)
