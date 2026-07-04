@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update nicholas-fedor/actionlint-action action to v1.0.17 by @renovate[bot] in [#918](https://github.com/nicholas-fedor/eui64-calculator/pull/918)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.12 by @renovate[bot] in [#916](https://github.com/nicholas-fedor/eui64-calculator/pull/916)
 - Update docker/login-action digest to af1e73f by @renovate[bot] in [#915](https://github.com/nicholas-fedor/eui64-calculator/pull/915)
 - Update commitlint monorepo to v21.2.0 by @renovate[bot] in [#913](https://github.com/nicholas-fedor/eui64-calculator/pull/913)
