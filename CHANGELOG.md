@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/schema to v1.8.1 by @renovate[bot] in [#933](https://github.com/nicholas-fedor/eui64-calculator/pull/933)
 - Update cimg/go:1.26.4 docker digest to 66a357f by @renovate[bot] in [#930](https://github.com/nicholas-fedor/eui64-calculator/pull/930)
 - Update step-security/harden-runner action to v2.20.0 by @renovate[bot] in [#931](https://github.com/nicholas-fedor/eui64-calculator/pull/931)
 - Update module golang.org/x/text to v0.39.0 by @renovate[bot] in [#928](https://github.com/nicholas-fedor/eui64-calculator/pull/928)
