@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update cimg/go:1.26.4 docker digest to 66a357f by @renovate[bot] in [#930](https://github.com/nicholas-fedor/eui64-calculator/pull/930)
+- Update step-security/harden-runner action to v2.20.0 by @renovate[bot] in [#931](https://github.com/nicholas-fedor/eui64-calculator/pull/931)
 - Update module golang.org/x/text to v0.39.0 by @renovate[bot] in [#928](https://github.com/nicholas-fedor/eui64-calculator/pull/928)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.15 by @renovate[bot] in [#926](https://github.com/nicholas-fedor/eui64-calculator/pull/926)
 - Update nicholas-fedor/actionlint-action action to v1.0.18 by @renovate[bot] in [#922](https://github.com/nicholas-fedor/eui64-calculator/pull/922)
