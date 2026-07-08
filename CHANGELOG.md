@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/crypto to v0.54.0 by @renovate[bot] in [#945](https://github.com/nicholas-fedor/eui64-calculator/pull/945)
 - Update cimg/go docker tag to v1.26.5 by @renovate[bot] in [#942](https://github.com/nicholas-fedor/eui64-calculator/pull/942)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.17 by @renovate[bot] in [#943](https://github.com/nicholas-fedor/eui64-calculator/pull/943)
 - Update module golang.org/x/sys to v0.47.0 by @renovate[bot] in [#940](https://github.com/nicholas-fedor/eui64-calculator/pull/940)
