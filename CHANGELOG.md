@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update securego/gosec action to v2.28.0 by @renovate[bot] in [#963](https://github.com/nicholas-fedor/eui64-calculator/pull/963)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.23 by @renovate[bot] in [#961](https://github.com/nicholas-fedor/eui64-calculator/pull/961)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.21 by @renovate[bot] in [#959](https://github.com/nicholas-fedor/eui64-calculator/pull/959)
 - Update module github.com/gofiber/schema to v1.8.2 by @renovate[bot] in [#957](https://github.com/nicholas-fedor/eui64-calculator/pull/957)
