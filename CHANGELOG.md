@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update nicholas-fedor/go-proxy-pull-action action to v1.1.26 by @renovate[bot] in [#975](https://github.com/nicholas-fedor/eui64-calculator/pull/975)
+- Update github/codeql-action digest to 7188fc3 by @renovate[bot] in [#974](https://github.com/nicholas-fedor/eui64-calculator/pull/974)
 - Update actions/setup-go action to v7 by @renovate[bot] in [#968](https://github.com/nicholas-fedor/eui64-calculator/pull/968)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.25 by @renovate[bot] in [#971](https://github.com/nicholas-fedor/eui64-calculator/pull/971)
 - Update module github.com/mattn/go-isatty to v0.0.23 by @renovate[bot] in [#970](https://github.com/nicholas-fedor/eui64-calculator/pull/970)
