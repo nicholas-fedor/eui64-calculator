@@ -16,7 +16,6 @@ Inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EU
   [![CircleCI](https://dl.circleci.com/status-badge/img/gh/nicholas-fedor/eui64-calculator/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/nicholas-fedor/eui64-calculator/tree/main)
   [![codecov](https://codecov.io/gh/nicholas-fedor/eui64-calculator/branch/main/graph/badge.svg)](https://codecov.io/gh/nicholas-fedor/eui64-calculator)
   [![GoDoc](https://godoc.org/github.com/nicholas-fedor/eui64-calculator?status.svg)](https://godoc.org/github.com/nicholas-fedor/eui64-calculator)
-  [![Go Report Card](https://goreportcard.com/badge/github.com/nicholas-fedor/eui64-calculator)](https://goreportcard.com/report/github.com/nicholas-fedor/eui64-calculator)
   [![latest version](https://img.shields.io/github/tag/nicholas-fedor/eui64-calculator.svg)](https://github.com/nicholas-fedor/eui64-calculator/releases)
   [![AGPLv3 License](https://img.shields.io/github/license/nicholas-fedor/eui64-calculator.svg)](https://www.gnu.org/licenses/agpl-3.0)
   [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1c48cfb7646d4009aa8c6f71287670b8)](https://www.codacy.com/gh/nicholas-fedor/eui64-calculator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nicholas-fedor/eui64-calculator&amp;utm_campaign=Badge_Grade)
