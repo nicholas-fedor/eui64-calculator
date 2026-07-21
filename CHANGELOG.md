@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update github/codeql-action digest to e064762 by @renovate[bot] in [#989](https://github.com/nicholas-fedor/eui64-calculator/pull/989)
 - Lock file maintenance by @renovate[bot] in [#925](https://github.com/nicholas-fedor/eui64-calculator/pull/925)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.28 by @renovate[bot] in [#986](https://github.com/nicholas-fedor/eui64-calculator/pull/986)
 - Update module github.com/klauspost/compress to v1.19.1 by @renovate[bot] in [#984](https://github.com/nicholas-fedor/eui64-calculator/pull/984)
