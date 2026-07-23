@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/utils/v2 to v2.4.0 by @renovate[bot] in [#1002](https://github.com/nicholas-fedor/eui64-calculator/pull/1002)
+- Update ossf/scorecard-action action to v2.4.4 by @renovate[bot] in [#1001](https://github.com/nicholas-fedor/eui64-calculator/pull/1001)
 - Update module github.com/mattn/go-isatty to v0.0.24 by @renovate[bot] in [#999](https://github.com/nicholas-fedor/eui64-calculator/pull/999)
 - Update docker/login-action digest to 06fb636 by @renovate[bot] in [#998](https://github.com/nicholas-fedor/eui64-calculator/pull/998)
 - Update module github.com/gofiber/utils/v2 to v2.3.0 by @renovate[bot] in [#996](https://github.com/nicholas-fedor/eui64-calculator/pull/996)
