@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update docker/login-action digest to dbcb813 by @renovate[bot] in [#1019](https://github.com/nicholas-fedor/eui64-calculator/pull/1019)
 - Update module github.com/gofiber/utils/v2 to v2.4.1 by @renovate[bot] in [#1017](https://github.com/nicholas-fedor/eui64-calculator/pull/1017)
 - Update docker/login-action digest to 371161b by @renovate[bot] in [#1016](https://github.com/nicholas-fedor/eui64-calculator/pull/1016)
 - Update module github.com/valyala/fasthttp to v1.73.0 by @renovate[bot] in [#1014](https://github.com/nicholas-fedor/eui64-calculator/pull/1014)
