@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update step-security/harden-runner action to v2.20.1 by @renovate[bot] in [#1034](https://github.com/nicholas-fedor/eui64-calculator/pull/1034)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.39 by @renovate[bot] in [#1033](https://github.com/nicholas-fedor/eui64-calculator/pull/1033)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.38 by @renovate[bot] in [#1031](https://github.com/nicholas-fedor/eui64-calculator/pull/1031)
 - Update github/codeql-action digest to 5595cca by @renovate[bot] in [#1029](https://github.com/nicholas-fedor/eui64-calculator/pull/1029)
