@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/crypto to v0.55.0 by @renovate[bot] in [#1047](https://github.com/nicholas-fedor/eui64-calculator/pull/1047)
+- Update module github.com/gofiber/schema to v1.8.4 by @renovate[bot] in [#1046](https://github.com/nicholas-fedor/eui64-calculator/pull/1046)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.42 by @renovate[bot] in [#1044](https://github.com/nicholas-fedor/eui64-calculator/pull/1044)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.41 by @renovate[bot] in [#1043](https://github.com/nicholas-fedor/eui64-calculator/pull/1043)
 - Update jamesives/github-pages-deploy-action digest to fa24774 by @renovate[bot] in [#1041](https://github.com/nicholas-fedor/eui64-calculator/pull/1041)
