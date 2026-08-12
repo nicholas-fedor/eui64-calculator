@@ -28,6 +28,12 @@ type Handler struct {
 	calc Calculator // calc is the EUI-64 calculator implementation.
 }
 
+const (
+	errInvalidMACAddress  = "Please enter a valid MAC address (e.g., 00-14-22-01-23-45)"
+	errInvalidIPv6Prefix  = "Please enter a valid IPv6 prefix (e.g., 2001:db8::)"
+	errCalculationFailure = "Failed to calculate EUI-64 address"
+)
+
 // NewHandler creates a new Handler with the specified EUI-64 calculator.
 // It initializes the handler with the provided calculator for dependency injection.
 func NewHandler(calc Calculator) *Handler {
@@ -44,7 +50,7 @@ func (h *Handler) Calculate(c fiber.Ctx) error {
 	data := ui.ResultData{}
 
 	if err := validators.ValidateMAC(mac); err != nil {
-		data.Error = "Please enter a valid MAC address (e.g., 00-14-22-01-23-45)"
+		data.Error = errInvalidMACAddress
 
 		slog.WarnContext(
 			c.Context(),
@@ -57,7 +63,7 @@ func (h *Handler) Calculate(c fiber.Ctx) error {
 	}
 
 	if err := validators.ValidateIPv6Prefix(prefix); err != nil {
-		data.Error = "Please enter a valid IPv6 prefix (e.g., 2001:db8::)"
+		data.Error = errInvalidIPv6Prefix
 
 		slog.WarnContext(
 			c.Context(),
@@ -76,7 +82,7 @@ func (h *Handler) Calculate(c fiber.Ctx) error {
 	data.FullIP = fullIP
 
 	if err != nil {
-		data.Error = "Failed to calculate EUI-64 address"
+		data.Error = errCalculationFailure
 
 		slog.ErrorContext(
 			c.Context(),

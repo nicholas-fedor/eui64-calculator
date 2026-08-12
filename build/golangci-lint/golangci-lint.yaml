@@ -562,6 +562,7 @@ linters:
           - exhaustruct
           - forcetypeassert
           - funlen
+          - goconst
           - gocyclo
           - gosec
           - promlinter
@@ -606,7 +607,8 @@ linters:
     # Which file paths to exclude: they will be analyzed, but issues from them won't be reported.
     # "/" will be replaced by the current OS file path separator to properly work on Windows.
     # Default: []
-    # paths:
+    paths:
+      - ".*_templ\\.go$"
     # - ".*\\.my\\.go$"
     # - lib/bad.go
     # - ".*/mocks/.*"
@@ -770,9 +772,9 @@ formatters:
     ##################################################################################################
     # Which file paths to exclude.
     # Default: []
-    # paths:
-    # - ".*mocks$"
-    # - ".*_templ.go$"
+    paths:
+      # - ".*mocks$"
+      - ".*_templ\\.go$"
   #   - third_party$
   #   - builtin$
   #   - examples$
