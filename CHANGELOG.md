@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Chores
+
+- Update module golang.org/x/net to v0.58.0 by @renovate[bot] in [#1054](https://github.com/nicholas-fedor/eui64-calculator/pull/1054)
+
+## [0.2.13] - 2026-08-12
+
 ### Added
 
 - Add security policy by @nicholas-fedor in [#836](https://github.com/nicholas-fedor/eui64-calculator/pull/836)
@@ -1289,7 +1295,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Compare Releases
 
-- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.12...HEAD)
+- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.13...HEAD)
+- [0.2.13](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.12...v0.2.13)
 - [0.2.12](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.10...v0.2.12)
 - [0.2.10](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.8...v0.2.10)
 - [0.2.8](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.7...v0.2.8)
