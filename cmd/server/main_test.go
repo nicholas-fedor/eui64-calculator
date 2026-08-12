@@ -159,9 +159,9 @@ func TestTrustedProxies(t *testing.T) {
 			wantIP:        "203.0.113.195",
 		},
 		{
-			name:          "Multiple IPs in X-Forwarded-For returns first",
+			name:          "Multiple IPs in X-Forwarded-For returns rightmost non-trusted",
 			xForwardedFor: "203.0.113.195, 70.41.3.18, 150.172.238.178",
-			wantIP:        "203.0.113.195",
+			wantIP:        "150.172.238.178",
 		},
 		{
 			name:          "No X-Forwarded-For header returns remote IP",
