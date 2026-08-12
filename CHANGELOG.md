@@ -163,6 +163,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove go report card badge by @nicholas-fedor in [#977](https://github.com/nicholas-fedor/eui64-calculator/pull/977)
 
+### Tests
+
+- Correct trusted proxy IP selection test expectation by @nicholas-fedor in [#1052](https://github.com/nicholas-fedor/eui64-calculator/pull/1052)
+
 ## [0.2.12] - 2026-05-25
 
 ### Changed
