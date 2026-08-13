@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/fiber/v3 to v3.5.0 by @renovate[bot] in [#1056](https://github.com/nicholas-fedor/eui64-calculator/pull/1056)
 - Update module golang.org/x/net to v0.58.0 by @renovate[bot] in [#1054](https://github.com/nicholas-fedor/eui64-calculator/pull/1054)
 
 ## [0.2.13] - 2026-08-12
