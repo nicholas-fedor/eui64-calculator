@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update github/codeql-action digest to ff2f1c6 by @renovate[bot] in [#1058](https://github.com/nicholas-fedor/eui64-calculator/pull/1058)
 - Update module github.com/gofiber/fiber/v3 to v3.5.0 by @renovate[bot] in [#1056](https://github.com/nicholas-fedor/eui64-calculator/pull/1056)
 - Update module golang.org/x/net to v0.58.0 by @renovate[bot] in [#1054](https://github.com/nicholas-fedor/eui64-calculator/pull/1054)
 
