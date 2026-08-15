@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update step-security/harden-runner action to v2.21.0 by @renovate[bot] in [#1067](https://github.com/nicholas-fedor/eui64-calculator/pull/1067)
+- Update nicholas-fedor/go-proxy-pull-action action to v1.1.44 by @renovate[bot] in [#1066](https://github.com/nicholas-fedor/eui64-calculator/pull/1066)
 - Update cimg/go docker tag to v1.26.6 by @renovate[bot] in [#1064](https://github.com/nicholas-fedor/eui64-calculator/pull/1064)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.43 by @renovate[bot] in [#1061](https://github.com/nicholas-fedor/eui64-calculator/pull/1061)
 - Update go module directive to v1.26.6 by @renovate[bot] in [#1060](https://github.com/nicholas-fedor/eui64-calculator/pull/1060)
