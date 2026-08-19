@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update go module directive to v1.26.7 by @renovate[bot] in [#1077](https://github.com/nicholas-fedor/eui64-calculator/pull/1077)
 - Update module github.com/stretchr/testify to v1.12.1 by @renovate[bot] in [#1078](https://github.com/nicholas-fedor/eui64-calculator/pull/1078)
 - Update module github.com/stretchr/testify to v1.12.0 by @renovate[bot] in [#1075](https://github.com/nicholas-fedor/eui64-calculator/pull/1075)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.46 by @renovate[bot] in [#1072](https://github.com/nicholas-fedor/eui64-calculator/pull/1072)
