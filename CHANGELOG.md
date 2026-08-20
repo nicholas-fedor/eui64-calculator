@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update cimg/go:1.27.0 docker digest to 91e576b by @renovate[bot] in [#1087](https://github.com/nicholas-fedor/eui64-calculator/pull/1087)
 - Update go module directive to v1.27.0 by @renovate[bot] in [#1084](https://github.com/nicholas-fedor/eui64-calculator/pull/1084)
 - Update cimg/go docker tag to v1.27.0 by @renovate[bot] in [#1085](https://github.com/nicholas-fedor/eui64-calculator/pull/1085)
 - Update docker/setup-buildx-action action to v4.3.0 by @renovate[bot] in [#1082](https://github.com/nicholas-fedor/eui64-calculator/pull/1082)
