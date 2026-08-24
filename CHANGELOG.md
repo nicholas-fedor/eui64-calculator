@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/utils/v2 to v2.4.2 by @renovate[bot] in [#1093](https://github.com/nicholas-fedor/eui64-calculator/pull/1093)
+- Update nicholas-fedor/go-proxy-pull-action action to v1.1.47 by @renovate[bot] in [#1091](https://github.com/nicholas-fedor/eui64-calculator/pull/1091)
 - Update github/codeql-action digest to db488dd by @renovate[bot] in [#1089](https://github.com/nicholas-fedor/eui64-calculator/pull/1089)
 - Update cimg/go:1.27.0 docker digest to 91e576b by @renovate[bot] in [#1087](https://github.com/nicholas-fedor/eui64-calculator/pull/1087)
 - Update go module directive to v1.27.0 by @renovate[bot] in [#1084](https://github.com/nicholas-fedor/eui64-calculator/pull/1084)
