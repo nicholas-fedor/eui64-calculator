@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/andybalholm/brotli to v1.2.3 by @renovate[bot] in [#1102](https://github.com/nicholas-fedor/eui64-calculator/pull/1102)
+- Update module github.com/puerkitobio/goquery to v1.13.0 by @renovate[bot] in [#1103](https://github.com/nicholas-fedor/eui64-calculator/pull/1103)
+- Update securego/gosec action to v2.29.0 by @renovate[bot] in [#1100](https://github.com/nicholas-fedor/eui64-calculator/pull/1100)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.49 by @renovate[bot] in [#1099](https://github.com/nicholas-fedor/eui64-calculator/pull/1099)
 - Update github/codeql-action digest to cdf488f by @renovate[bot] in [#1098](https://github.com/nicholas-fedor/eui64-calculator/pull/1098)
 - Update cimg/go:1.27.0 docker digest to 4da2d4b by @renovate[bot] in [#1094](https://github.com/nicholas-fedor/eui64-calculator/pull/1094)
