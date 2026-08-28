@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update anchore/sbom-action action to v0.24.2 by @renovate[bot] in [#1106](https://github.com/nicholas-fedor/eui64-calculator/pull/1106)
+- Update anchore/sbom-action action to v0.24.1 by @renovate[bot] in [#1104](https://github.com/nicholas-fedor/eui64-calculator/pull/1104)
 - Update module github.com/andybalholm/brotli to v1.2.3 by @renovate[bot] in [#1102](https://github.com/nicholas-fedor/eui64-calculator/pull/1102)
 - Update module github.com/puerkitobio/goquery to v1.13.0 by @renovate[bot] in [#1103](https://github.com/nicholas-fedor/eui64-calculator/pull/1103)
 - Update securego/gosec action to v2.29.0 by @renovate[bot] in [#1100](https://github.com/nicholas-fedor/eui64-calculator/pull/1100)
