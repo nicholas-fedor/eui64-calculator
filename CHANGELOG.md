@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update step-security/harden-runner action to v2.21.1 by @renovate[bot] in [#1107](https://github.com/nicholas-fedor/eui64-calculator/pull/1107)
 - Update anchore/sbom-action action to v0.24.2 by @renovate[bot] in [#1106](https://github.com/nicholas-fedor/eui64-calculator/pull/1106)
 - Update anchore/sbom-action action to v0.24.1 by @renovate[bot] in [#1104](https://github.com/nicholas-fedor/eui64-calculator/pull/1104)
 - Update module github.com/andybalholm/brotli to v1.2.3 by @renovate[bot] in [#1102](https://github.com/nicholas-fedor/eui64-calculator/pull/1102)
