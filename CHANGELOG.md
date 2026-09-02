@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update cimg/go docker tag to v1.27.1 by @renovate[bot] in [#1113](https://github.com/nicholas-fedor/eui64-calculator/pull/1113)
 - Update cimg/go:1.27.0 docker digest to 6026c28 by @renovate[bot] in [#1112](https://github.com/nicholas-fedor/eui64-calculator/pull/1112)
 - Update module github.com/gofiber/schema to v1.8.5 by @renovate[bot] in [#1110](https://github.com/nicholas-fedor/eui64-calculator/pull/1110)
 - Update orhun/git-cliff-action digest to 3d96a18 by @renovate[bot] in [#1109](https://github.com/nicholas-fedor/eui64-calculator/pull/1109)
