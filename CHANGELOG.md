@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/klauspost/compress to v1.20.0 by @renovate[bot] in [#1120](https://github.com/nicholas-fedor/eui64-calculator/pull/1120)
 - Update docker/setup-qemu-action action to v4.3.0 by @renovate[bot] in [#1117](https://github.com/nicholas-fedor/eui64-calculator/pull/1117)
 - Update go module directive to v1.27.1 by @renovate[bot] in [#1116](https://github.com/nicholas-fedor/eui64-calculator/pull/1116)
 - Update cimg/go docker tag to v1.27.1 by @renovate[bot] in [#1113](https://github.com/nicholas-fedor/eui64-calculator/pull/1113)
