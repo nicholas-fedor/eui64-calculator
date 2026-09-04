@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/andybalholm/cascadia to v1.3.5 by @renovate[bot] in [#1124](https://github.com/nicholas-fedor/eui64-calculator/pull/1124)
 - Update module golang.org/x/crypto to v0.56.0 by @renovate[bot] in [#1123](https://github.com/nicholas-fedor/eui64-calculator/pull/1123)
 - Update module github.com/gofiber/utils/v2 to v2.4.3 by @renovate[bot] in [#1119](https://github.com/nicholas-fedor/eui64-calculator/pull/1119)
 - Update module github.com/klauspost/compress to v1.20.0 by @renovate[bot] in [#1120](https://github.com/nicholas-fedor/eui64-calculator/pull/1120)
