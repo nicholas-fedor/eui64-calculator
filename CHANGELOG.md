@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/utils/v2 to v2.5.1 by @renovate[bot] in [#1130](https://github.com/nicholas-fedor/eui64-calculator/pull/1130)
+- Update nicholas-fedor/go-proxy-pull-action action to v1.1.50 by @renovate[bot] in [#1128](https://github.com/nicholas-fedor/eui64-calculator/pull/1128)
 - Update module github.com/gofiber/utils/v2 to v2.5.0 by @renovate[bot] in [#1126](https://github.com/nicholas-fedor/eui64-calculator/pull/1126)
 - Update module github.com/andybalholm/cascadia to v1.3.5 by @renovate[bot] in [#1124](https://github.com/nicholas-fedor/eui64-calculator/pull/1124)
 - Update module golang.org/x/crypto to v0.56.0 by @renovate[bot] in [#1123](https://github.com/nicholas-fedor/eui64-calculator/pull/1123)
