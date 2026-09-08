@@ -7,7 +7,7 @@ require (
 	github.com/a-h/templ v0.3.1020
 	github.com/gofiber/fiber/v3 v3.5.0
 	github.com/stretchr/testify v1.12.1
-	golang.org/x/net v0.58.0
+	golang.org/x/net v0.59.0
 )
 
 require (
