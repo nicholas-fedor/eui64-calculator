@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/net to v0.59.0 by @renovate[bot] in [#1140](https://github.com/nicholas-fedor/eui64-calculator/pull/1140)
 - Update module golang.org/x/crypto to v0.57.0 by @renovate[bot] in [#1137](https://github.com/nicholas-fedor/eui64-calculator/pull/1137)
 - Update module golang.org/x/text to v0.42.0 by @renovate[bot] in [#1138](https://github.com/nicholas-fedor/eui64-calculator/pull/1138)
 - Update module golang.org/x/sys to v0.48.0 by @renovate[bot] in [#1135](https://github.com/nicholas-fedor/eui64-calculator/pull/1135)
