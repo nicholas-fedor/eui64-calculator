@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/sys to v0.48.0 by @renovate[bot] in [#1135](https://github.com/nicholas-fedor/eui64-calculator/pull/1135)
+- Update module github.com/gofiber/schema to v1.8.6 by @renovate[bot] in [#1134](https://github.com/nicholas-fedor/eui64-calculator/pull/1134)
 - Update module github.com/valyala/fasthttp to v1.74.0 by @renovate[bot] in [#1133](https://github.com/nicholas-fedor/eui64-calculator/pull/1133)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.51 by @renovate[bot] in [#1131](https://github.com/nicholas-fedor/eui64-calculator/pull/1131)
 - Update module github.com/gofiber/utils/v2 to v2.5.1 by @renovate[bot] in [#1130](https://github.com/nicholas-fedor/eui64-calculator/pull/1130)
