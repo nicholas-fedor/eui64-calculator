@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/schema to v1.8.7 by @renovate[bot] in [#1150](https://github.com/nicholas-fedor/eui64-calculator/pull/1150)
+- Update codecov/codecov-action action to v7.1.0 by @renovate[bot] in [#1148](https://github.com/nicholas-fedor/eui64-calculator/pull/1148)
 - Update module github.com/gofiber/utils/v2 to v2.5.2 by @renovate[bot] in [#1146](https://github.com/nicholas-fedor/eui64-calculator/pull/1146)
 - Update module github.com/molecule-man/go-brrr to v1.1.0 by @renovate[bot] in [#1144](https://github.com/nicholas-fedor/eui64-calculator/pull/1144)
 - Update github/codeql-action digest to b96794f by @renovate[bot] in [#1142](https://github.com/nicholas-fedor/eui64-calculator/pull/1142)
