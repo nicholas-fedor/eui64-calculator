@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Lock file maintenance by @renovate[bot] in [#1073](https://github.com/nicholas-fedor/eui64-calculator/pull/1073)
+- Update docker/setup-buildx-action action to v4.4.0 by @renovate[bot] in [#1151](https://github.com/nicholas-fedor/eui64-calculator/pull/1151)
 - Update module github.com/gofiber/schema to v1.8.7 by @renovate[bot] in [#1150](https://github.com/nicholas-fedor/eui64-calculator/pull/1150)
 - Update codecov/codecov-action action to v7.1.0 by @renovate[bot] in [#1148](https://github.com/nicholas-fedor/eui64-calculator/pull/1148)
 - Update module github.com/gofiber/utils/v2 to v2.5.2 by @renovate[bot] in [#1146](https://github.com/nicholas-fedor/eui64-calculator/pull/1146)
