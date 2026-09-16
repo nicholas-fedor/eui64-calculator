@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update docker/setup-buildx-action action to v4.4.1 by @renovate[bot] in [#1155](https://github.com/nicholas-fedor/eui64-calculator/pull/1155)
 - Update docker/setup-qemu-action action to v4.4.0 by @renovate[bot] in [#1153](https://github.com/nicholas-fedor/eui64-calculator/pull/1153)
 
 ## [0.2.14] - 2026-09-15
