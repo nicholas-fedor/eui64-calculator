@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Use the commit date for archive mtime by @nicholas-fedor in [#1167](https://github.com/nicholas-fedor/eui64-calculator/pull/1167)
+
 ### Chores
 
 - Update commitlint monorepo to v21.2.3 by @renovate[bot] in [#1166](https://github.com/nicholas-fedor/eui64-calculator/pull/1166)
