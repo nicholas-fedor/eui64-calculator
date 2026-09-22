@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update commitlint monorepo to v21.2.3 by @renovate[bot] in [#1166](https://github.com/nicholas-fedor/eui64-calculator/pull/1166)
+- Update module github.com/gofiber/utils/v2 to v2.5.3 by @renovate[bot] in [#1164](https://github.com/nicholas-fedor/eui64-calculator/pull/1164)
 - Update module github.com/molecule-man/go-brrr to v1.1.1 by @renovate[bot] in [#1161](https://github.com/nicholas-fedor/eui64-calculator/pull/1161)
 - Update orhun/git-cliff-action digest to a9a9552 by @renovate[bot] in [#1160](https://github.com/nicholas-fedor/eui64-calculator/pull/1160)
 - Update github/codeql-action digest to 1c5b675 by @renovate[bot] in [#1159](https://github.com/nicholas-fedor/eui64-calculator/pull/1159)
