@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/utils/v2 to v2.6.0 by @renovate[bot] in [#1169](https://github.com/nicholas-fedor/eui64-calculator/pull/1169)
 - Update commitlint monorepo to v21.2.3 by @renovate[bot] in [#1166](https://github.com/nicholas-fedor/eui64-calculator/pull/1166)
 - Update module github.com/gofiber/utils/v2 to v2.5.3 by @renovate[bot] in [#1164](https://github.com/nicholas-fedor/eui64-calculator/pull/1164)
 - Update module github.com/molecule-man/go-brrr to v1.1.1 by @renovate[bot] in [#1161](https://github.com/nicholas-fedor/eui64-calculator/pull/1161)
