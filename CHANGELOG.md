@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/klauspost/compress to v1.20.1 by @renovate[bot] in [#1175](https://github.com/nicholas-fedor/eui64-calculator/pull/1175)
+- Update module github.com/gofiber/schema to v1.8.8 by @renovate[bot] in [#1172](https://github.com/nicholas-fedor/eui64-calculator/pull/1172)
 - Update github/codeql-action digest to 2892aa5 by @renovate[bot] in [#1171](https://github.com/nicholas-fedor/eui64-calculator/pull/1171)
 - Update module github.com/gofiber/utils/v2 to v2.6.0 by @renovate[bot] in [#1169](https://github.com/nicholas-fedor/eui64-calculator/pull/1169)
 - Update commitlint monorepo to v21.2.3 by @renovate[bot] in [#1166](https://github.com/nicholas-fedor/eui64-calculator/pull/1166)
