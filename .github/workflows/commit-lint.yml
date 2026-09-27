@@ -2,13 +2,14 @@
 name: Commit Lint
 on:
   pull_request:
+    paths-ignore:
+      - CHANGELOG.md
 
 permissions:
   contents: read
 
 jobs:
   commitlint:
-    if: github.head_ref != 'docs/update-changelog'
     runs-on: ubuntu-latest
     steps:
       - name: Harden the runner (Audit all outbound calls)
