@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Lock file maintenance by @renovate[bot] in [#1180](https://github.com/nicholas-fedor/eui64-calculator/pull/1180)
 - Lock file maintenance by @renovate[bot] in [#1163](https://github.com/nicholas-fedor/eui64-calculator/pull/1163)
 - Update module github.com/klauspost/compress to v1.20.1 by @renovate[bot] in [#1175](https://github.com/nicholas-fedor/eui64-calculator/pull/1175)
 - Update module github.com/gofiber/schema to v1.8.8 by @renovate[bot] in [#1172](https://github.com/nicholas-fedor/eui64-calculator/pull/1172)
