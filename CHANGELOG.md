@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/tinylib/msgp to v1.6.5 by @renovate[bot] in [#1184](https://github.com/nicholas-fedor/eui64-calculator/pull/1184)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.52 by @renovate[bot] in [#1182](https://github.com/nicholas-fedor/eui64-calculator/pull/1182)
 - Lock file maintenance by @renovate[bot] in [#1180](https://github.com/nicholas-fedor/eui64-calculator/pull/1180)
 - Lock file maintenance by @renovate[bot] in [#1163](https://github.com/nicholas-fedor/eui64-calculator/pull/1163)
