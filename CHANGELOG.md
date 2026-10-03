@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/molecule-man/go-brrr to v1.2.0 by @renovate[bot] in [#1188](https://github.com/nicholas-fedor/eui64-calculator/pull/1188)
 - Update anchore/sbom-action action to v0.24.3 by @renovate[bot] in [#1186](https://github.com/nicholas-fedor/eui64-calculator/pull/1186)
 - Update module github.com/tinylib/msgp to v1.6.5 by @renovate[bot] in [#1184](https://github.com/nicholas-fedor/eui64-calculator/pull/1184)
 - Update nicholas-fedor/go-proxy-pull-action action to v1.1.52 by @renovate[bot] in [#1182](https://github.com/nicholas-fedor/eui64-calculator/pull/1182)
