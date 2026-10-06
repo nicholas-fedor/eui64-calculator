@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update step-security/harden-runner action to v2.22.0 by @renovate[bot] in [#1197](https://github.com/nicholas-fedor/eui64-calculator/pull/1197)
+- Update module github.com/mattn/go-colorable to v0.1.16 by @renovate[bot] in [#1196](https://github.com/nicholas-fedor/eui64-calculator/pull/1196)
 - Lock file maintenance by @renovate[bot] in [#1192](https://github.com/nicholas-fedor/eui64-calculator/pull/1192)
 - Update module github.com/valyala/fasthttp to v1.75.0 by @renovate[bot] in [#1193](https://github.com/nicholas-fedor/eui64-calculator/pull/1193)
 - Update module github.com/a-h/templ to v0.3.1070 by @renovate[bot] in [#1190](https://github.com/nicholas-fedor/eui64-calculator/pull/1190)
