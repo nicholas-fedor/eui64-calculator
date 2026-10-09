@@ -13,7 +13,6 @@ Inspired by [ThePrincelle's EUI64-Calculator](https://github.com/ThePrincelle/EU
 <br/><br/>
 <!-- markdownlint-restore -->
 
-  [![CircleCI](https://dl.circleci.com/status-badge/img/gh/nicholas-fedor/eui64-calculator/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/nicholas-fedor/eui64-calculator/tree/main)
   [![codecov](https://codecov.io/gh/nicholas-fedor/eui64-calculator/branch/main/graph/badge.svg)](https://codecov.io/gh/nicholas-fedor/eui64-calculator)
   [![GoDoc](https://godoc.org/github.com/nicholas-fedor/eui64-calculator?status.svg)](https://godoc.org/github.com/nicholas-fedor/eui64-calculator)
   [![latest version](https://img.shields.io/github/tag/nicholas-fedor/eui64-calculator.svg)](https://github.com/nicholas-fedor/eui64-calculator/releases)
@@ -203,8 +202,6 @@ task <target>
 │   │   ├── docker-compose.yaml
 │   │   └── traefik.yaml
 │   └── docker-compose.yaml
-├── .circleci
-│   └── config.yml
 ├── .codacy.yml
 ├── .gitattributes
 ├── .gitignore
