@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/sys to v0.49.0 by @renovate[bot] in [#1214](https://github.com/nicholas-fedor/eui64-calculator/pull/1214)
 - Update nicholas-fedor/actionlint-action action to v1.0.19 by @renovate[bot] in [#1212](https://github.com/nicholas-fedor/eui64-calculator/pull/1212)
 - Remove codacy integration by @nicholas-fedor in [#1210](https://github.com/nicholas-fedor/eui64-calculator/pull/1210)
 - Update module golang.org/x/net to v0.60.0 by @renovate[bot] in [#1207](https://github.com/nicholas-fedor/eui64-calculator/pull/1207)
