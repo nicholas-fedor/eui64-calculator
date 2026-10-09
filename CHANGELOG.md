@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Remove codacy integration by @nicholas-fedor in [#1210](https://github.com/nicholas-fedor/eui64-calculator/pull/1210)
 - Update module golang.org/x/net to v0.60.0 by @renovate[bot] in [#1207](https://github.com/nicholas-fedor/eui64-calculator/pull/1207)
 - Update go module directive to v1.27.2 by @renovate[bot] in [#1204](https://github.com/nicholas-fedor/eui64-calculator/pull/1204)
 - Update github/codeql-action digest to 24c5418 by @renovate[bot] in [#1203](https://github.com/nicholas-fedor/eui64-calculator/pull/1203)
