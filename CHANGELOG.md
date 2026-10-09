@@ -47,6 +47,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix changelog automation workflows by @nicholas-fedor in [#1178](https://github.com/nicholas-fedor/eui64-calculator/pull/1178)
 
+### Removed
+
+- Remove circleci integration by @nicholas-fedor in [#1208](https://github.com/nicholas-fedor/eui64-calculator/pull/1208)
+
 ## [0.2.14] - 2026-09-15
 
 ### Chores
