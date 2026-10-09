@@ -12,7 +12,6 @@ build/                  @nicholas-fedor
 .github/                @nicholas-fedor
 cliff.toml              @nicholas-fedor
 commitlint.config.cjs   @nicholas-fedor
-.codacy.yml             @nicholas-fedor
 
 # Project configuration
 .all-contributorsrc     @nicholas-fedor
