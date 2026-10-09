@@ -10,7 +10,6 @@ build/                  @nicholas-fedor
 
 # CI/CD and tool configuration
 .github/                @nicholas-fedor
-.circleci/              @nicholas-fedor
 cliff.toml              @nicholas-fedor
 commitlint.config.cjs   @nicholas-fedor
 .codacy.yml             @nicholas-fedor
