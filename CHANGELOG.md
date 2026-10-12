@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/fiber/v3 to v3.6.0 by @renovate[bot] in [#1229](https://github.com/nicholas-fedor/eui64-calculator/pull/1229)
 - Update module github.com/klauspost/compress to v1.20.3 by @renovate[bot] in [#1227](https://github.com/nicholas-fedor/eui64-calculator/pull/1227)
 - Lock file maintenance by @renovate[bot] in [#1223](https://github.com/nicholas-fedor/eui64-calculator/pull/1223)
 - Update ossf/scorecard-action action to v2.5.0 by @renovate[bot] in [#1224](https://github.com/nicholas-fedor/eui64-calculator/pull/1224)
