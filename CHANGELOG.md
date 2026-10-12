@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update ossf/scorecard-action action to v2.5.0 by @renovate[bot] in [#1224](https://github.com/nicholas-fedor/eui64-calculator/pull/1224)
 - Update module github.com/molecule-man/go-brrr to v1.3.0 by @renovate[bot] in [#1221](https://github.com/nicholas-fedor/eui64-calculator/pull/1221)
 - Update module golang.org/x/net to v0.61.0 by @renovate[bot] in [#1219](https://github.com/nicholas-fedor/eui64-calculator/pull/1219)
 - Update module golang.org/x/text to v0.43.0 by @renovate[bot] in [#1217](https://github.com/nicholas-fedor/eui64-calculator/pull/1217)
