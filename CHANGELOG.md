@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/klauspost/compress to v1.20.3 by @renovate[bot] in [#1227](https://github.com/nicholas-fedor/eui64-calculator/pull/1227)
 - Lock file maintenance by @renovate[bot] in [#1223](https://github.com/nicholas-fedor/eui64-calculator/pull/1223)
 - Update ossf/scorecard-action action to v2.5.0 by @renovate[bot] in [#1224](https://github.com/nicholas-fedor/eui64-calculator/pull/1224)
 - Update module github.com/molecule-man/go-brrr to v1.3.0 by @renovate[bot] in [#1221](https://github.com/nicholas-fedor/eui64-calculator/pull/1221)
