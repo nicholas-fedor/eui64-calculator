@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update go module directive to v1.27.3 by @renovate[bot] in [#1245](https://github.com/nicholas-fedor/eui64-calculator/pull/1245)
 - Update module github.com/valyala/fasthttp to v1.76.0 by @renovate[bot] in [#1242](https://github.com/nicholas-fedor/eui64-calculator/pull/1242)
 - Lock file maintenance by @renovate[bot] in [#1241](https://github.com/nicholas-fedor/eui64-calculator/pull/1241)
 - Update module github.com/philhofer/fwd to v1.2.1 by @renovate[bot] in [#1239](https://github.com/nicholas-fedor/eui64-calculator/pull/1239)
