@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update securego/gosec action to v2.30.0 by @renovate[bot] in [#1255](https://github.com/nicholas-fedor/eui64-calculator/pull/1255)
 - Update github/codeql-action digest to 9b32540 by @renovate[bot] in [#1251](https://github.com/nicholas-fedor/eui64-calculator/pull/1251)
 - Update commitlint monorepo to v21.2.4 by @renovate[bot] in [#1252](https://github.com/nicholas-fedor/eui64-calculator/pull/1252)
 - Update module github.com/gofiber/schema to v1.9.0 by @renovate[bot] in [#1249](https://github.com/nicholas-fedor/eui64-calculator/pull/1249)
