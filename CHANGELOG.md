@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/molecule-man/go-brrr to v1.3.1 by @renovate[bot] in [#1259](https://github.com/nicholas-fedor/eui64-calculator/pull/1259)
 - Update docker/login-action digest to 81c6f93 by @renovate[bot] in [#1257](https://github.com/nicholas-fedor/eui64-calculator/pull/1257)
 - Update securego/gosec action to v2.30.0 by @renovate[bot] in [#1255](https://github.com/nicholas-fedor/eui64-calculator/pull/1255)
 - Update github/codeql-action digest to 9b32540 by @renovate[bot] in [#1251](https://github.com/nicholas-fedor/eui64-calculator/pull/1251)
