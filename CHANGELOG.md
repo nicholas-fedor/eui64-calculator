@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/valyala/fasthttp to v1.77.0 by @renovate[bot] in [#1263](https://github.com/nicholas-fedor/eui64-calculator/pull/1263)
 - Lock file maintenance by @renovate[bot] in [#1261](https://github.com/nicholas-fedor/eui64-calculator/pull/1261)
 
 ## [0.2.15] - 2026-10-24
