@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Chores
+
+- Lock file maintenance by @renovate[bot] in [#1261](https://github.com/nicholas-fedor/eui64-calculator/pull/1261)
+
+## [0.2.15] - 2026-10-24
+
 ### Changed
 
 - Use the commit date for archive mtime by @nicholas-fedor in [#1167](https://github.com/nicholas-fedor/eui64-calculator/pull/1167)
@@ -1424,7 +1430,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Compare Releases
 
-- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.14...HEAD)
+- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.15...HEAD)
+- [0.2.15](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.14...v0.2.15)
 - [0.2.14](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.13...v0.2.14)
 - [0.2.13](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.12...v0.2.13)
 - [0.2.12](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.10...v0.2.12)
