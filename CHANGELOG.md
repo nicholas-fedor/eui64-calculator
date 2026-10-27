@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/gofiber/schema to v1.9.1 by @renovate[bot] in [#1269](https://github.com/nicholas-fedor/eui64-calculator/pull/1269)
 - Update module github.com/gofiber/utils/v2 to v2.6.3 by @renovate[bot] in [#1267](https://github.com/nicholas-fedor/eui64-calculator/pull/1267)
 - Update module github.com/a-h/templ to v0.3.1100 by @renovate[bot] in [#1265](https://github.com/nicholas-fedor/eui64-calculator/pull/1265)
 - Update module github.com/valyala/fasthttp to v1.77.0 by @renovate[bot] in [#1263](https://github.com/nicholas-fedor/eui64-calculator/pull/1263)
