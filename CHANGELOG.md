@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Lock file maintenance by @renovate[bot] in [#1278](https://github.com/nicholas-fedor/eui64-calculator/pull/1278)
 - Update module go.yaml.in/yaml/v3 to v3.0.6 by @renovate[bot] in [#1276](https://github.com/nicholas-fedor/eui64-calculator/pull/1276)
 - Update module github.com/gofiber/schema to v1.9.2 by @renovate[bot] in [#1275](https://github.com/nicholas-fedor/eui64-calculator/pull/1275)
 - Update module golang.org/x/net to v0.62.0 by @renovate[bot] in [#1272](https://github.com/nicholas-fedor/eui64-calculator/pull/1272)
