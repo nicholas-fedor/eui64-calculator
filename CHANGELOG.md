@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update step-security/harden-runner action to v2.22.4 by @renovate[bot] in [#1289](https://github.com/nicholas-fedor/eui64-calculator/pull/1289)
 - Update docker/login-action digest to 8aa5831 by @renovate[bot] in [#1287](https://github.com/nicholas-fedor/eui64-calculator/pull/1287)
 - Update github/codeql-action digest to 33d7b85 by @renovate[bot] in [#1284](https://github.com/nicholas-fedor/eui64-calculator/pull/1284)
 - Update sigstore/cosign-installer action to v4.1.3 by @renovate[bot] in [#1285](https://github.com/nicholas-fedor/eui64-calculator/pull/1285)
