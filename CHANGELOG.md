@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/klauspost/compress to v1.20.4 by @renovate[bot] in [#1294](https://github.com/nicholas-fedor/eui64-calculator/pull/1294)
 - Update module github.com/valyala/fasthttp to v1.78.0 by @renovate[bot] in [#1292](https://github.com/nicholas-fedor/eui64-calculator/pull/1292)
 - Update step-security/harden-runner action to v2.22.4 by @renovate[bot] in [#1289](https://github.com/nicholas-fedor/eui64-calculator/pull/1289)
 - Update docker/login-action digest to 8aa5831 by @renovate[bot] in [#1287](https://github.com/nicholas-fedor/eui64-calculator/pull/1287)
