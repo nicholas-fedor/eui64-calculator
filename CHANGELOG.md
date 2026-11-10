@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update go module directive to v1.27.4 by @renovate[bot] in [#1305](https://github.com/nicholas-fedor/eui64-calculator/pull/1305)
 - Update peter-evans/create-pull-request action to v8.1.3 by @renovate[bot] in [#1303](https://github.com/nicholas-fedor/eui64-calculator/pull/1303)
 - Update module github.com/gofiber/fiber/v3 to v3.7.0 by @renovate[bot] in [#1301](https://github.com/nicholas-fedor/eui64-calculator/pull/1301)
 - Update module golang.org/x/sys to v0.50.0 by @renovate[bot] in [#1298](https://github.com/nicholas-fedor/eui64-calculator/pull/1298)
