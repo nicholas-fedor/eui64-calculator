@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/text to v0.44.0 by @renovate[bot] in [#1299](https://github.com/nicholas-fedor/eui64-calculator/pull/1299)
+- Update peter-evans/create-pull-request action to v8.1.2 by @renovate[bot] in [#1295](https://github.com/nicholas-fedor/eui64-calculator/pull/1295)
 - Update module github.com/klauspost/compress to v1.20.4 by @renovate[bot] in [#1294](https://github.com/nicholas-fedor/eui64-calculator/pull/1294)
 - Update module github.com/valyala/fasthttp to v1.78.0 by @renovate[bot] in [#1292](https://github.com/nicholas-fedor/eui64-calculator/pull/1292)
 - Update step-security/harden-runner action to v2.22.4 by @renovate[bot] in [#1289](https://github.com/nicholas-fedor/eui64-calculator/pull/1289)
