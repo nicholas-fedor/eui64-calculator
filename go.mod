@@ -3,7 +3,7 @@ module github.com/nicholas-fedor/eui64-calculator
 go 1.27.4
 
 require (
-	github.com/PuerkitoBio/goquery v1.13.0
+	github.com/PuerkitoBio/goquery v1.14.0
 	github.com/a-h/templ v0.3.1118
 	github.com/gofiber/fiber/v3 v3.7.0
 	github.com/stretchr/testify v1.12.1
