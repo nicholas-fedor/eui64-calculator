@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update actions/setup-go action to v7.1.0 by @renovate[bot] in [#1318](https://github.com/nicholas-fedor/eui64-calculator/pull/1318)
 - Update module github.com/valyala/fasthttp to v1.79.0 by @renovate[bot] in [#1316](https://github.com/nicholas-fedor/eui64-calculator/pull/1316)
 - Update module github.com/puerkitobio/goquery to v1.14.0 by @renovate[bot] in [#1314](https://github.com/nicholas-fedor/eui64-calculator/pull/1314)
 - Update module github.com/a-h/templ to v0.3.1118 by @renovate[bot] in [#1312](https://github.com/nicholas-fedor/eui64-calculator/pull/1312)
