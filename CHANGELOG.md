@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Remove commitlint by @nicholas-fedor in [#1326](https://github.com/nicholas-fedor/eui64-calculator/pull/1326)
 - Add release tag tasks and remove the makefile by @nicholas-fedor in [#1324](https://github.com/nicholas-fedor/eui64-calculator/pull/1324)
 - Lock file maintenance by @renovate[bot] in [#1291](https://github.com/nicholas-fedor/eui64-calculator/pull/1291)
 - Update module golang.org/x/net to v0.63.0 by @renovate[bot] in [#1321](https://github.com/nicholas-fedor/eui64-calculator/pull/1321)
