@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module golang.org/x/net to v0.63.0 by @renovate[bot] in [#1321](https://github.com/nicholas-fedor/eui64-calculator/pull/1321)
+- Update module github.com/gofiber/schema to v1.9.5 by @renovate[bot] in [#1320](https://github.com/nicholas-fedor/eui64-calculator/pull/1320)
 - Update actions/setup-go action to v7.1.0 by @renovate[bot] in [#1318](https://github.com/nicholas-fedor/eui64-calculator/pull/1318)
 - Update module github.com/valyala/fasthttp to v1.79.0 by @renovate[bot] in [#1316](https://github.com/nicholas-fedor/eui64-calculator/pull/1316)
 - Update module github.com/puerkitobio/goquery to v1.14.0 by @renovate[bot] in [#1314](https://github.com/nicholas-fedor/eui64-calculator/pull/1314)
