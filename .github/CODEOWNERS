@@ -4,7 +4,6 @@ internal/               @nicholas-fedor
 main.go                 @nicholas-fedor
 
 # Build and task configuration
-Makefile                @nicholas-fedor
 Taskfile.yml            @nicholas-fedor
 build/                  @nicholas-fedor
 

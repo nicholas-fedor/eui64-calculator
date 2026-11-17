@@ -58,8 +58,7 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 
 - Go 1.26+: <https://go.dev/doc/install>
 - Templ: <https://github.com/a-h/templ>
-- Make (optional, for Makefile targets)
-- [Task](https://taskfile.dev/installation/) (optional, for Taskfile targets)
+- [Task](https://taskfile.dev/installation/)
 
 #### Installation
 
@@ -78,13 +77,13 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 3. Install dependencies and generate templ files:
 
     ```console
-    make generate
+    task generate
     ```
 
 4. Run the server:
 
     ```console
-    make run
+    task run
     ```
 
 5. The application will be accessible at <http://localhost:8080/>
@@ -93,13 +92,13 @@ docker run -d --name eui64-calculator nickfedor/eui64-calculator:latest
 
 ### Build Automation
 
-This project provides both a `Makefile` and a `Taskfile.yml` for build automation. Both offer the same set of targets.
+This project uses [Task](https://taskfile.dev/) for build automation. Run a task with `task <task>`, or list them all with `task --list`. Running `task` alone runs `check`.
 
-#### Available Targets
+#### Available Tasks
 
-| Target                    | Description                                        |
+| Task                      | Description                                        |
 |---------------------------|----------------------------------------------------|
-| `all` / `check`           | Full CI check (lint, vet, test)                    |
+| `check`                   | Full CI check (lint, vet, test)                    |
 | `generate`                | Run `go generate` for templ code generation        |
 | `lint`                    | Run golangci-lint with project configuration       |
 | `vet`                     | Run `go vet` for static analysis                   |
@@ -113,19 +112,14 @@ This project provides both a `Makefile` and a `Taskfile.yml` for build automatio
 | `docker-build`            | Build binary and Docker image                      |
 | `docker-run`              | Build and run the Docker container                 |
 | `release`                 | Create a release build with GoReleaser             |
+| `tag:bump-patch`          | Tag and push the next patch release, `vX.Y.Z`      |
+| `tag:bump-minor`          | Tag and push the next minor release, `vX.Y.0`      |
+| `tag:bump-major`          | Tag and push the next major release, `vX.0.0`      |
 | `clean`                   | Remove build artifacts and generated files         |
 
-**Make:**
+#### Tagging a Release
 
-```console
-make <target>
-```
-
-**Task:**
-
-```console
-task <target>
-```
+Tag a release with `task tag:bump-patch`, `task tag:bump-minor`, or `task tag:bump-major`. The task fetches origin first. It refuses unless HEAD is a clean `main` that matches `origin/main` and has no release tag. It asks for confirmation and then pushes an annotated `vX.Y.Z` tag, which starts the release workflow.
 
 ### Project Structure
 
@@ -208,7 +202,6 @@ task <target>
 ├── go.mod
 ├── go.sum
 ├── LICENSE
-├── Makefile
 ├── README.md
 └── Taskfile.yml
 ```
@@ -228,7 +221,7 @@ If you're using VS Code, an `extensions.json` file with recommended extensions i
 Templ files (`.templ`) are compiled to Go via `go generate`. To regenerate after editing `.templ` files:
 
 ```console
-make generate
+task generate
 ```
 
 This runs `go generate ./...`, which invokes the `templ` CLI for all packages containing `//go:generate` directives.
@@ -238,19 +231,19 @@ This runs `go generate ./...`, which invokes the `templ` CLI for all packages co
 - Run all tests:
 
     ```console
-    make test
+    task test
     ```
 
 - Run tests with the race detector:
 
     ```console
-    make test-race
+    task test-race
     ```
 
 - Generate a coverage report:
 
     ```console
-    make test-coverage
+    task test-coverage
     ```
 
     The HTML report is written to `coverage/coverage.html`.
@@ -260,13 +253,13 @@ This runs `go generate ./...`, which invokes the `templ` CLI for all packages co
 The project uses [golangci-lint](https://golangci-lint.run/) with a comprehensive configuration at `build/golangci-lint/golangci-lint.yaml`.
 
 ```console
-make lint
+task lint
 ```
 
 To format code according to the project's style rules:
 
 ```console
-make fmt
+task fmt
 ```
 
 ### Docker
@@ -274,13 +267,13 @@ make fmt
 - Build the Docker image:
 
     ```console
-    make docker-build
+    task docker-build
     ```
 
 - Run the container locally:
 
     ```console
-    make docker-run
+    task docker-run
     ```
 
 ### Notes
