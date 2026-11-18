@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update step-security/harden-runner action to v2.23.0 by @renovate[bot] in [#1328](https://github.com/nicholas-fedor/eui64-calculator/pull/1328)
+
+## [0.2.16] - 2026-11-17
+
+### Chores
+
 - Remove commitlint by @nicholas-fedor in [#1326](https://github.com/nicholas-fedor/eui64-calculator/pull/1326)
 - Add release tag tasks and remove the makefile by @nicholas-fedor in [#1324](https://github.com/nicholas-fedor/eui64-calculator/pull/1324)
 - Lock file maintenance by @renovate[bot] in [#1291](https://github.com/nicholas-fedor/eui64-calculator/pull/1291)
@@ -1465,7 +1471,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Compare Releases
 
-- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.15...HEAD)
+- [unreleased](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.16...HEAD)
+- [0.2.16](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.15...v0.2.16)
 - [0.2.15](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.14...v0.2.15)
 - [0.2.14](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.13...v0.2.14)
 - [0.2.13](https://github.com/nicholas-fedor/eui64-calculator/compare/v0.2.12...v0.2.13)
