@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update ossf/scorecard-action action to v2.6.0 by @renovate[bot] in [#1332](https://github.com/nicholas-fedor/eui64-calculator/pull/1332)
 - Update module github.com/gofiber/schema to v1.10.0 by @renovate[bot] in [#1330](https://github.com/nicholas-fedor/eui64-calculator/pull/1330)
 - Update step-security/harden-runner action to v2.23.0 by @renovate[bot] in [#1328](https://github.com/nicholas-fedor/eui64-calculator/pull/1328)
 
