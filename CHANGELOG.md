@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update module github.com/klauspost/compress to v1.20.5 by @renovate[bot] in [#1336](https://github.com/nicholas-fedor/eui64-calculator/pull/1336)
 - Update github/codeql-action digest to 1bd86f2 by @renovate[bot] in [#1334](https://github.com/nicholas-fedor/eui64-calculator/pull/1334)
 - Update ossf/scorecard-action action to v2.6.0 by @renovate[bot] in [#1332](https://github.com/nicholas-fedor/eui64-calculator/pull/1332)
 - Update module github.com/gofiber/schema to v1.10.0 by @renovate[bot] in [#1330](https://github.com/nicholas-fedor/eui64-calculator/pull/1330)
