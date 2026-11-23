@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update anchore/sbom-action action to v0.24.4 by @renovate[bot] in [#1340](https://github.com/nicholas-fedor/eui64-calculator/pull/1340)
 - Update module github.com/valyala/fasthttp to v1.80.0 by @renovate[bot] in [#1338](https://github.com/nicholas-fedor/eui64-calculator/pull/1338)
 - Update module github.com/klauspost/compress to v1.20.5 by @renovate[bot] in [#1336](https://github.com/nicholas-fedor/eui64-calculator/pull/1336)
 - Update github/codeql-action digest to 1bd86f2 by @renovate[bot] in [#1334](https://github.com/nicholas-fedor/eui64-calculator/pull/1334)
