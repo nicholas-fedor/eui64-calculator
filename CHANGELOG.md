@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 
+- Update sigstore/cosign-installer action to v4.1.4 by @renovate[bot] in [#1345](https://github.com/nicholas-fedor/eui64-calculator/pull/1345)
 - Update module github.com/gofiber/schema to v1.10.2 by @renovate[bot] in [#1343](https://github.com/nicholas-fedor/eui64-calculator/pull/1343)
 - Update github/codeql-action digest to 915412f by @renovate[bot] in [#1342](https://github.com/nicholas-fedor/eui64-calculator/pull/1342)
 - Update anchore/sbom-action action to v0.24.4 by @renovate[bot] in [#1340](https://github.com/nicholas-fedor/eui64-calculator/pull/1340)
